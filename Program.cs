@@ -18,7 +18,7 @@ namespace Cave_Adventure
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
-            Console.WriteLine("thorth");
+            Console.WriteLine("six");
         }
     }
 }
