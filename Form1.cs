@@ -15,6 +15,7 @@ namespace Cave_Adventure
         public Form1()
         {
             InitializeComponent();
+            Button b1 = new Button();
         }
     }
 }
