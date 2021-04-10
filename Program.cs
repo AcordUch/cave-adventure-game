@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 namespace Cave_Adventure
 {
+    // Это ветка master
     static class Program
     {
         /// <summary>
