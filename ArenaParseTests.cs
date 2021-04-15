@@ -11,7 +11,7 @@ namespace Cave_Adventure
         public void SpliteEmptyArena()
         {
             var TextArena = new string[0];
-            Assert.AreEqual(new string [0,0], ArenaMap.PublicGetterForTestsDaYaDurakChtoTakDelau(TextArena));
+            Assert.AreEqual(new string [0,0], ArenaParser.PublicGetterForTestsDaYaDurakChtoTakDelau(TextArena));
         }
         
         [Test]
@@ -29,7 +29,7 @@ namespace Cave_Adventure
                 {"  ", "  ", "  "},
                 {"  ", "  ", "M "},
             };
-            AssertsArena(ArenaMap.PublicGetterForTestsDaYaDurakChtoTakDelau(TextArena), expected);
+            AssertsArena(ArenaParser.PublicGetterForTestsDaYaDurakChtoTakDelau(TextArena), expected);
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace Cave_Adventure
                 {"# ", "  ", "  "},
                 {"# ", "  ", "  "}
             };
-            AssertsArena(ArenaMap.PublicGetterForTestsDaYaDurakChtoTakDelau(TextArena), expected);
+            AssertsArena(ArenaParser.PublicGetterForTestsDaYaDurakChtoTakDelau(TextArena), expected);
         }
         
         private static void AssertsArena(string[,] arena, string[,] expectedArena)
@@ -78,7 +78,7 @@ namespace Cave_Adventure
                 {CellType.Wall, CellType.Floor},
             };
 
-            AssertsArena(ArenaMap.ParsingMap(textArena), expectedArena,
+            AssertsArena(ArenaParser.ParsingMap(textArena), expectedArena,
                 new Point[0], new Point(1, 1));
         }
         
@@ -87,7 +87,7 @@ namespace Cave_Adventure
         public void ParseEmptyArena()
         {
             var textArena = new string[0];
-            AssertsArena(ArenaMap.ParsingMap(textArena), new CellType[0,0],
+            AssertsArena(ArenaParser.ParsingMap(textArena), new CellType[0,0],
                 new Point[0], Point.Empty);
         }
 
@@ -104,7 +104,7 @@ namespace Cave_Adventure
                 {CellType.Floor, CellType.Floor},
                 {CellType.Floor, CellType.Floor}
             };
-            AssertsArena(ArenaMap.ParsingMap(textArena), expectedArena,
+            AssertsArena(ArenaParser.ParsingMap(textArena), expectedArena,
                 new Point[0], Point.Empty);
         }
 
@@ -123,7 +123,7 @@ namespace Cave_Adventure
                 {CellType.Floor, CellType.Floor},
                 {CellType.Floor, CellType.Floor}
             };
-            AssertsArena(ArenaMap.ParsingMap(textArena), expectedArena,
+            AssertsArena(ArenaParser.ParsingMap(textArena), expectedArena,
                 new Point[0], new Point(1, 0));
         }
         
@@ -148,7 +148,7 @@ namespace Cave_Adventure
                 new Point(0, 2), new Point(1, 2), new Point(2, 2)
             };
                 
-            AssertsArena(ArenaMap.ParsingMap(textArena), expectedArena,
+            AssertsArena(ArenaParser.ParsingMap(textArena), expectedArena,
                 expectedMonsters, new Point(1, 0));
         }
         
@@ -167,7 +167,7 @@ namespace Cave_Adventure
                 {CellType.Wall, CellType.Floor},
             };
 
-            AssertsArena(ArenaMap.ParsingMap(textArena), expectedArena,
+            AssertsArena(ArenaParser.ParsingMap(textArena), expectedArena,
                 new Point[0], new Point(1, 1));
         }
         
@@ -189,7 +189,7 @@ namespace Cave_Adventure
             };
             var expectedMonsters = new Point[0];
 
-            AssertsArena(ArenaMap.ParsingMap(textArena), expectedArena,
+            AssertsArena(ArenaParser.ParsingMap(textArena), expectedArena,
                 expectedMonsters, new Point(0, 1));
         }
         
@@ -216,19 +216,20 @@ namespace Cave_Adventure
                 new Point(1, 2), new Point(3, 2)
             };
                 
-            AssertsArena(ArenaMap.ParsingMap(textArena), expectedArena,
+            AssertsArena(ArenaParser.ParsingMap(textArena), expectedArena,
                 expectedMonsters, new Point(1, 0));
         }
 
-        private static void AssertsArena(ArenaMap arena, CellType[,] expectedArena, Point[] expextedMonsters, Point player)
+        private static void AssertsArena((CellType[,] arenaMap, Point playerPosition, Point[] monsters) arena,
+            CellType[,] expectedArena, Point[] expextedMonsters, Point player)
         {
-            Assert.AreEqual(expectedArena.Length, arena.Arena.Length, "Размеры не совпадают с ожидаемыми");
-            Assert.AreEqual(expextedMonsters, arena.Monsters, "Расположение монстров не совпадает с ожидаемым");
-            Assert.AreEqual(player, arena.Player, "Расположение игрока не совпадает с ожидаемым");
+            Assert.AreEqual(expectedArena.Length, arena.arenaMap.Length, "Размеры не совпадают с ожидаемыми");
+            Assert.AreEqual(expextedMonsters, arena.monsters, "Расположение монстров не совпадает с ожидаемым");
+            Assert.AreEqual(player, arena.playerPosition, "Расположение игрока не совпадает с ожидаемым");
             for (int y = 0; y < expectedArena.GetLength(0); y++)
             for (int x = 0; x < expectedArena.GetLength(1); x++)
             {
-                Assert.AreEqual(expectedArena[y, x], arena.Arena[x, y], $"Ошибка на клетке X: {x}, Y: {y}");
+                Assert.AreEqual(expectedArena[y, x], arena.arenaMap[x, y], $"Ошибка на клетке X: {x}, Y: {y}");
             }
             //Примечание: На выходе мы как бы получаем транспонированную матрицу
             //То есть: Раньше по первому измерению хранились строки(y), после хранятся стобцы(x)
