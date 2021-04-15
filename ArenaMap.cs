@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cave_Adventure
 {
@@ -15,6 +16,16 @@ namespace Cave_Adventure
             Arena = arena;
             Player = player;
             Monsters = monsters;
+        }
+
+        public static ArenaMap CreatNewArenaMap(string textMap)
+        {
+            var arenaInfo = ArenaParser.ParsingMap(textMap);
+            var newPlayer = new Player(arenaInfo.playerPosition);
+            var newMonsters = arenaInfo.monstersPosition.Select(e => new Monster(e)).ToArray();
+            //Переделать под фабрику, что бы получать классы монстров
+            return new ArenaMap(arenaInfo.arenaMap, newPlayer, newMonsters);
+            //Здесь rider недоволен апкастом Monster[] в IMomonster[], типо ошибка во время записи может быть
         }
         
         //ToDo late ...
