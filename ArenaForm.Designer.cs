@@ -1,6 +1,6 @@
 ﻿namespace Cave_Adventure
 {
-    partial class Form1
+    partial class ArenaForm
     {
         /// <summary>
         ///  Required designer variable.
