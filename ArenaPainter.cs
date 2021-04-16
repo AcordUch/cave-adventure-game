@@ -30,15 +30,16 @@ namespace Cave_Adventure
                 for (int x = 0; x < ArenaSize.Width; x++)
                 for (int y = 0; y < ArenaSize.Height; y++)
                 {
-                    graphics.DrawRectangle(DetermineCellType(currentArena.Arena[x, y]),
-                        new Rectangle(x * cellWidth, y * cellHeight, cellWidth, cellHeight));
+                    var rec = new Rectangle(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
+                    graphics.FillRectangle(ChooseBrushForCell(currentArena.Arena[x, y]), rec);
+                    graphics.DrawRectangle(Pens.Black, rec);
                 }
             }
         }
 
-        private static Pen DetermineCellType(CellType cell)
+        private static Brush ChooseBrushForCell(CellType cell)
         {
-            return cell == CellType.Floor ? new Pen(Color.LightGray) : new Pen(Color.DimGray);
+            return cell == CellType.Floor ? Brushes.DimGray : Brushes.Firebrick;
         }
     }
 }

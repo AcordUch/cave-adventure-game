@@ -59,5 +59,54 @@ namespace Cave_Adventure.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на # .# .# .# .# .
+        ///# .  .P .  .# .
+        ///# .  .  .  .# .
+        ///# .  .M .  .# .
+        ///# .# .# .# .# ..
+        /// </summary>
+        internal static string Arena1 {
+            get {
+                return ResourceManager.GetString("Arena1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на .
+        /// </summary>
+        internal static string Arena2 {
+            get {
+                return ResourceManager.GetString("Arena2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на .
+        /// </summary>
+        internal static string Arena3 {
+            get {
+                return ResourceManager.GetString("Arena3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на .
+        /// </summary>
+        internal static string Arena4 {
+            get {
+                return ResourceManager.GetString("Arena4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на .
+        /// </summary>
+        internal static string Arena5 {
+            get {
+                return ResourceManager.GetString("Arena5", resourceCulture);
+            }
+        }
     }
 }

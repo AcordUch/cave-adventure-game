@@ -17,11 +17,23 @@
       <None Remove="ArenaLevels\Arena1.txt" />
       <None Remove="ArenaLevels\Arena2.txt" />
       <Content Include="ArenaLevels\Arena1.txt">
-        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <Content Include="ArenaLevels\Arena2.txt" />
+      <Content Include="ArenaLevels\Arena2.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <None Remove="ArenaLevels\Arena3.txt" />
-      <Content Include="ArenaLevels\Arena3.txt" />
+      <Content Include="ArenaLevels\Arena3.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="ArenaLevels\Arena5.txt" />
+      <Content Include="ArenaLevels\Arena5.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="ArenaLevels\Arena4.txt" />
+      <Content Include="ArenaLevels\Arena4.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
