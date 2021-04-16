@@ -36,7 +36,7 @@ namespace Cave_Adventure
 
         private static IEnumerable<ArenaMap> LoadLevels()
         {
-            yield return ArenaMap.CreatNewArenaMap(Properties.Resources.Arena2);
+            yield return ArenaMap.CreatNewArenaMap(Properties.Resources.Arena1);
             //TODO
         }
         
