@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Cave_Adventure.Properties;
 
 namespace Cave_Adventure
 {
@@ -11,7 +12,8 @@ namespace Cave_Adventure
         private const int ShiftFromUpAndDownBorder = 10;
         
         private readonly Timer _timer;
-        private readonly ArenaPainter _painter;
+        private readonly ArenaPainter _arenaPainter;
+        private readonly PlayerPainter _playerPainter;
         private int _zoomScale;
         private Player _player;
         private PointF _logicalCenterPos;
@@ -32,9 +34,10 @@ namespace Cave_Adventure
             KeyDown += OnPress;
             KeyUp += OnKeyUp;
             var levels = LoadLevels().ToArray();
-            _painter = new ArenaPainter(levels);
+            _arenaPainter = new ArenaPainter(levels);
+            _playerPainter = new PlayerPainter();
             
-            _timer = new Timer { Interval = 30 };
+            _timer = new Timer { Interval = 60 };
             _timer.Tick += Update;
             _timer.Start();
         }
@@ -74,12 +77,12 @@ namespace Cave_Adventure
                 case Keys.A:
                     _player.DirX = -5;
                     _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    _player.Mirroring = -1;
+                    _player.ViewDirection = ViewDirection.Left;
                     break;
                 case Keys.D:
                     _player.DirX = 5;
                     _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    _player.Mirroring = 1;
+                    _player.ViewDirection = ViewDirection.Right;
                     break;
                 case Keys.Space:
                     _player.SetAnimationConfiguration(StatesOfAnimation.Attack);
@@ -120,7 +123,7 @@ namespace Cave_Adventure
         {
             base.OnPaint(e);
             e.Graphics.Clear(Color.White);
-            var sceneSize = _painter.ArenaSize;
+            var sceneSize = _arenaPainter.ArenaSize;
             
             _zoomScale = ClientSize.Height / sceneSize.Height - ShiftFromUpAndDownBorder;
             _logicalCenterPos = new PointF(sceneSize.Width / 2f, sceneSize.Height / 2f);
@@ -130,10 +133,10 @@ namespace Cave_Adventure
             e.Graphics.ResetTransform();
             e.Graphics.TranslateTransform(shift.X, shift.Y);
             e.Graphics.ScaleTransform(_zoomScale, _zoomScale);
-            _painter.Paint(e.Graphics);
+            _arenaPainter.Paint(e.Graphics);
             
             e.Graphics.ResetTransform();
-            _player.PlayAnimation(e.Graphics);
+            _playerPainter.SetUpAndPaint(e.Graphics, _player);
         }
     }
 }
