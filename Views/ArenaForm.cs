@@ -1,24 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Cave_Adventure
 {
     public partial class ArenaForm : Form
     {
-        private int _zoomScale;
         private const int ShiftFromUpAndDownBorder = 10;
-        public Image gladiatorImage;
-        Player player;
-
+        
         private readonly Timer _timer;
-        private ArenaPainter _painter;
+        private readonly ArenaPainter _painter;
+        private int _zoomScale;
+        private Player _player;
         private PointF _logicalCenterPos;
 
         protected override void OnLoad(EventArgs e)
@@ -33,6 +28,7 @@ namespace Cave_Adventure
         {
             //InitializeComponent();
             Init();
+            
             KeyDown += OnPress;
             KeyUp += OnKeyUp;
             var levels = LoadLevels().ToArray();
@@ -42,64 +38,55 @@ namespace Cave_Adventure
             _timer.Tick += Update;
             _timer.Start();
         }
-        
-        public void Init()
+
+        private void Init()
         {
-            gladiatorImage = Properties.Resources.Gladiator;
-            player = new Player(Point.Empty, Hero.idleFrames, Hero.runFrames, Hero.attackFrames, Hero.deathFrames, gladiatorImage);
+            _player = new Player(Point.Empty);
         }
         
-        public void Update(object sender, EventArgs e)
+        private void Update(object sender, EventArgs e)
         {
-            if (player.isMoving)
-                player.Move();
+            if (_player.IsMoving)
+                _player.Move();
 
             Invalidate();
         }
 
-        public void OnKeyUp(object sender, KeyEventArgs e)
+        private void OnKeyUp(object sender, KeyEventArgs e)
         {
-            player.DirX = 0;
-            player.DirY = 0;
-            player.isMoving = false;
-            player.SetAnimationConfiguration(0);
+            _player.DirX = 0;
+            _player.DirY = 0;
+            _player.SetAnimationConfiguration(StatesOfAnimation.Idle);
         }
 
-        public void OnPress(object sender, KeyEventArgs e)
+        private void OnPress(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
                 case Keys.W:
-                    player.DirY = -5;
-                    player.isMoving = true;
-                    player.SetAnimationConfiguration(1);
+                    _player.DirY = -5;
+                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
                     break;
                 case Keys.S:
-                    player.DirY = 5;
-                    player.isMoving = true;
-                    player.SetAnimationConfiguration(1);
+                    _player.DirY = 5;
+                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
                     break;
                 case Keys.A:
-                    player.DirX = -5;
-                    player.isMoving = true;
-                    player.SetAnimationConfiguration(1);
-                    player.Flip = -1;
+                    _player.DirX = -5;
+                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
+                    _player.Mirroring = -1;
                     break;
                 case Keys.D:
-                    player.DirX = 5;
-                    player.isMoving = true;
-                    player.SetAnimationConfiguration(1);
-                    player.Flip = 1;
+                    _player.DirX = 5;
+                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
+                    _player.Mirroring = 1;
                     break;
                 case Keys.Space:
-                    player.DirX = 0;
-                    player.DirY = 0;
-                    player.isMoving = false;
-                    player.SetAnimationConfiguration(2);
+                    _player.SetAnimationConfiguration(StatesOfAnimation.Attack);
                     break;
             }
 
-        }
+        }   
 
         private static IEnumerable<ArenaMap> LoadLevels()
         {
@@ -146,7 +133,7 @@ namespace Cave_Adventure
             _painter.Paint(e.Graphics);
             
             e.Graphics.ResetTransform();
-            player.PlayAnimation(e.Graphics);
+            _player.PlayAnimation(e.Graphics);
         }
     }
 }
