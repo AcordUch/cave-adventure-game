@@ -32,6 +32,9 @@ namespace Cave_Adventure
             // InitializeComponent();
             var levels = LoadLevels().ToArray();
             _painter = new ArenaPainter(levels);
+            
+            _timer = new Timer { Interval = 50 };
+            _timer.Start();
         }
 
         private static IEnumerable<ArenaMap> LoadLevels()
