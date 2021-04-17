@@ -37,8 +37,8 @@ namespace Cave_Adventure
 
         private void CreateArena()
         {
-            const int cellWidth = 64;
-            const int cellHeight = 64;
+            const int cellWidth = GlobalConstants.AssetsSize;
+            const int cellHeight = GlobalConstants.AssetsSize;
             _arenaImage = new Bitmap(ArenaSize.Width * cellWidth, ArenaSize.Height * cellHeight);
             using (var graphics = Graphics.FromImage(_arenaImage))
             {
