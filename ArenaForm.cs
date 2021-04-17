@@ -14,7 +14,9 @@ namespace Cave_Adventure
     {
         private int _zoomScale;
         private const int ShiftFromUpAndDownBorder = 10;
-        
+        public Image gladiatorImage;
+        Player player;
+
         private readonly Timer _timer;
         private ArenaPainter _painter;
         private PointF _logicalCenterPos;
@@ -29,9 +31,74 @@ namespace Cave_Adventure
         
         public ArenaForm()
         {
-            // InitializeComponent();
+            //InitializeComponent();
+            Init();
+            KeyDown += OnPress;
+            KeyUp += OnKeyUp;
             var levels = LoadLevels().ToArray();
             _painter = new ArenaPainter(levels);
+            
+            _timer = new Timer { Interval = 30 };
+            _timer.Tick += Update;
+            _timer.Start();
+        }
+        
+        public void Init()
+        {
+            gladiatorImage = Properties.Resources.Gladiator;
+            player = new Player(Point.Empty, Hero.idleFrames, Hero.runFrames, Hero.attackFrames, Hero.deathFrames, gladiatorImage);
+        }
+        
+        public void Update(object sender, EventArgs e)
+        {
+            if (player.isMoving)
+                player.Move();
+
+            Invalidate();
+        }
+
+        public void OnKeyUp(object sender, KeyEventArgs e)
+        {
+            player.DirX = 0;
+            player.DirY = 0;
+            player.isMoving = false;
+            player.SetAnimationConfiguration(0);
+        }
+
+        public void OnPress(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.W:
+                    player.DirY = -5;
+                    player.isMoving = true;
+                    player.SetAnimationConfiguration(1);
+                    break;
+                case Keys.S:
+                    player.DirY = 5;
+                    player.isMoving = true;
+                    player.SetAnimationConfiguration(1);
+                    break;
+                case Keys.A:
+                    player.DirX = -5;
+                    player.isMoving = true;
+                    player.SetAnimationConfiguration(1);
+                    player.Flip = -1;
+                    break;
+                case Keys.D:
+                    player.DirX = 5;
+                    player.isMoving = true;
+                    player.SetAnimationConfiguration(1);
+                    player.Flip = 1;
+                    break;
+                case Keys.Space:
+                    player.DirX = 0;
+                    player.DirY = 0;
+                    player.isMoving = false;
+                    player.SetAnimationConfiguration(2);
+                    break;
+            }
+
         }
 
         private static IEnumerable<ArenaMap> LoadLevels()
@@ -77,6 +144,9 @@ namespace Cave_Adventure
             e.Graphics.TranslateTransform(shift.X, shift.Y);
             e.Graphics.ScaleTransform(_zoomScale, _zoomScale);
             _painter.Paint(e.Graphics);
+            
+            e.Graphics.ResetTransform();
+            player.PlayAnimation(e.Graphics);
         }
     }
 }

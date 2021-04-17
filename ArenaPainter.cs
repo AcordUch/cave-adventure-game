@@ -17,21 +17,22 @@ namespace Cave_Adventure
 
         public void Paint(Graphics graphics)
         {
-            graphics.DrawImage(_arenaImage, 0, 0, ArenaSize.Width, ArenaSize.Width);
-            TypeEntity(graphics);
+            TypeEntity();
+            graphics.DrawImage(_arenaImage, new Rectangle(0, 0, ArenaSize.Width, ArenaSize.Height));
         }
-
-        private void TypeEntity(Graphics graphics)
+        
+        private void TypeEntity()
         {
-            foreach (var monster in currentArena.Monsters)
+            using (var graphics = Graphics.FromImage(_arenaImage))
             {
-                var coodr = new Point(monster.Position.X * 64, monster.Position.Y * 64);
-                var testPoint = new PointF(50, 50);
-                graphics.DrawString("M", new Font(SystemFonts.DefaultFont.FontFamily, 100),
-                    Brushes.Black, testPoint);
+                foreach (var monster in currentArena.Monsters)
+                {
+                    graphics.DrawString("M", new Font(SystemFonts.DefaultFont.FontFamily, 32),
+                        Brushes.Black, new Point(monster.Position.X * 64, monster.Position.Y * 64));
+                }
+                graphics.DrawString("P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
+                    Brushes.Black, new Point(currentArena.Player.Position.X * 64, currentArena.Player.Position.Y * 64));
             }
-            graphics.DrawString("P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
-                Brushes.Black, new Point(currentArena.Player.Position.X * 64, currentArena.Player.Position.Y * 64));
         }
 
         private void CreateArena()
