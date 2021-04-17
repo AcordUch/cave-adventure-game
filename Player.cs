@@ -10,12 +10,12 @@ namespace Cave_Adventure
         private const int ImageSize = 33;
         
         private Point _position;
+        private int _dX;
+        private int _dY;
 
         public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
         public ViewDirection ViewDirection { get; set; } = ViewDirection.Right;
         public bool IsMoving { get; private set; }
-        public int DirX { get; set; }
-        public int DirY { get; set; }
         public Point Position
         {
             get => _position;
@@ -27,10 +27,16 @@ namespace Cave_Adventure
             _position = position;
         }
 
-        public void Move()
+        public void UpdatePosition()
         {
-            _position.X += DirX;
-            _position.Y += DirY;
+            _position.X += _dX;
+            _position.Y += _dY;
+        }
+
+        public void Move(int dx, int dy)
+        {
+            _dX = dx;
+            _dY = dy;
         }
         
         public void SetAnimationConfiguration(StatesOfAnimation currentAnimation)

@@ -50,15 +50,14 @@ namespace Cave_Adventure
         private void Update(object sender, EventArgs e)
         {
             if (_player.IsMoving)
-                _player.Move();
+                _player.UpdatePosition();
 
             Invalidate();
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
-            _player.DirX = 0;
-            _player.DirY = 0;
+            _player.Move(0, 0);
             _player.SetAnimationConfiguration(StatesOfAnimation.Idle);
         }
 
@@ -67,20 +66,20 @@ namespace Cave_Adventure
             switch (e.KeyCode)
             {
                 case Keys.W:
-                    _player.DirY = -5;
+                    _player.Move(0, -5);
                     _player.SetAnimationConfiguration(StatesOfAnimation.Run);
                     break;
                 case Keys.S:
-                    _player.DirY = 5;
+                    _player.Move(0, 5);
                     _player.SetAnimationConfiguration(StatesOfAnimation.Run);
                     break;
                 case Keys.A:
-                    _player.DirX = -5;
+                    _player.Move(-5, 0);
                     _player.SetAnimationConfiguration(StatesOfAnimation.Run);
                     _player.ViewDirection = ViewDirection.Left;
                     break;
                 case Keys.D:
-                    _player.DirX = 5;
+                    _player.Move(5, 0);
                     _player.SetAnimationConfiguration(StatesOfAnimation.Run);
                     _player.ViewDirection = ViewDirection.Right;
                     break;
