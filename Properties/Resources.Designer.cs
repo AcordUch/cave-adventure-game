@@ -61,11 +61,12 @@ namespace Cave_Adventure.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на # .# .# .# .# .
-        ///# .  .P .  .# .
-        ///# .# .  .  .# .
-        ///# .M .  .M .# .
-        ///# .# .# .# .# ..
+        ///   Ищет локализованную строку, похожую на # .# .# .# .# .# .
+        ///# .  .P .  .  .# .
+        ///# .# .  .  .# .# .
+        ///# .  .  .  .  .# .
+        ///# .M .  .M .  .# .
+        ///# .# .# .# .# .# ..
         /// </summary>
         internal static string Arena1 {
             get {
@@ -145,6 +146,26 @@ namespace Cave_Adventure.Properties {
         internal static string Arena5 {
             get {
                 return ResourceManager.GetString("Arena5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Dwarf {
+            get {
+                object obj = ResourceManager.GetObject("Dwarf", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Gladiator {
+            get {
+                object obj = ResourceManager.GetObject("Gladiator", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

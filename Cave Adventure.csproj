@@ -16,6 +16,8 @@
     <ItemGroup>
       <None Remove="ArenaLevels\Arena1.txt" />
       <None Remove="ArenaLevels\Arena2.txt" />
+      <None Remove="Assets\Dwarf.png" />
+      <None Remove="Assets\Gladiator.png" />
       <Content Include="ArenaLevels\Arena1.txt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
@@ -32,6 +34,12 @@
       </Content>
       <None Remove="ArenaLevels\Arena4.txt" />
       <Content Include="ArenaLevels\Arena4.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\Dwarf.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\Gladiator.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

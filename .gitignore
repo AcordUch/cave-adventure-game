@@ -3,3 +3,9 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+.idea/
+.vs/
+/.vs/Cave Adventure/DesignTimeBuild/.dtbcache.v2
+/.vs/Cave Adventure/v16/TestStore/1/000.testlog
+/Cave Adventure.sln.DotSettings.user
+/.vs/Cave Adventure/v16/TestStore/1/testlog.manifest
