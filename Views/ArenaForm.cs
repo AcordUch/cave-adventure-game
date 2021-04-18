@@ -9,14 +9,10 @@ namespace Cave_Adventure
 {
     public partial class ArenaForm : Form
     {
-        private const int ShiftFromUpAndDownBorder = 10;
-        
         private readonly Timer _timer;
         private readonly ArenaPainter _arenaPainter;
         private readonly PlayerPainter _playerPainter;
-        private int _zoomScale;
-        private Player _player;
-        private PointF _logicalCenterPos;
+        private readonly ArenaPanel _arenaPanel;
 
         protected override void OnLoad(EventArgs e)
         {
@@ -24,118 +20,101 @@ namespace Cave_Adventure
             DoubleBuffered = true;
             WindowState = FormWindowState.Maximized;
             Text = "Здесь должны быть бои!";
+            KeyPreview = true;
         }
         
         public ArenaForm()
         {
             //InitializeComponent();
-            Init();
-            
-            KeyDown += OnPress;
-            KeyUp += OnKeyUp;
             var levels = LoadLevels().ToArray();
-            _arenaPainter = new ArenaPainter(levels);
+            
+            _arenaPainter = new ArenaPainter(levels[0]);
             _playerPainter = new PlayerPainter();
+            _arenaPanel = new ArenaPanel(_arenaPainter, _playerPainter) {Dock = DockStyle.Fill};
+            
+            var levelMenu = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.LeftToRight,
+                Dock = DockStyle.Left,
+                Width = 150,
+                BackColor = Color.Empty,
+                Padding = new Padding(25, 10, 0, 0),
+                Font = new Font(SystemFonts.DialogFont.FontFamily, 12)
+            };
+            SetUpLevelSwitch(levels, levelMenu);
+
+            Controls.Add(_arenaPanel);
+            Controls.Add(levelMenu);
+            
+            KeyDown += _arenaPanel.OnKeyDown;
+            KeyUp += _arenaPanel.OnKeyUp;
             
             _timer = new Timer { Interval = 60 };
-            _timer.Tick += Update;
+            _timer.Tick += TimerTick;
             _timer.Start();
         }
 
-        private void Init()
+        private void SetUpLevelSwitch(ArenaMap[] levels, Control menuPanel)
         {
-            _player = new Player(Point.Empty);
+            menuPanel.Controls.Add(new Label
+            {
+                Text = "Choose arena:",
+                ForeColor = Color.Black,
+                Size = new Size(100, 75),
+                Margin = new Padding(0, 30, 0, 0)
+            });
+            
+            var linkLabels = new List<LinkLabel>();
+            for (var i = 0; i < levels.Length; i++)
+            {
+                var level = levels[i];
+                var link = new LinkLabel
+                {
+                    Text = $"Arena {i + 1}",
+                    ActiveLinkColor = Color.LimeGreen,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Size = new Size(100, 35),
+                    Margin = new Padding(0, 20, 0, 5),
+                    Tag = level
+                };
+                link.LinkClicked += (sender, args) =>
+                {
+                    ChangeLevel(level);
+                    UpdateLinksColors(level, linkLabels);
+                };
+                menuPanel.Controls.Add(link);
+                linkLabels.Add(link);
+            }
+            UpdateLinksColors(levels[0], linkLabels);
         }
         
-        private void Update(object sender, EventArgs e)
-        {
-            if (_player.IsMoving)
-                _player.UpdatePosition();
-
-            Invalidate();
-        }
-
-        private void OnKeyUp(object sender, KeyEventArgs e)
-        {
-            _player.Move(0, 0);
-            _player.SetAnimationConfiguration(StatesOfAnimation.Idle);
-        }
-
-        private void OnPress(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.W:
-                    _player.Move(0, -5);
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    break;
-                case Keys.S:
-                    _player.Move(0, 5);
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    break;
-                case Keys.A:
-                    _player.Move(-5, 0);
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    _player.ViewDirection = ViewDirection.Left;
-                    break;
-                case Keys.D:
-                    _player.Move(5, 0);
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    _player.ViewDirection = ViewDirection.Right;
-                    break;
-                case Keys.Space:
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Attack);
-                    break;
-            }
-
-        }   
-
         private static IEnumerable<ArenaMap> LoadLevels()
         {
             yield return ArenaMap.CreatNewArenaMap(Properties.Resources.Arena1);
-            //TODO
+            yield return ArenaMap.CreatNewArenaMap(Properties.Resources.Arena2);
+            yield return ArenaMap.CreatNewArenaMap(Properties.Resources.Arena3);
+            yield return ArenaMap.CreatNewArenaMap(Properties.Resources.Arena4);
+            yield return ArenaMap.CreatNewArenaMap(Properties.Resources.Arena5);
         }
         
-        private PointF ToLogical(Point point)
+        private void ChangeLevel(ArenaMap newMap)
         {
-            var shift = GetShift();
-            return new PointF(
-                (point.X - shift.X) / _zoomScale,
-                (point.Y - shift.Y) / _zoomScale);
+            _arenaPainter.ChangeLevel(newMap);
+            //_timer.Start();
+            _arenaPanel.Invalidate();
+        }
+        
+        private static void UpdateLinksColors(ArenaMap level, List<LinkLabel> linkLabels)
+        {
+            foreach (var linkLabel in linkLabels)
+            {
+                linkLabel.LinkColor = linkLabel.Tag == level ? Color.LimeGreen : Color.Black;
+            }
         }
 
-        private PointF ToGraphic(Point point)
+        private void TimerTick(object sender, EventArgs e)
         {
-            var shift = GetShift();
-            return new PointF(
-                point.X * _zoomScale + shift.X,
-                point.Y * _zoomScale + shift.Y);
-        }
-
-        private PointF GetShift()
-        {
-            return new PointF(ClientSize.Width / 2f - _logicalCenterPos.X * _zoomScale,
-                ClientSize.Height / 2f - _logicalCenterPos.Y * _zoomScale);
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-            e.Graphics.Clear(Color.White);
-            var sceneSize = _arenaPainter.ArenaSize;
-            
-            _zoomScale = ClientSize.Height / sceneSize.Height - ShiftFromUpAndDownBorder;
-            _logicalCenterPos = new PointF(sceneSize.Width / 2f, sceneSize.Height / 2f);
-            
-            var shift = GetShift();
-            
-            e.Graphics.ResetTransform();
-            e.Graphics.TranslateTransform(shift.X, shift.Y);
-            e.Graphics.ScaleTransform(_zoomScale, _zoomScale);
-            _arenaPainter.Paint(e.Graphics);
-            
-            e.Graphics.ResetTransform();
-            _playerPainter.SetUpAndPaint(e.Graphics, _player);
+            _arenaPanel.Update();
         }
     }
 }
