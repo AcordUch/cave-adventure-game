@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -6,19 +7,58 @@ namespace Cave_Adventure
 {
     public class ArenaPanel : Panel
     {
-        private const int ShiftFromUpAndDownBorder = 10;
-        
-        private readonly ArenaPainter _arenaPainter;
-        private readonly PlayerPainter _playerPainter;
-        private int _zoomScale;
-        private Player _player;
-        private PointF _logicalCenterPos;
+        public readonly ArenaFieldControl ArenaFieldControl;
 
-        public ArenaPanel(ArenaPainter arenaPainter, PlayerPainter playerPainter)
+        public ArenaPanel(ArenaMap[] levels)
         {
-            _arenaPainter = arenaPainter;
-            _playerPainter = playerPainter;
-            _player = new Player(Point.Empty);
+            var levelMenu = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.LeftToRight,
+                Dock = DockStyle.Fill,
+                // Width = 150,
+                AutoSize = true,
+                BackColor = Color.Red,
+                Padding = new Padding(25, 10, 0, 0),
+                Font = new Font(SystemFonts.DialogFont.FontFamily, 12)
+            };
+            SetUpLevelSwitch(levels, levelMenu);
+            
+            ArenaFieldControl = new ArenaFieldControl(levels);
+
+            var table = new TableLayoutPanel()
+            {
+                Dock = DockStyle.Fill,
+                AutoSize = true
+            };
+            var secondColumnTable = new FlowLayoutPanel()
+            {
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                Padding = new Padding(100, 30, 0, 50),
+            };
+            var thirdColumnTable = new TableLayoutPanel()
+            {
+                Dock = DockStyle.Fill,
+                AutoSize = true
+            };
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            thirdColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
+            thirdColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
+            thirdColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
+            thirdColumnTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+            
+            secondColumnTable.Controls.Add(ArenaFieldControl);
+            thirdColumnTable.Controls.Add(new Panel(){Dock = DockStyle.Fill,BackColor = Color.Black},0, 0);
+            thirdColumnTable.Controls.Add(new Panel(){Dock = DockStyle.Fill,BackColor = Color.Blue},0, 1);
+            thirdColumnTable.Controls.Add(new Panel(){Dock = DockStyle.Fill,BackColor = Color.Black},0, 2);
+            table.Controls.Add(levelMenu, 0, 0);
+            table.Controls.Add(secondColumnTable, 1, 0);
+            table.Controls.Add(thirdColumnTable, 2, 0);
+            
+            Controls.Add(table);
         }
         
         protected override void InitLayout()
@@ -27,89 +67,76 @@ namespace Cave_Adventure
             ResizeRedraw = true;
             DoubleBuffered = true;
         }
+
+        public void Configure(ArenaMap arenaMap)
+        {
+            ArenaFieldControl.Configure(arenaMap);
+        }
         
         public new void Update()
         {
-            if (_player.IsMoving)
-                _player.UpdatePosition();
-
+            ArenaFieldControl.Update();
+            
+            var zoom = GetZoomForController();
+            ArenaFieldControl.Size =
+                new Size((int)(ArenaFieldControl.Width * zoom), (int)(ArenaFieldControl.Height * zoom));
             Invalidate();
         }
 
-        public void OnKeyUp(object sender, KeyEventArgs e)
+        private void SetUpLevelSwitch(ArenaMap[] levels, Control menuPanel)
         {
-            _player.Move(0, 0);
-            _player.SetAnimationConfiguration(StatesOfAnimation.Idle);
-        }
-
-        public void OnKeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
+            menuPanel.Controls.Add(new Label
             {
-                case Keys.W:
-                    _player.Move(0, -5);
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    break;
-                case Keys.S:
-                    _player.Move(0, 5);
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    break;
-                case Keys.A:
-                    _player.Move(-5, 0);
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    _player.ViewDirection = ViewDirection.Left;
-                    break;
-                case Keys.D:
-                    _player.Move(5, 0);
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    _player.ViewDirection = ViewDirection.Right;
-                    break;
-                case Keys.Space:
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Attack);
-                    break;
+                Text = "Choose arena:",
+                ForeColor = Color.Black,
+                Size = new Size(100, 75),
+                Margin = new Padding(0, 30, 0, 0)
+            });
+            
+            var linkLabels = new List<LinkLabel>();
+            for (var i = 0; i < levels.Length; i++)
+            {
+                var level = levels[i];
+                var link = new LinkLabel
+                {
+                    Text = $"Arena {i + 1}",
+                    ActiveLinkColor = Color.LimeGreen,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Size = new Size(100, 35),
+                    Margin = new Padding(0, 20, 0, 5),
+                    Tag = level
+                };
+                link.LinkClicked += (sender, args) =>
+                {
+                    ArenaFieldControl.ChangeLevel(level);
+                    UpdateLinksColors(level, linkLabels);
+                };
+                menuPanel.Controls.Add(link);
+                linkLabels.Add(link);
+            }
+            UpdateLinksColors(levels[0], linkLabels);
+        }
+        
+        private static void UpdateLinksColors(ArenaMap level, List<LinkLabel> linkLabels)
+        {
+            foreach (var linkLabel in linkLabels)
+            {
+                linkLabel.LinkColor = linkLabel.Tag == level ? Color.LimeGreen : Color.Black;
             }
         }
         
-        private PointF ToLogical(Point point)
+        private double GetZoomForController()
         {
-            var shift = GetShift();
-            return new PointF(
-                (point.X - shift.X) / _zoomScale,
-                (point.Y - shift.Y) / _zoomScale);
-        }
-
-        private PointF ToGraphic(Point point)
-        {
-            var shift = GetShift();
-            return new PointF(
-                point.X * _zoomScale + shift.X,
-                point.Y * _zoomScale + shift.Y);
-        }
-
-        private PointF GetShift()
-        {
-            return new PointF(ClientSize.Width / 2f - _logicalCenterPos.X * _zoomScale,
-                ClientSize.Height / 2f - _logicalCenterPos.Y * _zoomScale);
+            return ArenaFieldControl.Height != 0 && ClientSize.Height != 0
+                ? (double)ClientSize.Height / ArenaFieldControl.Height
+                : 1;
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
             e.Graphics.Clear(Color.White);
-            var sceneSize = _arenaPainter.ArenaSize;
             
-            _zoomScale = ClientSize.Height / sceneSize.Height - ShiftFromUpAndDownBorder;
-            _logicalCenterPos = new PointF(sceneSize.Width / 2f, sceneSize.Height / 2f);
-            
-            var shift = GetShift();
-            
-            e.Graphics.ResetTransform();
-            e.Graphics.TranslateTransform(shift.X, shift.Y);
-            e.Graphics.ScaleTransform(_zoomScale, _zoomScale);
-            _arenaPainter.Paint(e.Graphics);
-            
-            e.Graphics.ResetTransform();
-            _playerPainter.SetUpAndPaint(e.Graphics, _player);
         }
     }
 }

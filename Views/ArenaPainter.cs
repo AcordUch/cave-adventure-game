@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Cave_Adventure
@@ -7,15 +9,27 @@ namespace Cave_Adventure
         private const int CellWidth = GlobalConst.AssetsSize;
         private const int CellHeight = GlobalConst.AssetsSize;
         
-        public Size ArenaSize => new Size(_currentArena.Arena.GetLength(0), _currentArena.Arena.GetLength(1));
+        public Size ArenaSize => new Size(_currentArena.Width, _currentArena.Height);
 
         private ArenaMap _currentArena;
         private Bitmap _arenaImage;
+        private Dictionary<Point, Rectangle> _pointToRectangle;
+        private bool _configured;
 
         public ArenaPainter(ArenaMap arena)
         {
             _currentArena = arena;
-            CreateArena();
+            // CreateArena();
+        }
+        
+        public void Configure(Dictionary<Point, Rectangle> pointToRectangle)
+        {
+            if (_configured)
+                throw new InvalidOperationException();
+
+            _pointToRectangle = pointToRectangle;
+            CreateArena2();
+            _configured = true;
         }
 
         public void Paint(Graphics graphics)
@@ -24,6 +38,14 @@ namespace Cave_Adventure
             graphics.DrawImage(_arenaImage, new Rectangle(0, 0, ArenaSize.Width,
                                                                         ArenaSize.Height));
         }
+
+        // public void Paint2(Graphics graphics)
+        // {
+        //     foreach (var pair in _pointToRectangle)
+        //     {
+        //         drawCell(graphics, pair.Value);
+        //     }
+        // }
         
         private void TypeEntity()
         {
@@ -41,13 +63,36 @@ namespace Cave_Adventure
             }
         }
         
-        public void ChangeLevel(ArenaMap newArena)
+        // private void drawCell(Graphics graphics, Rectangle rectangle)
+        // {
+        //     graphics.FillRectangle(Brushes.Brown, rectangle);
+        //     graphics.DrawRectangle(Pens.Black, rectangle);
+        // }
+        
+        public void ChangeLevel(ArenaMap newArena, Dictionary<Point, Rectangle> pointToRectangle)
         {
             _currentArena = newArena;
-            CreateArena();
+            _pointToRectangle = pointToRectangle;
+            // CreateArena();
+            CreateArena2();
         }
 
-        private void CreateArena()
+        // private void CreateArena()
+        // {
+        //     _arenaImage = new Bitmap(ArenaSize.Width * CellWidth, ArenaSize.Height * CellHeight);
+        //     using (var graphics = Graphics.FromImage(_arenaImage))
+        //     {
+        //         for (int x = 0; x < ArenaSize.Width; x++)
+        //         for (int y = 0; y < ArenaSize.Height; y++)
+        //         {
+        //             var rec = new Rectangle(x * CellWidth, y * CellHeight, CellWidth, CellHeight);
+        //             graphics.FillRectangle(ChooseBrushForCell(_currentArena.Arena[x, y]), rec);
+        //             graphics.DrawRectangle(Pens.Black, rec);
+        //         }
+        //     }
+        // }
+
+        private void CreateArena2()
         {
             _arenaImage = new Bitmap(ArenaSize.Width * CellWidth, ArenaSize.Height * CellHeight);
             using (var graphics = Graphics.FromImage(_arenaImage))
@@ -55,7 +100,7 @@ namespace Cave_Adventure
                 for (int x = 0; x < ArenaSize.Width; x++)
                 for (int y = 0; y < ArenaSize.Height; y++)
                 {
-                    var rec = new Rectangle(x * CellWidth, y * CellHeight, CellWidth, CellHeight);
+                    var rec = _pointToRectangle[new Point(x, y)];
                     graphics.FillRectangle(ChooseBrushForCell(_currentArena.Arena[x, y]), rec);
                     graphics.DrawRectangle(Pens.Black, rec);
                 }

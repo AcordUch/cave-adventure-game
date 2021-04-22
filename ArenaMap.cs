@@ -11,6 +11,9 @@ namespace Cave_Adventure
         public readonly Player Player;
         public readonly IMonster[] Monsters;
 
+        public int Width => Arena.GetLength(0);
+        public int Height => Arena.GetLength(1);
+
         public ArenaMap(CellType[,] arena, Player player, IMonster[] monsters)
         {
             Arena = arena;
