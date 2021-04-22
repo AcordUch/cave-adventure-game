@@ -12,6 +12,7 @@ namespace Cave_Adventure
         public Size ArenaSize => new Size(_currentArena.Width, _currentArena.Height);
 
         private ArenaMap _currentArena;
+        private Player _player;
         private Bitmap _arenaImage;
         private Dictionary<Point, Rectangle> _pointToRectangle;
         private bool _configured;
@@ -31,11 +32,16 @@ namespace Cave_Adventure
             _configured = true;
         }
 
+        public void SetPlayer(Player player)
+        {
+            _player = player;
+        }
+
         public void Paint(Graphics graphics)
         {
             TypeEntity();
-            graphics.DrawImage(_arenaImage, new Rectangle(0, 0, ArenaSize.Width,
-                                                                        ArenaSize.Height));
+            graphics.DrawImage(_arenaImage, new Rectangle(0, 0, ArenaSize.Width * GlobalConst.AssetsSize,
+                                                                        ArenaSize.Height * GlobalConst.AssetsSize));
         }
         
         private void TypeEntity()
@@ -48,9 +54,21 @@ namespace Cave_Adventure
                         Brushes.Black, new Point(monster.Position.X * CellWidth,
                                                     monster.Position.Y * CellHeight));
                 }
-                graphics.DrawString("P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
-                    Brushes.Black, new Point(_currentArena.Player.Position.X * CellWidth,
-                                                _currentArena.Player.Position.Y * CellHeight));
+                // graphics.DrawString("P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
+                //     Brushes.Black, new Point(_currentArena.Player.Position.X * CellWidth,
+                //                                 _currentArena.Player.Position.Y * CellHeight));
+                if(!_player.IsSelected)
+                {
+                    graphics.DrawString("P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
+                        Brushes.Black, new Point(_player.Position.X * CellWidth,
+                            _player.Position.Y * CellHeight));
+                }
+                else
+                {
+                    graphics.DrawString("P!", new Font(SystemFonts.DefaultFont.FontFamily, 32),
+                        Brushes.Black, new Point(_player.Position.X * CellWidth,
+                            _player.Position.Y * CellHeight));
+                }
             }
         }
         
@@ -58,6 +76,11 @@ namespace Cave_Adventure
         {
             _currentArena = newArena;
             _pointToRectangle = pointToRectangle;
+            CreateArena2();
+        }
+
+        public void Update()
+        {
             CreateArena2();
         }
 

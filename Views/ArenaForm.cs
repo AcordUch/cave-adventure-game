@@ -32,8 +32,8 @@ namespace Cave_Adventure
             
             Controls.Add(_arenaPanel);
 
-            KeyDown += _arenaPanel.ArenaFieldControl.OnKeyDown;
-            KeyUp += _arenaPanel.ArenaFieldControl.OnKeyUp;
+            // KeyDown += _arenaPanel.ArenaFieldControl.OnKeyDown;
+            // KeyUp += _arenaPanel.ArenaFieldControl.OnKeyUp;
             
             _timer = new Timer { Interval = 60 };
             _timer.Tick += TimerTick;

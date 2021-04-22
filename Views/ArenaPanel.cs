@@ -41,6 +41,15 @@ namespace Cave_Adventure
                 Dock = DockStyle.Fill,
                 AutoSize = true
             };
+            ConfigureTables(table, secondColumnTable, thirdColumnTable, levelMenu);
+            
+            Controls.Add(table);
+            ArenaFieldControl.ClickOnPoint += ArenaFieldControl_ClickOnPoint;
+        }
+
+        private void ConfigureTables(TableLayoutPanel table, FlowLayoutPanel secondColumnTable,
+            TableLayoutPanel thirdColumnTable, FlowLayoutPanel levelMenu)
+        {
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65));
@@ -57,8 +66,6 @@ namespace Cave_Adventure
             table.Controls.Add(levelMenu, 0, 0);
             table.Controls.Add(secondColumnTable, 1, 0);
             table.Controls.Add(thirdColumnTable, 2, 0);
-            
-            Controls.Add(table);
         }
         
         protected override void InitLayout()
@@ -81,6 +88,31 @@ namespace Cave_Adventure
             ArenaFieldControl.Size =
                 new Size((int)(ArenaFieldControl.Width * zoom), (int)(ArenaFieldControl.Height * zoom));
             Invalidate();
+        }
+
+        private void ArenaFieldControl_ClickOnPoint(Point point, MouseEventArgs args)
+        {
+            if (args.Button == MouseButtons.Left)
+            {
+                var actionWasBeen = false;
+                if (point == ArenaFieldControl.Player.Position && !actionWasBeen)
+                {
+                    ArenaFieldControl.Player.IsSelected = true;
+                    actionWasBeen = true;
+                }
+
+                if (ArenaFieldControl.Player.IsSelected && !actionWasBeen)
+                {
+                    if(ArenaFieldControl.ArenaMap.Arena[point.X, point.Y] == CellType.Floor)
+                    {
+                        ArenaFieldControl.Player.MoveToPoint(point);
+                        ArenaFieldControl.Player.IsSelected = false;
+                        ArenaFieldControl.Update();
+                        ArenaFieldControl.ArenaPainter.Update();
+                    }
+                    actionWasBeen = true;
+                }
+            }
         }
 
         private void SetUpLevelSwitch(ArenaMap[] levels, Control menuPanel)
@@ -136,7 +168,6 @@ namespace Cave_Adventure
         {
             base.OnPaint(e);
             e.Graphics.Clear(Color.White);
-            
         }
     }
 }

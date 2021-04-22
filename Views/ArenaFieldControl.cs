@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 
 namespace Cave_Adventure
 {
@@ -20,17 +21,26 @@ namespace Cave_Adventure
         private Player _player;
         private bool _configured = false;
         private Dictionary<Point, Rectangle> _pointToRectangle;
-        
+
+        public Player Player
+        {
+            get => _player;
+            set => _player = value;
+        }
+
+        public ArenaPainter ArenaPainter => _arenaPainter;
+
+        public ArenaMap ArenaMap => _arenaMap;
+
         public ArenaFieldControl(ArenaMap[] levels)
         {
             InitializeComponent();
             DoubleBuffered = true;
             _arenaPainter = new ArenaPainter(levels[0]);
             _playerPainter = new PlayerPainter();
-            _player = new Player(new Point(levels[0].Player.Position.X * GlobalConst.AssetsSize,
-                                                    levels[0].Player.Position.Y * GlobalConst.AssetsSize));
+
+            Click += HandleClick;
             // Resize += HandleResize;
-            // Click += HandleClick;
             // DoubleClick += HandleClick;
         }
         
@@ -42,7 +52,8 @@ namespace Cave_Adventure
                 throw new InvalidOperationException();
             
             _arenaMap = arenaMap;
-            _pointToRectangle = GeneratePointToRectangle(_arenaMap);
+            _player = new Player(new Point(_arenaMap.Player.Position.X, _arenaMap.Player.Position.Y));
+            _pointToRectangle = GeneratePointToRectangle(this, _arenaMap);
             _arenaPainter.Configure(_pointToRectangle);
             _configured = true;
         }
@@ -52,52 +63,75 @@ namespace Cave_Adventure
             if (_player.IsMoving)
                 _player.UpdatePosition();
             
+            // _player = new Player(new Point(_arenaMap.Player.Position.X, _arenaMap.Player.Position.Y));
+            // _player.UpdatePosition2(new Point(_arenaMap.Player.Position.X, _arenaMap.Player.Position.Y));
             Invalidate();
+        }
+        
+        protected override void InitLayout()
+        {
+            base.InitLayout();
+            ResizeRedraw = true;
+            DoubleBuffered = true;
         }
         
         public void ChangeLevel(ArenaMap newMap)
         {
             _arenaMap = newMap;
-            _pointToRectangle = GeneratePointToRectangle(_arenaMap);
+            _player = new Player(new Point(_arenaMap.Player.Position.X, _arenaMap.Player.Position.Y));
+            _pointToRectangle = GeneratePointToRectangle(this, _arenaMap);
             _arenaPainter.ChangeLevel(newMap, _pointToRectangle);
             Invalidate();
         }
 
-        public void OnKeyUp(object sender, KeyEventArgs e)
-        {
-            _player.Move(0, 0);
-            _player.SetAnimationConfiguration(StatesOfAnimation.Idle);
-        }
+        // public void OnKeyUp(object sender, KeyEventArgs e)
+        // {
+        //     _player.Move(0, 0);
+        //     _player.SetAnimationConfiguration(StatesOfAnimation.Idle);
+        // }
 
-        public void OnKeyDown(object sender, KeyEventArgs e)
+        // public void OnKeyDown(object sender, KeyEventArgs e)
+        // {
+        //     switch (e.KeyCode)
+        //     {
+        //         case Keys.W:
+        //             _player.Move(0, -5);
+        //             _player.SetAnimationConfiguration(StatesOfAnimation.Run);
+        //             break;
+        //         case Keys.S:
+        //             _player.Move(0, 5);
+        //             _player.SetAnimationConfiguration(StatesOfAnimation.Run);
+        //             break;
+        //         case Keys.A:
+        //             _player.Move(-5, 0);
+        //             _player.SetAnimationConfiguration(StatesOfAnimation.Run);
+        //             _player.ViewDirection = ViewDirection.Left;
+        //             break;
+        //         case Keys.D:
+        //             _player.Move(5, 0);
+        //             _player.SetAnimationConfiguration(StatesOfAnimation.Run);
+        //             _player.ViewDirection = ViewDirection.Right;
+        //             break;
+        //         case Keys.Space:
+        //             _player.SetAnimationConfiguration(StatesOfAnimation.Attack);
+        //             break;
+        //     }
+        // }
+        
+        private void HandleClick(object sender, EventArgs e)
         {
-            switch (e.KeyCode)
-            {
-                case Keys.W:
-                    _player.Move(0, -5);
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    break;
-                case Keys.S:
-                    _player.Move(0, 5);
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    break;
-                case Keys.A:
-                    _player.Move(-5, 0);
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    _player.ViewDirection = ViewDirection.Left;
-                    break;
-                case Keys.D:
-                    _player.Move(5, 0);
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    _player.ViewDirection = ViewDirection.Right;
-                    break;
-                case Keys.Space:
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Attack);
-                    break;
-            }
+            if (!_configured)
+                return;
+
+            var args = e as MouseEventArgs;
+            var pairs = _pointToRectangle
+                .Where(it => it.Value.Contains(args.Location))
+                .ToList();
+            if (pairs.Count > 0)
+                ClickOnPoint?.Invoke(pairs[0].Key, args);
         }
         
-        private static Dictionary<Point, Rectangle> GeneratePointToRectangle(ArenaMap arenaMap)
+        private static Dictionary<Point, Rectangle> GeneratePointToRectangle(ArenaFieldControl arenaFieldControl, ArenaMap arenaMap)
         {
             var result = new Dictionary<Point, Rectangle>();
             for (int x = 0; x < arenaMap.Width; x++)
@@ -108,7 +142,7 @@ namespace Cave_Adventure
             }
             return result;
         }
-        
+
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -120,14 +154,15 @@ namespace Cave_Adventure
             e.Graphics.Clear(Color.White);
             var sceneSize = _arenaPainter.ArenaSize;
             
-            _zoomScale = ClientSize.Height / sceneSize.Height - ShiftFromUpAndDownBorder;
+            UpdateZoomScale();
             _logicalCenterPos = new PointF(sceneSize.Width / 2f, sceneSize.Height / 2f);
             
             var shift = GetShift();
             
-            e.Graphics.ResetTransform();
-            e.Graphics.TranslateTransform(shift.X, shift.Y);
-            e.Graphics.ScaleTransform(_zoomScale, _zoomScale);
+            _arenaPainter.SetPlayer(_player);
+            // e.Graphics.ResetTransform();
+            // e.Graphics.TranslateTransform(shift.X, shift.Y);
+            // e.Graphics.ScaleTransform(_zoomScale, _zoomScale);
             _arenaPainter.Paint(e.Graphics);
             
             e.Graphics.ResetTransform();
@@ -140,20 +175,25 @@ namespace Cave_Adventure
                 ClientSize.Height / 2f - _logicalCenterPos.Y * _zoomScale);
         }
         
-        private PointF ToLogical(Point point)
+        private void UpdateZoomScale()
         {
-            var shift = GetShift();
+            _zoomScale = ClientSize.Height / _arenaPainter.ArenaSize.Height - ShiftFromUpAndDownBorder;
+        }
+        
+        private static PointF ToLogical(ArenaFieldControl arenaFieldControl, Point point)
+        {
+            var shift = arenaFieldControl.GetShift();
             return new PointF(
-                (point.X - shift.X) / _zoomScale,
-                (point.Y - shift.Y) / _zoomScale);
+                (point.X - shift.X) / arenaFieldControl._zoomScale,
+                (point.Y - shift.Y) / arenaFieldControl._zoomScale);
         }
 
-        private PointF ToGraphic(Point point)
+        private static Point ToGraphic(ArenaFieldControl arenaFieldControl, Point point)
         {
-            var shift = GetShift();
-            return new PointF(
-                point.X * _zoomScale + shift.X,
-                point.Y * _zoomScale + shift.Y);
+            var shift = arenaFieldControl.GetShift();
+            return new Point(
+                (int)(point.X * arenaFieldControl._zoomScale + shift.X),
+                (int)(point.Y * arenaFieldControl._zoomScale + shift.Y));
         }
     }
 }

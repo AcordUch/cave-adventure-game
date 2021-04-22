@@ -16,6 +16,7 @@ namespace Cave_Adventure
         public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
         public ViewDirection ViewDirection { get; set; } = ViewDirection.Right;
         public bool IsMoving { get; private set; }
+        public bool IsSelected { get; set; }
         public Point Position
         {
             get => _position;
@@ -33,10 +34,20 @@ namespace Cave_Adventure
             _position.Y += _dY;
         }
 
+        public void UpdatePosition2(Point point)
+        {
+            _position = point;
+        }
+
         public void Move(int dx, int dy)
         {
             _dX = dx;
             _dY = dy;
+        }
+
+        public void MoveToPoint(Point point)
+        {
+            _position = point;
         }
         
         public void SetAnimationConfiguration(StatesOfAnimation currentAnimation)

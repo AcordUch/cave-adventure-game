@@ -18,13 +18,16 @@ namespace Cave_Adventure
         
         public void SetUpAndPaint(Graphics graphics, Player player)
         {
+            var playerPosition = new Point(player.Position.X * GlobalConst.AssetsSize,
+                player.Position.Y * GlobalConst.AssetsSize);
+            
             _mirroring = (int) player.ViewDirection;
             _currentAnimation = (int) player.CurrentStates;
             SetFrameLimit(player.CurrentStates);
-            PlayAnimation(graphics, player);
+            PlayAnimation(graphics, playerPosition);
         }
         
-        private void PlayAnimation(Graphics graphics, Player player)
+        private void PlayAnimation(Graphics graphics, Point playerPosition)
         {
             if (_currentFrame < _currentFrameLimit - 1)
                 _currentFrame++;
@@ -33,8 +36,8 @@ namespace Cave_Adventure
             graphics.DrawImage(
                 _gladiatorSheet,
                 new Rectangle(
-                    player.Position.X - _mirroring * ImageSize / 2,
-                    player.Position.Y,
+                    playerPosition.X - _mirroring * ImageSize / 2,
+                    playerPosition.Y,
                     _mirroring * ImageSize * 2,
                     ImageSize * 2
                     ), 
