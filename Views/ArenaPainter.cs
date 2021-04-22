@@ -19,7 +19,6 @@ namespace Cave_Adventure
         public ArenaPainter(ArenaMap arena)
         {
             _currentArena = arena;
-            // CreateArena();
         }
         
         public void Configure(Dictionary<Point, Rectangle> pointToRectangle)
@@ -38,14 +37,6 @@ namespace Cave_Adventure
             graphics.DrawImage(_arenaImage, new Rectangle(0, 0, ArenaSize.Width,
                                                                         ArenaSize.Height));
         }
-
-        // public void Paint2(Graphics graphics)
-        // {
-        //     foreach (var pair in _pointToRectangle)
-        //     {
-        //         drawCell(graphics, pair.Value);
-        //     }
-        // }
         
         private void TypeEntity()
         {
@@ -63,34 +54,12 @@ namespace Cave_Adventure
             }
         }
         
-        // private void drawCell(Graphics graphics, Rectangle rectangle)
-        // {
-        //     graphics.FillRectangle(Brushes.Brown, rectangle);
-        //     graphics.DrawRectangle(Pens.Black, rectangle);
-        // }
-        
         public void ChangeLevel(ArenaMap newArena, Dictionary<Point, Rectangle> pointToRectangle)
         {
             _currentArena = newArena;
             _pointToRectangle = pointToRectangle;
-            // CreateArena();
             CreateArena2();
         }
-
-        // private void CreateArena()
-        // {
-        //     _arenaImage = new Bitmap(ArenaSize.Width * CellWidth, ArenaSize.Height * CellHeight);
-        //     using (var graphics = Graphics.FromImage(_arenaImage))
-        //     {
-        //         for (int x = 0; x < ArenaSize.Width; x++)
-        //         for (int y = 0; y < ArenaSize.Height; y++)
-        //         {
-        //             var rec = new Rectangle(x * CellWidth, y * CellHeight, CellWidth, CellHeight);
-        //             graphics.FillRectangle(ChooseBrushForCell(_currentArena.Arena[x, y]), rec);
-        //             graphics.DrawRectangle(Pens.Black, rec);
-        //         }
-        //     }
-        // }
 
         private void CreateArena2()
         {

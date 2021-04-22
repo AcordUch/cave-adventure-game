@@ -109,24 +109,6 @@ namespace Cave_Adventure
             return result;
         }
         
-        // private static Dictionary<Point, Rectangle> GeneratePointToRectangle(ArenaMap arenaMap, int screenWidth, int screenHeight)
-        // {
-        //     var result = new Dictionary<Point, Rectangle>();
-        //     for (var x = 0; x < arenaMap.Width; x++)
-        //     {
-        //         for (int y = 0; y < arenaMap.Height; y++)
-        //         {
-        //             var left = (screenWidth - 2) * x / arenaMap.Width + 1;
-        //             var right = (screenWidth - 2) * (x + 1) / arenaMap.Width + 1;
-        //             var top = (screenHeight - 2) * y / arenaMap.Height + 1;
-        //             var bottom = (screenHeight - 2) * (y + 1) / arenaMap.Height + 1;
-        //             var rectangle = new Rectangle(left, top, right - left, bottom - top);
-        //             result.Add(new Point(x, y), rectangle);
-        //         }
-        //     }
-        //     return result;
-        // }
-        
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -148,11 +130,6 @@ namespace Cave_Adventure
             e.Graphics.ScaleTransform(_zoomScale, _zoomScale);
             _arenaPainter.Paint(e.Graphics);
             
-            // e.Graphics.ResetTransform();
-            // var zoomScale2 = (float)Height / (CellHeight * _arenaMap.Height);
-            // e.Graphics.TranslateTransform(shift.X, shift.Y);
-            // e.Graphics.ScaleTransform(zoomScale2, zoomScale2);
-            // _arenaPainter.Paint2(e.Graphics);
             e.Graphics.ResetTransform();
             _playerPainter.SetUpAndPaint(e.Graphics, _player);
         }
