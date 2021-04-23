@@ -4,9 +4,12 @@ namespace Cave_Adventure
 {
     public class Monster: IMonster
     {
-        public Point Position { get; set; }
-        public StatesOfAnimation CurrentStates { get; }
-        public ViewDirection ViewDirection { get; set; }
+        private Point _position;
+        private int _dX;
+        private int _dY;
+
+        public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
+        public ViewDirection ViewDirection { get; set; } = ViewDirection.Right;
         public bool IsMoving { get; set; }
         public bool IsSelected { get; set; }
         public int AnimStage { get; set; }
@@ -16,6 +19,12 @@ namespace Cave_Adventure
         public double Attack { get; }
         public double Defense { get; }
         public double Damage { get; }
+
+        public Point Position
+        {
+            get => _position;
+            set => _position = value;
+        }
 
         public Monster(Point position)
         {

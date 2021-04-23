@@ -29,7 +29,7 @@ namespace Cave_Adventure
             
             _arenaPanel = new ArenaPanel(levels) {Dock = DockStyle.Fill};
             _arenaPanel.Configure(levels[0]);
-            
+
             Controls.Add(_arenaPanel);
 
             // KeyDown += _arenaPanel.ArenaFieldControl.OnKeyDown;
@@ -42,11 +42,11 @@ namespace Cave_Adventure
 
         private static IEnumerable<ArenaMap> LoadLevels()
         {
-            yield return ArenaMap.CreatNewArenaMap(Properties.Resources.Arena1);
-            yield return ArenaMap.CreatNewArenaMap(Properties.Resources.Arena2);
-            yield return ArenaMap.CreatNewArenaMap(Properties.Resources.Arena3);
-            yield return ArenaMap.CreatNewArenaMap(Properties.Resources.Arena4);
-            yield return ArenaMap.CreatNewArenaMap(Properties.Resources.Arena5);
+            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena1);
+            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena2);
+            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena3);
+            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena4);
+            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena5);
         }
         
         private void TimerTick(object sender, EventArgs e)

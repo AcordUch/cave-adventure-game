@@ -21,7 +21,7 @@ namespace Cave_Adventure
             Monsters = monsters;
         }
 
-        public static ArenaMap CreatNewArenaMap(string textMap)
+        public static ArenaMap CreateNewArenaMap(string textMap)
         {
             var arenaInfo = ArenaParser.ParsingMap(textMap);
             var newPlayer = new Player(arenaInfo.playerPosition);

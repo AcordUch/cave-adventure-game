@@ -17,6 +17,6 @@ namespace Cave_Adventure
         double Defense { get; }
         double Damage { get; }
         
-        void Move();
+        void Move(int dx, int dy);
     }
 }

@@ -197,6 +197,7 @@ namespace Cave_Adventure
                 _playerPainter.SetUpAndPaint(e.Graphics, _player, playerPositionReal);
                 _arenaPainter.Update();
             }
+            _monstersPainter.SetUpAndPaint(e.Graphics, _monsters);
         }
         
         private PointF GetShift()
