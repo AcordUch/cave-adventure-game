@@ -97,15 +97,17 @@ namespace Cave_Adventure
                 var actionWasBeen = false;
                 if (point == ArenaFieldControl.Player.Position && !actionWasBeen)
                 {
-                    ArenaFieldControl.Player.IsSelected = true;
+                    ArenaFieldControl.Player.IsSelected = !ArenaFieldControl.Player.IsSelected;
                     actionWasBeen = true;
+                    ArenaFieldControl.ArenaPainter.Update();
                 }
 
                 if (ArenaFieldControl.Player.IsSelected && !actionWasBeen)
                 {
                     if(ArenaFieldControl.ArenaMap.Arena[point.X, point.Y] == CellType.Floor)
                     {
-                        ArenaFieldControl.Player.MoveToPoint(point);
+                        // ArenaFieldControl.Player.MoveToPoint(point);
+                        ArenaFieldControl.Player.SetTargetPoint(point);
                         ArenaFieldControl.Player.IsSelected = false;
                         ArenaFieldControl.Update();
                         ArenaFieldControl.ArenaPainter.Update();
