@@ -58,7 +58,7 @@ namespace Cave_Adventure
         {
             var dPoint = new Point(targetPoint.X - _position.X, targetPoint.Y - _position.Y);
             AnimStage++;
-            if (AnimStage == 7)
+            if (AnimStage == 15)
             {
                 AnimStage = 0;
                 Move(dPoint.X, dPoint.Y);

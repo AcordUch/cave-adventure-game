@@ -180,8 +180,8 @@ namespace Cave_Adventure
             else
             {
                 var dPoint = _player.GetDPoint();
-                var playerPositionReal = new Point(_player.Position.X * GlobalConst.AssetsSize + _player.AnimStage * dPoint.X * GlobalConst.AssetsSize / 8,
-                    _player.Position.Y * GlobalConst.AssetsSize + _player.AnimStage * dPoint.Y * GlobalConst.AssetsSize / 8);
+                var playerPositionReal = new Point(_player.Position.X * GlobalConst.AssetsSize + _player.AnimStage * dPoint.X * GlobalConst.AssetsSize / 16,
+                    _player.Position.Y * GlobalConst.AssetsSize + _player.AnimStage * dPoint.Y * GlobalConst.AssetsSize / 16);
                 _playerPainter.SetUpAndPaint(e.Graphics, _player, playerPositionReal);
                 _arenaPainter.Update();
             }

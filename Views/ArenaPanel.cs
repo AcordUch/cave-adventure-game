@@ -97,8 +97,9 @@ namespace Cave_Adventure
                 var actionWasBeen = false;
                 if (point == ArenaFieldControl.Player.Position && !actionWasBeen)
                 {
-                    ArenaFieldControl.Player.IsSelected = true;
+                    ArenaFieldControl.Player.IsSelected = !ArenaFieldControl.Player.IsSelected;
                     actionWasBeen = true;
+                    ArenaFieldControl.ArenaPainter.Update();
                 }
 
                 if (ArenaFieldControl.Player.IsSelected && !actionWasBeen)
