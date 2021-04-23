@@ -73,6 +73,7 @@ namespace Cave_Adventure
             if (IsMovingNow && _position == targetPoint)
             {
                 IsMovingNow = false;
+                SetAnimationConfiguration(StatesOfAnimation.Idle);
             }
         }
 
@@ -82,6 +83,7 @@ namespace Cave_Adventure
             {
                 targetPoint = point;
                 IsMovingNow = true;
+                SetAnimationConfiguration(StatesOfAnimation.Run);
             }
         }
         
