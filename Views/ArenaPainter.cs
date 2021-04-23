@@ -13,6 +13,7 @@ namespace Cave_Adventure
 
         private ArenaMap _currentArena;
         private Player _player;
+        private Monster[] _monsters = new Monster[2];
         private Bitmap _arenaImage;
         private Dictionary<Point, Rectangle> _pointToRectangle;
         private bool _configured;
@@ -37,6 +38,12 @@ namespace Cave_Adventure
             _player = player;
         }
 
+        public void SetMonster(Monster[] monsters)
+        {
+            for (var i = 0; i < monsters.Length; i++)
+                _monsters[i] = monsters[i];
+        }
+
         public void Paint(Graphics graphics)
         {
             TypeEntity();
@@ -57,7 +64,7 @@ namespace Cave_Adventure
                 // graphics.DrawString("P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
                 //     Brushes.Black, new Point(_currentArena.Player.Position.X * CellWidth,
                 //                                 _currentArena.Player.Position.Y * CellHeight));
-                if(!_player.IsSelected)
+                if (!_player.IsSelected)
                 {
                     graphics.DrawString("P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
                         Brushes.Black, new Point(_player.Position.X * CellWidth,

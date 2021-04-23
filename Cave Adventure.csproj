@@ -3,6 +3,7 @@
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net5.0-windows</TargetFramework>
+		<StartupObject>Cave_Adventure.Program</StartupObject>
         <RootNamespace>Cave_Adventure</RootNamespace>
         <UseWindowsForms>true</UseWindowsForms>
     </PropertyGroup>

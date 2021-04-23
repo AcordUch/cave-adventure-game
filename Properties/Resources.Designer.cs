@@ -61,12 +61,13 @@ namespace Cave_Adventure.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на # .# .# .# .# .# .
-        ///# .  .P .  .  .# .
-        ///# .# .  .  .# .# .
-        ///# .  .  .  .  .# .
-        ///# .M .  .M .  .# .
-        ///# .# .# .# .# .# ..
+        ///   Ищет локализованную строку, похожую на # .# .# .# .# .# .# .
+        ///# .  .P .  .  .  .# .
+        ///# .# .  .  .# .  .# .
+        ///# .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .# .
+        ///# .M .  .M .  .  .# .
+        ///# .# .# .# .# .# .# ..
         /// </summary>
         internal static string Arena1 {
             get {
@@ -101,9 +102,7 @@ namespace Cave_Adventure.Properties {
         ///# .# .# .# .# .# .# .# .# .# .# .# .# .# .# .
         ///# .# .# .# .# .# .# .# .# .# .# .# .# .# .# .
         ///# .# .# .# .# .# .# .# .# .# .# .# .# .# .# .
-        ///# .# .# .# .# .# .# .# .# .# .# .# .# .# .# .
-        ///# .# .# .# .# .# .# .# .# .# .# .# .# .# .# .
-        ///# .# .# .# .# .# .# .# .# .# .# .# .# .# . [остаток строки не уместился]&quot;;.
+        ///# .# .# .# .# .# .# .# .# .# .# .# .# .# .# ..
         /// </summary>
         internal static string Arena3 {
             get {
@@ -152,6 +151,16 @@ namespace Cave_Adventure.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Cobra {
+            get {
+                object obj = ResourceManager.GetObject("Cobra", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Dwarf {
             get {
                 object obj = ResourceManager.GetObject("Dwarf", resourceCulture);
@@ -165,6 +174,16 @@ namespace Cave_Adventure.Properties {
         internal static System.Drawing.Bitmap Gladiator {
             get {
                 object obj = ResourceManager.GetObject("Gladiator", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Spider {
+            get {
+                object obj = ResourceManager.GetObject("Spider", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

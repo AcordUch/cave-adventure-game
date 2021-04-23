@@ -9,12 +9,12 @@ namespace Cave_Adventure
     {
         public readonly CellType[,] Arena;
         public readonly Player Player;
-        public readonly IMonster[] Monsters;
+        public readonly Monster[] Monsters;
 
         public int Width => Arena.GetLength(0);
         public int Height => Arena.GetLength(1);
 
-        public ArenaMap(CellType[,] arena, Player player, IMonster[] monsters)
+        public ArenaMap(CellType[,] arena, Player player, Monster[] monsters)
         {
             Arena = arena;
             Player = player;
