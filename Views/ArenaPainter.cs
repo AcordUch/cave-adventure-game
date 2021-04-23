@@ -54,21 +54,21 @@ namespace Cave_Adventure
                         Brushes.Black, new Point(monster.Position.X * CellWidth,
                                                     monster.Position.Y * CellHeight));
                 }
-                // graphics.DrawString("P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
-                //     Brushes.Black, new Point(_currentArena.Player.Position.X * CellWidth,
-                //                                 _currentArena.Player.Position.Y * CellHeight));
-                if(!_player.IsSelected)
-                {
-                    graphics.DrawString("P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
-                        Brushes.Black, new Point(_player.Position.X * CellWidth,
-                            _player.Position.Y * CellHeight));
-                }
-                else
-                {
-                    graphics.DrawString("P!", new Font(SystemFonts.DefaultFont.FontFamily, 32),
-                        Brushes.Black, new Point(_player.Position.X * CellWidth,
-                            _player.Position.Y * CellHeight));
-                }
+                // if(!_player.IsSelected)
+                // {
+                //     graphics.DrawString("P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
+                //         Brushes.Black, new Point(_player.Position.X * CellWidth,
+                //             _player.Position.Y * CellHeight));
+                // }
+                // else
+                // {
+                //     graphics.DrawString("P!", new Font(SystemFonts.DefaultFont.FontFamily, 32),
+                //         Brushes.Black, new Point(_player.Position.X * CellWidth,
+                //             _player.Position.Y * CellHeight));
+                // }
+                graphics.DrawString(!_player.IsSelected ? "P" : "P!", new Font(SystemFonts.DefaultFont.FontFamily, 32),
+                    Brushes.Black, new Point(_player.Position.X * CellWidth,
+                        _player.Position.Y * CellHeight));
             }
         }
         

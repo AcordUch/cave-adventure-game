@@ -105,7 +105,8 @@ namespace Cave_Adventure
                 {
                     if(ArenaFieldControl.ArenaMap.Arena[point.X, point.Y] == CellType.Floor)
                     {
-                        ArenaFieldControl.Player.MoveToPoint(point);
+                        // ArenaFieldControl.Player.MoveToPoint(point);
+                        ArenaFieldControl.Player.SetTargetPoint(point);
                         ArenaFieldControl.Player.IsSelected = false;
                         ArenaFieldControl.Update();
                         ArenaFieldControl.ArenaPainter.Update();

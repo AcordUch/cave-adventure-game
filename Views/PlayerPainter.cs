@@ -16,11 +16,8 @@ namespace Cave_Adventure
         private int _currentFrame = 0;
         private int _currentFrameLimit = 0;
         
-        public void SetUpAndPaint(Graphics graphics, Player player)
+        public void SetUpAndPaint(Graphics graphics, Player player, Point playerPosition)
         {
-            var playerPosition = new Point(player.Position.X * GlobalConst.AssetsSize,
-                player.Position.Y * GlobalConst.AssetsSize);
-            
             _mirroring = (int) player.ViewDirection;
             _currentAnimation = (int) player.CurrentStates;
             SetFrameLimit(player.CurrentStates);

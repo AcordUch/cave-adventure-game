@@ -60,9 +60,14 @@ namespace Cave_Adventure
 
         public new void Update()
         {
-            if (_player.IsMoving)
-                _player.UpdatePosition();
-            
+            // if (_player.IsMoving)
+            //     _player.UpdatePosition();
+            // if(_player.IsMovingNow)
+            // {
+            //     _player.GetDPoint();
+            //     _player.UpdatePosition();
+            // }
+
             // _player = new Player(new Point(_arenaMap.Player.Position.X, _arenaMap.Player.Position.Y));
             // _player.UpdatePosition2(new Point(_arenaMap.Player.Position.X, _arenaMap.Player.Position.Y));
             Invalidate();
@@ -166,7 +171,20 @@ namespace Cave_Adventure
             _arenaPainter.Paint(e.Graphics);
             
             e.Graphics.ResetTransform();
-            _playerPainter.SetUpAndPaint(e.Graphics, _player);
+            if (!_player.IsMovingNow)
+            {
+                var playerPositionReal = new Point(_player.Position.X * GlobalConst.AssetsSize,
+                    _player.Position.Y * GlobalConst.AssetsSize);
+                _playerPainter.SetUpAndPaint(e.Graphics, _player, playerPositionReal);
+            }
+            else
+            {
+                var dPoint = _player.GetDPoint();
+                var playerPositionReal = new Point(_player.Position.X * GlobalConst.AssetsSize + _player.AnimStage * dPoint.X * GlobalConst.AssetsSize / 8,
+                    _player.Position.Y * GlobalConst.AssetsSize + _player.AnimStage * dPoint.Y * GlobalConst.AssetsSize / 8);
+                _playerPainter.SetUpAndPaint(e.Graphics, _player, playerPositionReal);
+                _arenaPainter.Update();
+            }
         }
         
         private PointF GetShift()
