@@ -18,7 +18,9 @@ namespace Cave_Adventure
         private ArenaMap _arenaMap;
         private readonly ArenaPainter _arenaPainter;
         private readonly PlayerPainter _playerPainter;
+        private readonly MonstersPainter _monstersPainter;
         private Player _player;
+        private Monster[] _monsters = new Monster[2];
         private bool _configured = false;
         private Dictionary<Point, Rectangle> _pointToRectangle;
 
@@ -26,6 +28,12 @@ namespace Cave_Adventure
         {
             get => _player;
             set => _player = value;
+        }
+
+        public Monster[] Monsters
+        {
+            get => _monsters;
+            set => _monsters = value;
         }
 
         public ArenaPainter ArenaPainter => _arenaPainter;
@@ -38,6 +46,7 @@ namespace Cave_Adventure
             DoubleBuffered = true;
             _arenaPainter = new ArenaPainter(levels[0]);
             _playerPainter = new PlayerPainter();
+            _monstersPainter = new MonstersPainter();
 
             Click += HandleClick;
         }
@@ -51,6 +60,8 @@ namespace Cave_Adventure
             
             _arenaMap = arenaMap;
             _player = new Player(new Point(_arenaMap.Player.Position.X, _arenaMap.Player.Position.Y));
+            for (var i = 0; i < _monsters.Length; i++)
+                _monsters[i] = new Monster(new Point(_arenaMap.Monsters[i].Position.X, _arenaMap.Monsters[i].Position.Y));
             _pointToRectangle = GeneratePointToRectangle(this, _arenaMap);
             _arenaPainter.Configure(_pointToRectangle);
             _configured = true;
@@ -163,6 +174,7 @@ namespace Cave_Adventure
             var shift = GetShift();
             
             _arenaPainter.SetPlayer(_player);
+            _arenaPainter.SetMonster(_monsters);
             // e.Graphics.ResetTransform();
             // e.Graphics.TranslateTransform(shift.X, shift.Y);
             // e.Graphics.ScaleTransform(_zoomScale, _zoomScale);
@@ -170,7 +182,7 @@ namespace Cave_Adventure
             
             e.Graphics.ResetTransform();
             _playerPainter.SetUpAndPaint(e.Graphics, _player);
-            _arenaPainter.Update();
+            _arenaPainter.Update();           
         }
         
         private PointF GetShift()

@@ -13,6 +13,7 @@ namespace Cave_Adventure
 
         private ArenaMap _currentArena;
         private Player _player;
+        private Monster[] _monsters = new Monster[2];
         private Bitmap _arenaImage;
         private Dictionary<Point, Rectangle> _pointToRectangle;
         private bool _configured;
@@ -35,6 +36,12 @@ namespace Cave_Adventure
         public void SetPlayer(Player player)
         {
             _player = player;
+        }
+
+        public void SetMonster(Monster[] monsters)
+        {
+            for (var i = 0; i < monsters.Length; i++)
+                _monsters[i] = monsters[i];
         }
 
         public void Paint(Graphics graphics)
