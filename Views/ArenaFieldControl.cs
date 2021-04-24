@@ -49,8 +49,6 @@ namespace Cave_Adventure
             _monstersPainter = new MonstersPainter();
 
             Click += HandleClick;
-            // Resize += HandleResize;
-            // DoubleClick += HandleClick;
         }
         
         public event Action<Point, MouseEventArgs> ClickOnPoint;
@@ -183,21 +181,8 @@ namespace Cave_Adventure
             _arenaPainter.Paint(e.Graphics);
             
             e.Graphics.ResetTransform();
-            if (!_player.IsMovingNow)
-            {
-                var playerPositionReal = new Point(_player.Position.X * GlobalConst.AssetsSize,
-                    _player.Position.Y * GlobalConst.AssetsSize);
-                _playerPainter.SetUpAndPaint(e.Graphics, _player, playerPositionReal);
-            }
-            else
-            {
-                var dPoint = _player.GetDPoint();
-                var playerPositionReal = new Point(_player.Position.X * GlobalConst.AssetsSize + _player.AnimStage * dPoint.X * GlobalConst.AssetsSize / 16,
-                    _player.Position.Y * GlobalConst.AssetsSize + _player.AnimStage * dPoint.Y * GlobalConst.AssetsSize / 16);
-                _playerPainter.SetUpAndPaint(e.Graphics, _player, playerPositionReal);
-                _arenaPainter.Update();
-            }
-            _monstersPainter.SetUpAndPaint(e.Graphics, _monsters);
+            _playerPainter.SetUpAndPaint(e.Graphics, _player);
+            _arenaPainter.Update();           
         }
         
         private PointF GetShift()
