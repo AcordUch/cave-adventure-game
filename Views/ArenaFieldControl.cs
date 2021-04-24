@@ -93,6 +93,12 @@ namespace Cave_Adventure
         {
             _arenaMap = newMap;
             _player = new Player(new Point(_arenaMap.Player.Position.X, _arenaMap.Player.Position.Y));
+            var newMonsters = new List<Monster>();
+            for (int i = 0; i < _arenaMap.Monsters.Length; i++)
+            {
+                newMonsters.Add(_arenaMap.Monsters[i]);
+            }
+            _monsters = newMonsters.ToArray();
             _pointToRectangle = GeneratePointToRectangle(this, _arenaMap);
             _arenaPainter.ChangeLevel(newMap, _pointToRectangle);
             Invalidate();
@@ -183,6 +189,7 @@ namespace Cave_Adventure
             e.Graphics.ResetTransform();
             _playerPainter.SetUpAndPaint(e.Graphics, _player);
             _arenaPainter.Update();           
+            _monstersPainter.SetUpAndPaint(e.Graphics, _monsters);
         }
         
         private PointF GetShift()
