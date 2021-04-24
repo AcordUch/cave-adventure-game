@@ -1,52 +1,106 @@
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Cave_Adventure
 {
     public class ArenaPainter
     {
-        public Size ArenaSize => new Size(currentArena.Arena.GetLength(0), currentArena.Arena.GetLength(1));
+        private const int CellWidth = GlobalConst.AssetsSize;
+        private const int CellHeight = GlobalConst.AssetsSize;
+        
+        public Size ArenaSize => new Size(_currentArena.Width, _currentArena.Height);
 
-        private ArenaMap currentArena;
+        private ArenaMap _currentArena;
+        private Player _player;
+        private Monster[] _monsters = new Monster[2];
         private Bitmap _arenaImage;
+        private Dictionary<Point, Rectangle> _pointToRectangle;
+        private bool _configured;
 
-        public ArenaPainter(ArenaMap[] arenas)
+        public ArenaPainter(ArenaMap arena)
         {
-            currentArena = arenas[0];
-            CreateArena();
+            _currentArena = arena;
+        }
+        
+        public void Configure(Dictionary<Point, Rectangle> pointToRectangle)
+        {
+            if (_configured)
+                throw new InvalidOperationException();
+
+            _pointToRectangle = pointToRectangle;
+            CreateArena2();
+            _configured = true;
+        }
+
+        public void SetPlayer(Player player)
+        {
+            _player = player;
+        }
+
+        public void SetMonster(Monster[] monsters)
+        {
+            for (var i = 0; i < monsters.Length; i++)
+                _monsters[i] = monsters[i];
         }
 
         public void Paint(Graphics graphics)
         {
             TypeEntity();
-            graphics.DrawImage(_arenaImage, new Rectangle(0, 0, ArenaSize.Width, ArenaSize.Height));
+            graphics.DrawImage(_arenaImage, new Rectangle(0, 0, ArenaSize.Width * GlobalConst.AssetsSize,
+                                                                        ArenaSize.Height * GlobalConst.AssetsSize));
         }
         
         private void TypeEntity()
         {
             using (var graphics = Graphics.FromImage(_arenaImage))
             {
-                foreach (var monster in currentArena.Monsters)
+                foreach (var monster in _currentArena.Monsters)
                 {
                     graphics.DrawString("M", new Font(SystemFonts.DefaultFont.FontFamily, 32),
-                        Brushes.Black, new Point(monster.Position.X * 64, monster.Position.Y * 64));
+                        Brushes.Black, new Point(monster.Position.X * CellWidth,
+                                                    monster.Position.Y * CellHeight));
                 }
-                graphics.DrawString("P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
-                    Brushes.Black, new Point(currentArena.Player.Position.X * 64, currentArena.Player.Position.Y * 64));
+                // if(!_player.IsSelected)
+                // {
+                //     graphics.DrawString("P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
+                //         Brushes.Black, new Point(_player.Position.X * CellWidth,
+                //             _player.Position.Y * CellHeight));
+                // }
+                // else
+                // {
+                //     graphics.DrawString("P!", new Font(SystemFonts.DefaultFont.FontFamily, 32),
+                //         Brushes.Black, new Point(_player.Position.X * CellWidth,
+                //             _player.Position.Y * CellHeight));
+                // }
+                graphics.DrawString(!_player.IsSelected ? "P" : "P!", new Font(SystemFonts.DefaultFont.FontFamily, 32),
+                    Brushes.Black, new Point(_player.Position.X * CellWidth,
+                        _player.Position.Y * CellHeight));
             }
         }
-
-        private void CreateArena()
+        
+        public void ChangeLevel(ArenaMap newArena, Dictionary<Point, Rectangle> pointToRectangle)
         {
-            const int cellWidth = GlobalConstants.AssetsSize;
-            const int cellHeight = GlobalConstants.AssetsSize;
-            _arenaImage = new Bitmap(ArenaSize.Width * cellWidth, ArenaSize.Height * cellHeight);
+            _currentArena = newArena;
+            _pointToRectangle = pointToRectangle;
+            CreateArena2();
+        }
+
+        public void Update()
+        {
+            CreateArena2();
+        }
+
+        private void CreateArena2()
+        {
+            _arenaImage = new Bitmap(ArenaSize.Width * CellWidth, ArenaSize.Height * CellHeight);
             using (var graphics = Graphics.FromImage(_arenaImage))
             {
                 for (int x = 0; x < ArenaSize.Width; x++)
                 for (int y = 0; y < ArenaSize.Height; y++)
                 {
-                    var rec = new Rectangle(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
-                    graphics.FillRectangle(ChooseBrushForCell(currentArena.Arena[x, y]), rec);
+                    var rec = _pointToRectangle[new Point(x, y)];
+                    graphics.FillRectangle(ChooseBrushForCell(_currentArena.Arena[x, y]), rec);
                     graphics.DrawRectangle(Pens.Black, rec);
                 }
             }
