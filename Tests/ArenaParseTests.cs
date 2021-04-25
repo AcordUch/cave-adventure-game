@@ -219,6 +219,25 @@ namespace Cave_Adventure
             AssertsArena(ArenaParser.ParsingMap(textArena), expectedArena,
                 expectedMonsters, new Point(1, 0));
         }
+        
+        [Test]
+        public void ParseArenaFromText()
+        {
+            var textArena =
+@"# .P .  .
+# .  .  .
+# .# .M .";
+
+            var expectedArena = new[,]
+            {
+                {CellType.Wall, CellType.Floor, CellType.Floor},
+                {CellType.Wall, CellType.Floor, CellType.Floor},
+                {CellType.Wall, CellType.Wall, CellType.Floor}
+            };
+            
+            AssertsArena(ArenaParser.ParsingMap(textArena), expectedArena,
+                new []{new Point(2, 2)}, new Point(1, 0));
+        }
 
         private static void AssertsArena((CellType[,] arenaMap, Point playerPosition, Point[] monsters) arena,
             CellType[,] expectedArena, Point[] expextedMonsters, Point player)

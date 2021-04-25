@@ -188,7 +188,8 @@ namespace Cave_Adventure
             
             e.Graphics.ResetTransform();
             _playerPainter.SetUpAndPaint(e.Graphics, _player);
-            _arenaPainter.Update();           
+            _arenaPainter.Update();       
+            
             _monstersPainter.SetUpAndPaint(e.Graphics, _monsters);
         }
         
