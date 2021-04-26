@@ -60,7 +60,6 @@ namespace Cave_Adventure
                 {
                     DisplacementStage = 0;
                     player.Move(dPoint.X, dPoint.Y);
-                    player.UpdatePosition();
                 }
             }
             

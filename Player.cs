@@ -8,8 +8,6 @@ namespace Cave_Adventure
     public class Player : IPlayer
     {
         private Point _position;
-        private int _dX;
-        private int _dY;
 
         public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
         public ViewDirection ViewDirection { get; set; } = ViewDirection.Right;
@@ -18,7 +16,7 @@ namespace Cave_Adventure
         public bool IsMoving { get; set; }
         public Point TargetPoint { get; private set; }
         public double Health { get; }
-        public int AP { get; }
+        public int AP { get; private set; }
         public double Attack { get; }
         public double Defense { get; }
         public double Damage { get; }
@@ -34,20 +32,14 @@ namespace Cave_Adventure
             _position = position;
             AP = 2;
         }
-
-        public void UpdatePosition()
-        {
-            _position.X += _dX;
-            _position.Y += _dY;
-            StopIfInTargetPoint();
-        }
         
         public void Move(int dx, int dy)
         {
-            _dX = dx;
-            _dY = dy;
+            _position.X += dx;
+            _position.Y += dy;
+            StopIfInTargetPoint();
         }
-
+        
         public void TeleportToPoint(Point point)
         {
             _position = point;
