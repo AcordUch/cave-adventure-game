@@ -7,9 +7,9 @@ namespace Cave_Adventure
 {
     public class ArenaMap
     {
-        public readonly CellType[,] Arena;
-        public readonly Player Player;
-        public readonly Monster[] Monsters;
+        public CellType[,] Arena { get; private set; }
+        public Player Player { get; private set; }
+        public Monster[] Monsters { get; private set; }
 
         public int Width => Arena.GetLength(0);
         public int Height => Arena.GetLength(1);
@@ -20,7 +20,10 @@ namespace Cave_Adventure
             Player = player;
             Monsters = monsters;
         }
+        
+        
 
+        #region CreatingArenaMap
         public static ArenaMap CreateNewArenaMap(string textMap)
         {
             return CreateNewArenaMap(ArenaParser.ParsingMap(textMap));
@@ -39,8 +42,7 @@ namespace Cave_Adventure
             //Переделать под фабрику, что бы получать классы монстров
             return new ArenaMap(arenaInfo.arenaMap, newPlayer, newMonsters);
         }
-        
-        //ToDo late ...
+        #endregion
         
         public bool InBounds(Point point)
         {
