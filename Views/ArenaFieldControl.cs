@@ -13,12 +13,12 @@ namespace Cave_Adventure
         private const int CellWidth = GlobalConst.AssetsSize;
         private const int CellHeight = GlobalConst.AssetsSize;
         
-        private int _zoomScale;
-        private PointF _logicalCenterPos;
-        private ArenaMap _arenaMap;
         private readonly ArenaPainter _arenaPainter;
         private readonly PlayerPainter _playerPainter;
         private readonly MonstersPainter _monstersPainter;
+        private int _zoomScale;
+        private PointF _logicalCenterPos;
+        private ArenaMap _arenaMap;
         private Player _player;
         private Monster[] _monsters = new Monster[2];
         private bool _configured = false;
