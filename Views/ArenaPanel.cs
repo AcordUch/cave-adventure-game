@@ -122,7 +122,7 @@ namespace Cave_Adventure
                 {
                     if (ArenaFieldControl.ArenaMap.PlayerPaths.Any(p => p.Contains(point)))
                     {
-                        ArenaFieldControl.ArenaMap.TempNameMovePlayerTipa(point);
+                        ArenaFieldControl.ArenaMap.MoveAlongThePath(point);
                         ArenaFieldControl.ArenaMap.PlayerSelected = false;
                     }
                     actionCompleted = true;

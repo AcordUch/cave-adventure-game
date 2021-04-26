@@ -71,7 +71,6 @@ namespace Cave_Adventure
         public void SetAnimation(StatesOfAnimation currentAnimation)
         {
             CurrentStates = currentAnimation;
-            IsMoving = currentAnimation == StatesOfAnimation.Run;
         }
     }
 }

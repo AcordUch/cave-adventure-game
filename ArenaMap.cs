@@ -34,7 +34,7 @@ namespace Cave_Adventure
             }
         }
 
-        public void TempNameMovePlayerTipa(Point targetPoint)
+        public async void MoveAlongThePath(Point targetPoint)
         {
             if (PlayerSelected)
             {
@@ -42,34 +42,27 @@ namespace Cave_Adventure
                         .FirstOrDefault(p => p.Value == targetPoint) 
                             ?? throw new InvalidOperationException("Среди доступных точек нет необходимой. В методе откуда вызов нет проверки?"))
                     .Select(p => p).Reverse().ToArray();
-                var tempName = path.GetEnumerator();
-                tempName.MoveNext();
-                MakeWork(tempName);
+                await StartMovePlayer(path);
             }
         }
-
-        private async void MakeWork(IEnumerator tempName)
+        
+        private Task StartMovePlayer(Point[] path)
         {
-            await MakeWorkInThread(tempName);
-        }
-
-        Task MakeWorkInThread(IEnumerator tempName)
-        {
+            var pathEnumerator = path.GetEnumerator();
+            if (!pathEnumerator.MoveNext())
+                return new Task(() => {});
             var task = new Task(() =>
             {
                 while (true)
                 {
                     if(!Player.IsMoving)
                     {
-                        var temp2 = (Point)tempName.Current;
-                        if(temp2 != Player.Position)
-                            Player.SetTargetPoint(temp2);
-                        if(!tempName.MoveNext())
+                        if (pathEnumerator.Current == null) break;
+                        var nextPoint = (Point)pathEnumerator.Current;
+                        if(nextPoint != Player.Position)
+                            Player.SetTargetPoint(nextPoint);
+                        if(!pathEnumerator.MoveNext())
                             break;
-                    }
-                    else
-                    {
-                        continue;
                     }
                 }
 
