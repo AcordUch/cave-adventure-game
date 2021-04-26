@@ -29,7 +29,7 @@ namespace Cave_Adventure
                 throw new InvalidOperationException();
 
             _pointToRectangle = pointToRectangle;
-            CreateArena2();
+            CreateArena();
             _configured = true;
         }
 
@@ -73,7 +73,7 @@ namespace Cave_Adventure
                 //         Brushes.Black, new Point(_player.Position.X * CellWidth,
                 //             _player.Position.Y * CellHeight));
                 // }
-                graphics.DrawString(!_player.IsSelected ? "P" : "P!", new Font(SystemFonts.DefaultFont.FontFamily, 32),
+                graphics.DrawString(_player.IsSelected ? "P!" : "P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
                     Brushes.Black, new Point(_player.Position.X * CellWidth,
                         _player.Position.Y * CellHeight));
             }
@@ -83,15 +83,15 @@ namespace Cave_Adventure
         {
             _currentArena = newArena;
             _pointToRectangle = pointToRectangle;
-            CreateArena2();
+            CreateArena();
         }
 
         public void Update()
         {
-            CreateArena2();
+            CreateArena();
         }
 
-        private void CreateArena2()
+        private void CreateArena()
         {
             _arenaImage = new Bitmap(ArenaSize.Width * CellWidth, ArenaSize.Height * CellHeight);
             using (var graphics = Graphics.FromImage(_arenaImage))

@@ -23,12 +23,21 @@ namespace Cave_Adventure
 
         public static ArenaMap CreateNewArenaMap(string textMap)
         {
-            var arenaInfo = ArenaParser.ParsingMap(textMap);
+            return CreateNewArenaMap(ArenaParser.ParsingMap(textMap));
+        }
+        
+        public static ArenaMap CreateNewArenaMap(string[] textMap)
+        {
+            return CreateNewArenaMap(ArenaParser.ParsingMap(textMap));
+        }
+
+        private static ArenaMap CreateNewArenaMap(
+            (CellType[,] arenaMap, Point playerPosition, Point[] monstersPosition) arenaInfo)
+        {
             var newPlayer = new Player(arenaInfo.playerPosition);
             var newMonsters = arenaInfo.monstersPosition.Select(e => new Monster(e)).ToArray();
             //Переделать под фабрику, что бы получать классы монстров
             return new ArenaMap(arenaInfo.arenaMap, newPlayer, newMonsters);
-            //Здесь rider недоволен апкастом Monster[] в IMomonster[], типо ошибка во время записи может быть
         }
         
         //ToDo late ...

@@ -104,6 +104,7 @@ namespace Cave_Adventure
             Invalidate();
         }
 
+        #region KeyControl
         // public void OnKeyUp(object sender, KeyEventArgs e)
         // {
         //     _player.Move(0, 0);
@@ -137,6 +138,7 @@ namespace Cave_Adventure
         //             break;
         //     }
         // }
+        #endregion
         
         private void HandleClick(object sender, EventArgs e)
         {
@@ -177,7 +179,7 @@ namespace Cave_Adventure
             UpdateZoomScale();
             _logicalCenterPos = new PointF(sceneSize.Width / 2f, sceneSize.Height / 2f);
             
-            var shift = GetShift();
+            // var shift = GetShift();
             
             _arenaPainter.SetPlayer(_player);
             _arenaPainter.SetMonster(_monsters);

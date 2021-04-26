@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Cave_Adventure
 {
-    public class Player
+    public class Player : IPlayer
     {
         private Point _position;
         private int _dX;
@@ -14,8 +14,15 @@ namespace Cave_Adventure
         public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
         public ViewDirection ViewDirection { get; set; } = ViewDirection.Right;
         public bool IsSelected { get; set; }
-        public bool IsMovingNow { get; set; }
+        public int AnimStage { get; set; }
+        public bool IsMoving { get; set; }
         public Point TargetPoint { get; private set; }
+        public double Health { get; }
+        public int AP { get; }
+        public double Attack { get; }
+        public double Defense { get; }
+        public double Damage { get; }
+
         public Point Position
         {
             get => _position;
@@ -25,6 +32,7 @@ namespace Cave_Adventure
         public Player(Point position)
         {
             _position = position;
+            AP = 2;
         }
 
         public void UpdatePosition()
@@ -50,11 +58,11 @@ namespace Cave_Adventure
             return new Point(TargetPoint.X - _position.X, TargetPoint.Y - _position.Y);
         }
 
-        public void StopIfInTargetPoint()
+        private void StopIfInTargetPoint()
         {
-            if (IsMovingNow && _position == TargetPoint)
+            if (IsMoving && _position == TargetPoint)
             {
-                IsMovingNow = false;
+                IsMoving = false;
                 SetAnimation(StatesOfAnimation.Idle);
             }
         }
@@ -64,7 +72,7 @@ namespace Cave_Adventure
             if(IsSelected)
             {
                 TargetPoint = point;
-                IsMovingNow = true;
+                IsMoving = true;
                 SetAnimation(StatesOfAnimation.Run);
             }
         }
@@ -72,7 +80,7 @@ namespace Cave_Adventure
         public void SetAnimation(StatesOfAnimation currentAnimation)
         {
             CurrentStates = currentAnimation;
-            IsMovingNow = currentAnimation == StatesOfAnimation.Run;
+            IsMoving = currentAnimation == StatesOfAnimation.Run;
         }
     }
 }

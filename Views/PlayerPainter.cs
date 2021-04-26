@@ -52,7 +52,7 @@ namespace Cave_Adventure
         private Point GetGraphicPosition(Player player)
         {
             var dPoint = Point.Empty;
-            if(player.IsMovingNow)
+            if(player.IsMoving)
             {
                 dPoint = player.GetDeltaPoint();
                 DisplacementStage++;

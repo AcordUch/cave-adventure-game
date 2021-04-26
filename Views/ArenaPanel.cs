@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Cave_Adventure
@@ -87,7 +88,7 @@ namespace Cave_Adventure
             var zoom = GetZoomForController();
             ArenaFieldControl.Size =
                 new Size((int)(ArenaFieldControl.Width * zoom), (int)(ArenaFieldControl.Height * zoom));
-            Invalidate();
+            //Invalidate();
         }
 
         private void ArenaFieldControl_ClickOnPoint(Point point, MouseEventArgs args)
@@ -104,9 +105,9 @@ namespace Cave_Adventure
 
                 if (ArenaFieldControl.Player.IsSelected && !actionWasBeen)
                 {
-                    if(ArenaFieldControl.ArenaMap.Arena[point.X, point.Y] == CellType.Floor)
+                    if(ArenaFieldControl.ArenaMap.Arena[point.X, point.Y] == CellType.Floor
+                        && ArenaFieldControl.Monsters.All(p => p.Position != point))
                     {
-                        // ArenaFieldControl.Player.MoveToPoint(point);
                         ArenaFieldControl.Player.SetTargetPoint(point);
                         ArenaFieldControl.Player.IsSelected = false;
                         ArenaFieldControl.Update();
