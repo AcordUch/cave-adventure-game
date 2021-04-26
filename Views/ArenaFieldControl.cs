@@ -19,8 +19,6 @@ namespace Cave_Adventure
         private int _zoomScale;
         private PointF _logicalCenterPos;
         private ArenaMap _arenaMap;
-        // private Player _player;
-        // private Monster[] _monsters = new Monster[2];
         private bool _configured = false;
         private Dictionary<Point, Rectangle> _pointToRectangle;
 
@@ -51,10 +49,6 @@ namespace Cave_Adventure
                 throw new InvalidOperationException();
             
             _arenaMap = arenaMap;
-            // _player = new Player(new Point(_arenaMap.Player.Position.X, _arenaMap.Player.Position.Y));
-            // for (var i = 0; i < _monsters.Length; i++)
-            //     _monsters[i] = new Monster(new Point(_arenaMap.Monsters[i].Position.X, _arenaMap.Monsters[i].Position.Y));
-            // _monsters = _arenaMap.Monsters;
             _pointToRectangle = GeneratePointToRectangle(this, _arenaMap);
             _arenaPainter.Configure(_pointToRectangle);
             _configured = true;
@@ -62,16 +56,6 @@ namespace Cave_Adventure
 
         public new void Update()
         {
-            // if (_player.IsMoving)
-            //     _player.UpdatePosition();
-            // if(_player.IsMovingNow)
-            // {
-            //     _player.GetDPoint();
-            //     _player.UpdatePosition();
-            // }
-
-            // _player = new Player(new Point(_arenaMap.Player.Position.X, _arenaMap.Player.Position.Y));
-            // _player.UpdatePosition2(new Point(_arenaMap.Player.Position.X, _arenaMap.Player.Position.Y));
             Invalidate();
         }
         
@@ -85,13 +69,6 @@ namespace Cave_Adventure
         public void ChangeLevel(ArenaMap newMap)
         {
             _arenaMap = newMap;
-            // _player = new Player(new Point(_arenaMap.Player.Position.X, _arenaMap.Player.Position.Y));
-            // var newMonsters = new List<Monster>();
-            // for (int i = 0; i < _arenaMap.Monsters.Length; i++)
-            // {
-            //     newMonsters.Add(_arenaMap.Monsters[i]);
-            // }
-            // _monsters = newMonsters.ToArray();
             _pointToRectangle = GeneratePointToRectangle(this, _arenaMap);
             _arenaPainter.ChangeLevel(newMap, _pointToRectangle);
             Invalidate();
@@ -166,19 +143,12 @@ namespace Cave_Adventure
             if (!_configured)
                 return;
 
-            e.Graphics.Clear(Color.White);
+            //e.Graphics.Clear(Color.White);
             var sceneSize = _arenaPainter.ArenaSize;
             
             UpdateZoomScale();
             _logicalCenterPos = new PointF(sceneSize.Width / 2f, sceneSize.Height / 2f);
             
-            // var shift = GetShift();
-            
-            // _arenaPainter.SetPlayer(_arenaMap.Player);
-            // _arenaPainter.SetMonster(_arenaMap.Monsters);
-            // e.Graphics.ResetTransform();
-            // e.Graphics.TranslateTransform(shift.X, shift.Y);
-            // e.Graphics.ScaleTransform(_zoomScale, _zoomScale);
             _arenaPainter.Paint(e.Graphics);
             
             e.Graphics.ResetTransform();
