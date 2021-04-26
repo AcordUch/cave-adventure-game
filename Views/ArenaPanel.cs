@@ -98,17 +98,26 @@ namespace Cave_Adventure
                 var actionCompleted = false;
                 if (point == ArenaFieldControl.Player.Position && !actionCompleted)
                 {
-                    var path = BFS.FindPaths(
-                        ArenaFieldControl.ArenaMap,
-                        ArenaFieldControl.Player.Position,
-                        ArenaFieldControl.Player.AP).ToArray();
-                    ArenaFieldControl.ArenaMap.SetPlayerPaths(path);
-                    
-                    ArenaFieldControl.Player.IsSelected = !ArenaFieldControl.Player.IsSelected;
-                    actionCompleted = true;
-                    ArenaFieldControl.ArenaPainter.Update();
-                }
+                    if (ArenaFieldControl.Player.IsSelected)
+                    {
+                        ArenaFieldControl.ArenaMap.PlayerSelected = false;
+                        ArenaFieldControl.Player.IsSelected = false;
+                        ArenaFieldControl.ArenaPainter.Update();
+                    }
+                    else
+                    {
+                        var path = BFS.FindPaths(
+                            ArenaFieldControl.ArenaMap,
+                            ArenaFieldControl.Player.Position,
+                            ArenaFieldControl.Player.AP).ToArray();
+                        ArenaFieldControl.ArenaMap.SetPlayerPaths(path);
 
+                        ArenaFieldControl.Player.IsSelected = true;
+                        ArenaFieldControl.ArenaPainter.Update();
+                    }
+                    actionCompleted = true;
+                }
+                
                 if (ArenaFieldControl.Player.IsSelected && !actionCompleted)
                 {
                     // if(ArenaFieldControl.ArenaMap.Arena[point.X, point.Y] == CellType.Floor

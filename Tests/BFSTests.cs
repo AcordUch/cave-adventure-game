@@ -44,14 +44,15 @@ namespace Cave_Adventure
         }
         
         [Test]
-        public void BFSCloseMonterAndWallButHavePath()
+        public void BFSCloseMonterAndWall()
         {
             var textArena =
 @"# .P .
   .M .";
             var arena = ArenaMap.CreateNewArenaMap(textArena);
             var paths = GetPaths(arena, 3);
-            AssertPaths(paths, arena, new []{2});
+            // AssertPaths(paths, arena, new []{2});
+            Assert.IsEmpty(paths);
         }
         
         [Test]
@@ -63,7 +64,7 @@ namespace Cave_Adventure
   .  .  .";
             var arena = ArenaMap.CreateNewArenaMap(textArena);
             var paths = GetPaths(arena, 1);
-            AssertPaths(paths, arena, new[]{2, 2, 2, 2, 2});
+            AssertPaths(paths, arena, new[]{2, 2, 2});
         }
         
         [Test]
@@ -75,7 +76,7 @@ namespace Cave_Adventure
 # .  .# .";
             var arena = ArenaMap.CreateNewArenaMap(textArena);
             var paths = GetPaths(arena, 2);
-            AssertPaths(paths, arena, new[]{2, 2, 3, 3});
+            AssertPaths(paths, arena, new[]{2, 3, 3});
         }
         
         [Test]
@@ -99,7 +100,7 @@ P .# .  .
   .  .  .";
             var arena = ArenaMap.CreateNewArenaMap(textArena);
             var paths = GetPaths(arena, 3);
-            AssertPaths(paths, arena, new[]{2, 2, 2, 2, 3, 3, 3});
+            AssertPaths(paths, arena, new[]{2, 2, 3, 3, 4, 4});
         }
         
         private static List<Point>[] GetPaths(ArenaMap map, int range)

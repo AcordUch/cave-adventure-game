@@ -62,7 +62,8 @@ namespace Cave_Adventure
                     if(!Player.IsMoving)
                     {
                         var temp2 = (Point)tempName.Current;
-                        Player.SetTargetPoint(temp2);
+                        if(temp2 != Player.Position)
+                            Player.SetTargetPoint(temp2);
                         if(!tempName.MoveNext())
                             break;
                     }

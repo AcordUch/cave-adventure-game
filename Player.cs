@@ -29,7 +29,7 @@ namespace Cave_Adventure
         public Player(Point position)
         {
             _position = position;
-            AP = 2;
+            AP = 3;
         }
         
         public void Move(int dx, int dy)
