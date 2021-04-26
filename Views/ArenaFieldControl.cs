@@ -174,8 +174,8 @@ namespace Cave_Adventure
             
             // var shift = GetShift();
             
-            _arenaPainter.SetPlayer(_arenaMap.Player);
-            _arenaPainter.SetMonster(_arenaMap.Monsters);
+            // _arenaPainter.SetPlayer(_arenaMap.Player);
+            // _arenaPainter.SetMonster(_arenaMap.Monsters);
             // e.Graphics.ResetTransform();
             // e.Graphics.TranslateTransform(shift.X, shift.Y);
             // e.Graphics.ScaleTransform(_zoomScale, _zoomScale);

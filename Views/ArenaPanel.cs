@@ -95,15 +95,19 @@ namespace Cave_Adventure
         {
             if (args.Button == MouseButtons.Left)
             {
-                var actionWasBeen = false;
-                if (point == ArenaFieldControl.Player.Position && !actionWasBeen)
+                var actionCompleted = false;
+                if (point == ArenaFieldControl.Player.Position && !actionCompleted)
                 {
+                    var path = BFS.FindPaths(
+                        ArenaFieldControl.ArenaMap,
+                        ArenaFieldControl.Player.Position,
+                        ArenaFieldControl.Player.AP).ToArray();
                     ArenaFieldControl.Player.IsSelected = !ArenaFieldControl.Player.IsSelected;
-                    actionWasBeen = true;
+                    actionCompleted = true;
                     ArenaFieldControl.ArenaPainter.Update();
                 }
 
-                if (ArenaFieldControl.Player.IsSelected && !actionWasBeen)
+                if (ArenaFieldControl.Player.IsSelected && !actionCompleted)
                 {
                     if(ArenaFieldControl.ArenaMap.Arena[point.X, point.Y] == CellType.Floor
                         && ArenaFieldControl.Monsters.All(p => p.Position != point))
@@ -113,7 +117,7 @@ namespace Cave_Adventure
                         ArenaFieldControl.Update();
                         ArenaFieldControl.ArenaPainter.Update();
                     }
-                    actionWasBeen = true;
+                    actionCompleted = true;
                 }
             }
         }

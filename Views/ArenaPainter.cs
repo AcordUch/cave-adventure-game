@@ -12,12 +12,11 @@ namespace Cave_Adventure
         public Size ArenaSize => new Size(_currentArena.Width, _currentArena.Height);
 
         private ArenaMap _currentArena;
-        private Player _player;
-        private Monster[] _monsters = new Monster[2];
+        // private Player _player;
+        // private Monster[] _monsters = new Monster[2];
         private Bitmap _arenaImage;
         private Dictionary<Point, Rectangle> _pointToRectangle;
         private bool _configured;
-
         public ArenaPainter(ArenaMap arena)
         {
             _currentArena = arena;
@@ -33,16 +32,16 @@ namespace Cave_Adventure
             _configured = true;
         }
 
-        public void SetPlayer(Player player)
-        {
-            _player = player;
-        }
-
-        public void SetMonster(Monster[] monsters)
-        {
-            for (var i = 0; i < monsters.Length; i++)
-                _monsters[i] = monsters[i];
-        }
+        // public void SetPlayer(Player player)
+        // {
+        //     _player = player;
+        // }
+        //
+        // public void SetMonster(Monster[] monsters)
+        // {
+        //     for (var i = 0; i < monsters.Length; i++)
+        //         _monsters[i] = monsters[i];
+        // }
 
         public void Paint(Graphics graphics)
         {
@@ -73,9 +72,9 @@ namespace Cave_Adventure
                 //         Brushes.Black, new Point(_player.Position.X * CellWidth,
                 //             _player.Position.Y * CellHeight));
                 // }
-                graphics.DrawString(_player.IsSelected ? "P!" : "P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
-                    Brushes.Black, new Point(_player.Position.X * CellWidth,
-                        _player.Position.Y * CellHeight));
+                graphics.DrawString(_currentArena.Player.IsSelected ? "P!" : "P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
+                    Brushes.Black, new Point(_currentArena.Player.Position.X * CellWidth,
+                        _currentArena.Player.Position.Y * CellHeight));
             }
         }
         
