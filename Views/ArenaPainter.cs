@@ -46,6 +46,8 @@ namespace Cave_Adventure
         public void Paint(Graphics graphics)
         {
             TypeEntity();
+            if(_currentArena.PlayerSelected)
+                PaintPath();
             graphics.DrawImage(_arenaImage, new Rectangle(0, 0, ArenaSize.Width * GlobalConst.AssetsSize,
                                                                         ArenaSize.Height * GlobalConst.AssetsSize));
         }
@@ -75,6 +77,19 @@ namespace Cave_Adventure
                 graphics.DrawString(_currentArena.Player.IsSelected ? "P!" : "P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
                     Brushes.Black, new Point(_currentArena.Player.Position.X * CellWidth,
                         _currentArena.Player.Position.Y * CellHeight));
+            }
+        }
+
+        private void PaintPath()
+        {
+            using (var graphics = Graphics.FromImage(_arenaImage))
+            {
+                foreach (var path in _currentArena.PlayerPaths)
+                {
+                    var temp = path.Value;
+                    var brush = new SolidBrush(Color.FromArgb(25, Color.White));
+                    graphics.FillRectangle(brush, temp.X * CellWidth, temp.Y * CellHeight, CellWidth, CellHeight);
+                }
             }
         }
         

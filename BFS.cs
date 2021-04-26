@@ -16,7 +16,8 @@ namespace Cave_Adventure
             while (queue.Count != 0)
             {
                 var currentPoint = queue.Dequeue();
-                yield return currentPoint.point;
+                if(currentPoint.distance != 0)
+                    yield return currentPoint.point;
                 
                 for(var dy = -1; dy <= 1; dy++)
                 for (var dx = -1; dx <= 1; dx++)

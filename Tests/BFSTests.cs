@@ -17,7 +17,8 @@ namespace Cave_Adventure
 # .# .";
             var arena = ArenaMap.CreateNewArenaMap(textArena);
             var paths = GetPaths(arena, 3);
-            AssertPaths(paths, arena, new []{1});
+            //AssertPaths(paths, arena, new []{1});
+            Assert.IsEmpty(paths);
         }
         
         [Test]
@@ -28,7 +29,7 @@ namespace Cave_Adventure
   .# .";
             var arena = ArenaMap.CreateNewArenaMap(textArena);
             var paths = GetPaths(arena, 3);
-            AssertPaths(paths, arena, new []{1});
+            Assert.IsEmpty(paths);
         }
         
         [Test]
@@ -39,7 +40,7 @@ namespace Cave_Adventure
 # .M .";
             var arena = ArenaMap.CreateNewArenaMap(textArena);
             var paths = GetPaths(arena, 3);
-            AssertPaths(paths, arena, new []{1});
+            Assert.IsEmpty(paths);
         }
         
         [Test]
@@ -50,7 +51,7 @@ namespace Cave_Adventure
   .M .";
             var arena = ArenaMap.CreateNewArenaMap(textArena);
             var paths = GetPaths(arena, 3);
-            AssertPaths(paths, arena, new []{1, 2});
+            AssertPaths(paths, arena, new []{2});
         }
         
         [Test]
@@ -62,7 +63,7 @@ namespace Cave_Adventure
   .  .  .";
             var arena = ArenaMap.CreateNewArenaMap(textArena);
             var paths = GetPaths(arena, 1);
-            AssertPaths(paths, arena, new[]{1, 2, 2, 2, 2, 2});
+            AssertPaths(paths, arena, new[]{2, 2, 2, 2, 2});
         }
         
         [Test]
@@ -74,7 +75,7 @@ namespace Cave_Adventure
 # .  .# .";
             var arena = ArenaMap.CreateNewArenaMap(textArena);
             var paths = GetPaths(arena, 2);
-            AssertPaths(paths, arena, new[]{1, 2, 2, 3, 3});
+            AssertPaths(paths, arena, new[]{2, 2, 3, 3});
         }
         
         [Test]
@@ -86,7 +87,7 @@ namespace Cave_Adventure
 # .  .# .";
             var arena = ArenaMap.CreateNewArenaMap(textArena);
             var paths = GetPaths(arena, 2);
-            AssertPaths(paths, arena, new[]{1, 2, 3});
+            AssertPaths(paths, arena, new[]{2, 3});
         }
         
         [Test]
@@ -98,7 +99,7 @@ P .# .  .
   .  .  .";
             var arena = ArenaMap.CreateNewArenaMap(textArena);
             var paths = GetPaths(arena, 3);
-            AssertPaths(paths, arena, new[]{1, 2, 2, 2, 2, 3, 3, 3});
+            AssertPaths(paths, arena, new[]{2, 2, 2, 2, 3, 3, 3});
         }
         
         private static List<Point>[] GetPaths(ArenaMap map, int range)

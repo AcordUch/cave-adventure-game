@@ -102,6 +102,8 @@ namespace Cave_Adventure
                         ArenaFieldControl.ArenaMap,
                         ArenaFieldControl.Player.Position,
                         ArenaFieldControl.Player.AP).ToArray();
+                    ArenaFieldControl.ArenaMap.SetPlayerPaths(path);
+                    
                     ArenaFieldControl.Player.IsSelected = !ArenaFieldControl.Player.IsSelected;
                     actionCompleted = true;
                     ArenaFieldControl.ArenaPainter.Update();
@@ -109,13 +111,23 @@ namespace Cave_Adventure
 
                 if (ArenaFieldControl.Player.IsSelected && !actionCompleted)
                 {
-                    if(ArenaFieldControl.ArenaMap.Arena[point.X, point.Y] == CellType.Floor
-                        && ArenaFieldControl.Monsters.All(p => p.Position != point))
+                    // if(ArenaFieldControl.ArenaMap.Arena[point.X, point.Y] == CellType.Floor
+                    //     && ArenaFieldControl.Monsters.All(p => p.Position != point))
+                    // {
+                    //     ArenaFieldControl.Player.SetTargetPoint(point);
+                    //     ArenaFieldControl.Player.IsSelected = false;
+                    //     ArenaFieldControl.Update();
+                    //     ArenaFieldControl.ArenaPainter.Update();
+                    // }
+                    if (ArenaFieldControl.ArenaMap.PlayerPaths.Any(p => p.Contains(point)))
                     {
-                        ArenaFieldControl.Player.SetTargetPoint(point);
-                        ArenaFieldControl.Player.IsSelected = false;
+                        //ArenaFieldControl.Player.SetTargetPoint(point);
+                        ArenaFieldControl.ArenaMap.TempNameMovePlayerTipa(point);
+                        ArenaFieldControl.ArenaMap.PlayerSelected = false;
                         ArenaFieldControl.Update();
-                        ArenaFieldControl.ArenaPainter.Update();
+                        //ArenaFieldControl.Player.IsSelected = false;
+                        ArenaFieldControl.ArenaMap.PlayerSelected = false;
+                        //ArenaFieldControl.ArenaPainter.Update();
                     }
                     actionCompleted = true;
                 }
