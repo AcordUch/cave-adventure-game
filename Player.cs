@@ -12,8 +12,7 @@ namespace Cave_Adventure
         public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
         public ViewDirection ViewDirection { get; set; } = ViewDirection.Right;
         public bool IsSelected { get; set; }
-        public int AnimStage { get; set; }
-        public bool IsMoving { get; set; }
+        public bool IsMoving { get; private set; }
         public Point TargetPoint { get; private set; }
         public double Health { get; }
         public int AP { get; private set; }
