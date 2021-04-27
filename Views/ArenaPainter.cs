@@ -12,12 +12,9 @@ namespace Cave_Adventure
         public Size ArenaSize => new Size(_currentArena.Width, _currentArena.Height);
 
         private ArenaMap _currentArena;
-        private Player _player;
-        private Monster[] _monsters = new Monster[2];
         private Bitmap _arenaImage;
         private Dictionary<Point, Rectangle> _pointToRectangle;
         private bool _configured;
-
         public ArenaPainter(ArenaMap arena)
         {
             _currentArena = arena;
@@ -29,24 +26,15 @@ namespace Cave_Adventure
                 throw new InvalidOperationException();
 
             _pointToRectangle = pointToRectangle;
-            CreateArena2();
+            CreateArena();
             _configured = true;
         }
-
-        public void SetPlayer(Player player)
-        {
-            _player = player;
-        }
-
-        public void SetMonster(Monster[] monsters)
-        {
-            for (var i = 0; i < monsters.Length; i++)
-                _monsters[i] = monsters[i];
-        }
-
+        
         public void Paint(Graphics graphics)
         {
             TypeEntity();
+            if(_currentArena.PlayerSelected)
+                PaintPath();
             graphics.DrawImage(_arenaImage, new Rectangle(0, 0, ArenaSize.Width * GlobalConst.AssetsSize,
                                                                         ArenaSize.Height * GlobalConst.AssetsSize));
         }
@@ -73,9 +61,22 @@ namespace Cave_Adventure
                 //         Brushes.Black, new Point(_player.Position.X * CellWidth,
                 //             _player.Position.Y * CellHeight));
                 // }
-                graphics.DrawString(!_player.IsSelected ? "P" : "P!", new Font(SystemFonts.DefaultFont.FontFamily, 32),
-                    Brushes.Black, new Point(_player.Position.X * CellWidth,
-                        _player.Position.Y * CellHeight));
+                graphics.DrawString(_currentArena.Player.IsSelected ? "P!" : "P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
+                    Brushes.Black, new Point(_currentArena.Player.Position.X * CellWidth,
+                        _currentArena.Player.Position.Y * CellHeight));
+            }
+        }
+
+        private void PaintPath()
+        {
+            using (var graphics = Graphics.FromImage(_arenaImage))
+            {
+                foreach (var path in _currentArena.PlayerPaths)
+                {
+                    var temp = path.Value;
+                    var brush = new SolidBrush(Color.FromArgb(25, Color.White));
+                    graphics.FillRectangle(brush, temp.X * CellWidth, temp.Y * CellHeight, CellWidth, CellHeight);
+                }
             }
         }
         
@@ -83,15 +84,15 @@ namespace Cave_Adventure
         {
             _currentArena = newArena;
             _pointToRectangle = pointToRectangle;
-            CreateArena2();
+            CreateArena();
         }
 
         public void Update()
         {
-            CreateArena2();
+            CreateArena();
         }
 
-        private void CreateArena2()
+        private void CreateArena()
         {
             _arenaImage = new Bitmap(ArenaSize.Width * CellWidth, ArenaSize.Height * CellHeight);
             using (var graphics = Graphics.FromImage(_arenaImage))

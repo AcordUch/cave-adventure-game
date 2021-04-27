@@ -5,17 +5,22 @@ using System.Linq;
 
 namespace Cave_Adventure
 {
-    public class Player
+    public class Player : IPlayer
     {
+        private const int DefaultAP = 3;
         private Point _position;
-        private int _dX;
-        private int _dY;
 
         public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
         public ViewDirection ViewDirection { get; set; } = ViewDirection.Right;
         public bool IsSelected { get; set; }
-        public bool IsMovingNow { get; set; }
+        public bool IsMoving { get; private set; }
         public Point TargetPoint { get; private set; }
+        public double Health { get; }
+        public int AP { get; private set; }
+        public double Attack { get; }
+        public double Defense { get; }
+        public double Damage { get; }
+
         public Point Position
         {
             get => _position;
@@ -25,19 +30,15 @@ namespace Cave_Adventure
         public Player(Point position)
         {
             _position = position;
-        }
-
-        public void UpdatePosition()
-        {
-            _position.X += _dX;
-            _position.Y += _dY;
-            StopIfInTargetPoint();
+            AP = DefaultAP;
         }
         
         public void Move(int dx, int dy)
         {
-            _dX = dx;
-            _dY = dy;
+            _position.X += dx;
+            _position.Y += dy;
+            AP--;
+            StopIfInTargetPoint();
         }
 
         public void TeleportToPoint(Point point)
@@ -45,16 +46,21 @@ namespace Cave_Adventure
             _position = point;
         }
 
+        public void ResetAP()
+        {
+            AP = DefaultAP;
+        }
+
         public Point GetDeltaPoint()
         {
             return new Point(TargetPoint.X - _position.X, TargetPoint.Y - _position.Y);
         }
 
-        public void StopIfInTargetPoint()
+        private void StopIfInTargetPoint()
         {
-            if (IsMovingNow && _position == TargetPoint)
+            if (IsMoving && _position == TargetPoint)
             {
-                IsMovingNow = false;
+                IsMoving = false;
                 SetAnimation(StatesOfAnimation.Idle);
             }
         }
@@ -64,7 +70,7 @@ namespace Cave_Adventure
             if(IsSelected)
             {
                 TargetPoint = point;
-                IsMovingNow = true;
+                IsMoving = true;
                 SetAnimation(StatesOfAnimation.Run);
             }
         }
@@ -72,7 +78,6 @@ namespace Cave_Adventure
         public void SetAnimation(StatesOfAnimation currentAnimation)
         {
             CurrentStates = currentAnimation;
-            IsMovingNow = currentAnimation == StatesOfAnimation.Run;
         }
     }
 }

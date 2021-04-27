@@ -7,9 +7,8 @@ namespace Cave_Adventure
         Point Position { get; set; }
         StatesOfAnimation CurrentStates { get; }
         ViewDirection ViewDirection { get; set; }
-        bool IsMoving { get; set; }
+        bool IsMoving { get; }
         bool IsSelected { get; set; }
-        int AnimStage { get; set; }
         Point TargetPoint { get; }
         double Health { get; }
         int AP { get; }
