@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Text;
 
 namespace Cave_Adventure
 {
@@ -19,22 +20,12 @@ namespace Cave_Adventure
         private int _zoomScale;
         private PointF _logicalCenterPos;
         private ArenaMap _arenaMap;
-        private Player _player;
-        private Monster[] _monsters = new Monster[2];
         private bool _configured = false;
         private Dictionary<Point, Rectangle> _pointToRectangle;
 
-        public Player Player
-        {
-            get => _player;
-            set => _player = value;
-        }
+        public Player Player => _arenaMap.Player;
 
-        public Monster[] Monsters
-        {
-            get => _monsters;
-            set => _monsters = value;
-        }
+        public Monster[] Monsters => _arenaMap.Monsters;
 
         public ArenaPainter ArenaPainter => _arenaPainter;
 
@@ -59,9 +50,6 @@ namespace Cave_Adventure
                 throw new InvalidOperationException();
             
             _arenaMap = arenaMap;
-            _player = new Player(new Point(_arenaMap.Player.Position.X, _arenaMap.Player.Position.Y));
-            for (var i = 0; i < _monsters.Length; i++)
-                _monsters[i] = new Monster(new Point(_arenaMap.Monsters[i].Position.X, _arenaMap.Monsters[i].Position.Y));
             _pointToRectangle = GeneratePointToRectangle(this, _arenaMap);
             _arenaPainter.Configure(_pointToRectangle);
             _configured = true;
@@ -69,16 +57,6 @@ namespace Cave_Adventure
 
         public new void Update()
         {
-            // if (_player.IsMoving)
-            //     _player.UpdatePosition();
-            // if(_player.IsMovingNow)
-            // {
-            //     _player.GetDPoint();
-            //     _player.UpdatePosition();
-            // }
-
-            // _player = new Player(new Point(_arenaMap.Player.Position.X, _arenaMap.Player.Position.Y));
-            // _player.UpdatePosition2(new Point(_arenaMap.Player.Position.X, _arenaMap.Player.Position.Y));
             Invalidate();
         }
         
@@ -92,13 +70,6 @@ namespace Cave_Adventure
         public void ChangeLevel(ArenaMap newMap)
         {
             _arenaMap = newMap;
-            _player = new Player(new Point(_arenaMap.Player.Position.X, _arenaMap.Player.Position.Y));
-            var newMonsters = new List<Monster>();
-            for (int i = 0; i < _arenaMap.Monsters.Length; i++)
-            {
-                newMonsters.Add(_arenaMap.Monsters[i]);
-            }
-            _monsters = newMonsters.ToArray();
             _pointToRectangle = GeneratePointToRectangle(this, _arenaMap);
             _arenaPainter.ChangeLevel(newMap, _pointToRectangle);
             Invalidate();
@@ -173,26 +144,19 @@ namespace Cave_Adventure
             if (!_configured)
                 return;
 
-            e.Graphics.Clear(Color.White);
+            //e.Graphics.Clear(Color.White);
             var sceneSize = _arenaPainter.ArenaSize;
             
             UpdateZoomScale();
             _logicalCenterPos = new PointF(sceneSize.Width / 2f, sceneSize.Height / 2f);
             
-            // var shift = GetShift();
-            
-            _arenaPainter.SetPlayer(_player);
-            _arenaPainter.SetMonster(_monsters);
-            // e.Graphics.ResetTransform();
-            // e.Graphics.TranslateTransform(shift.X, shift.Y);
-            // e.Graphics.ScaleTransform(_zoomScale, _zoomScale);
             _arenaPainter.Paint(e.Graphics);
             
             e.Graphics.ResetTransform();
-            _playerPainter.SetUpAndPaint(e.Graphics, _player);
+            _playerPainter.SetUpAndPaint(e.Graphics, _arenaMap.Player);
             _arenaPainter.Update();       
             
-            _monstersPainter.SetUpAndPaint(e.Graphics, _monsters);
+            _monstersPainter.SetUpAndPaint(e.Graphics, _arenaMap.Monsters);
         }
         
         private PointF GetShift()
@@ -220,6 +184,38 @@ namespace Cave_Adventure
             return new Point(
                 (int)(point.X * arenaFieldControl._zoomScale + shift.X),
                 (int)(point.Y * arenaFieldControl._zoomScale + shift.Y));
+        }
+        
+        public string PlayerInfoToString()
+        {
+            return ArenaMap == null ? "null" : 
+$@"Health: {Player.Health} |
+Attack: {Player.Attack} | Defense: {Player.Defense}
+Damage: {Player.Damage} | AP: {Player.AP}
+||DEBUG||
+Zoom: {_zoomScale} | ArenaLogPos: {_logicalCenterPos}
+Position: {Player.Position} | Target: {Player.TargetPoint}
+IsSelected: {Player.IsSelected} | IsMoving: {Player.IsMoving}
+State: {Player.CurrentStates} | PlayerSelected: {_arenaMap.PlayerSelected} 
+Monster: {MonsterPositionsToString()}
+";
+        }
+
+        private string MonsterPositionsToString()
+        {
+            var result = new StringBuilder();
+            var counter = 0;
+            foreach (var monster in _arenaMap.Monsters)
+            {
+                result.Append($"{monster.Position} ");
+                counter++;
+                if (counter == 3)
+                {
+                    result.Append("\n");
+                    counter = 0;
+                }
+            }
+            return result.ToString();
         }
     }
 }
