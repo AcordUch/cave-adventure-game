@@ -189,14 +189,14 @@ namespace Cave_Adventure
         public string PlayerInfoToString()
         {
             return ArenaMap == null ? "null" : 
-$@"Health: {Player.Health}
-Attack: {Player.Attack} Defense: {Player.Defense}
-Damage: {Player.Damage} AP: {Player.AP}
+$@"Health: {Player.Health} |
+Attack: {Player.Attack} | Defense: {Player.Defense}
+Damage: {Player.Damage} | AP: {Player.AP}
 ||DEBUG||
-Zoom: {_zoomScale} ArenaLogPos: {_logicalCenterPos}
-Position: {Player.Position} Target: {Player.TargetPoint}
-IsSelected: {Player.IsSelected} IsMoving: {Player.IsMoving}
-State: {Player.CurrentStates} PlayerSelected: {_arenaMap.PlayerSelected} 
+Zoom: {_zoomScale} | ArenaLogPos: {_logicalCenterPos}
+Position: {Player.Position} | Target: {Player.TargetPoint}
+IsSelected: {Player.IsSelected} | IsMoving: {Player.IsMoving}
+State: {Player.CurrentStates} | PlayerSelected: {_arenaMap.PlayerSelected} 
 Monster: {MonsterPositionsToString()}
 ";
         }
