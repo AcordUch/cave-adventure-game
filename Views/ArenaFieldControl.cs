@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Text;
 
 namespace Cave_Adventure
 {
@@ -183,6 +184,38 @@ namespace Cave_Adventure
             return new Point(
                 (int)(point.X * arenaFieldControl._zoomScale + shift.X),
                 (int)(point.Y * arenaFieldControl._zoomScale + shift.Y));
+        }
+        
+        public string PlayerInfoToString()
+        {
+            return ArenaMap == null ? "null" : 
+$@"Health: {Player.Health}
+Attack: {Player.Attack} Defense: {Player.Defense}
+Damage: {Player.Damage} AP: {Player.AP}
+||DEBUG||
+Zoom: {_zoomScale} ArenaLogPos: {_logicalCenterPos}
+Position: {Player.Position} Target: {Player.TargetPoint}
+IsSelected: {Player.IsSelected} IsMoving: {Player.IsMoving}
+State: {Player.CurrentStates} PlayerSelected: {_arenaMap.PlayerSelected} 
+Monster: {MonsterPositionsToString()}
+";
+        }
+
+        private string MonsterPositionsToString()
+        {
+            var result = new StringBuilder();
+            var counter = 0;
+            foreach (var monster in _arenaMap.Monsters)
+            {
+                result.Append($"{monster.Position} ");
+                counter++;
+                if (counter == 3)
+                {
+                    result.Append("\n");
+                    counter = 0;
+                }
+            }
+            return result.ToString();
         }
     }
 }

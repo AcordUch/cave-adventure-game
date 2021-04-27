@@ -34,6 +34,13 @@ namespace Cave_Adventure
             }
         }
 
+        public void NextTurn()
+        {
+            Player.ResetAP();
+            Player.IsSelected = false;
+            PlayerSelected = false;
+        }
+
         public async void MoveAlongThePath(Point targetPoint)
         {
             if (PlayerSelected)

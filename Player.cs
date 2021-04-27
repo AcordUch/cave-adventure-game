@@ -7,6 +7,7 @@ namespace Cave_Adventure
 {
     public class Player : IPlayer
     {
+        private const int DefaultAP = 3;
         private Point _position;
 
         public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
@@ -29,19 +30,25 @@ namespace Cave_Adventure
         public Player(Point position)
         {
             _position = position;
-            AP = 3;
+            AP = DefaultAP;
         }
         
         public void Move(int dx, int dy)
         {
             _position.X += dx;
             _position.Y += dy;
+            AP--;
             StopIfInTargetPoint();
         }
-        
+
         public void TeleportToPoint(Point point)
         {
             _position = point;
+        }
+
+        public void ResetAP()
+        {
+            AP = DefaultAP;
         }
 
         public Point GetDeltaPoint()
