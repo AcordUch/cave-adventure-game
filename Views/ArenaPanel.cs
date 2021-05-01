@@ -132,7 +132,6 @@ namespace Cave_Adventure
             {
                 FlowDirection = FlowDirection.LeftToRight,
                 Dock = DockStyle.Fill,
-                // Width = 150,
                 AutoSize = true,
                 BackColor = Color.Red,
                 Padding = new Padding(25, 10, 0, 0),
@@ -226,9 +225,11 @@ namespace Cave_Adventure
         {
             menuPanel.Controls.Add(new Label
             {
-                Text = "Choose arena:",
+                Text = "Выберете Арену:",
                 ForeColor = Color.Black,
+                TextAlign = ContentAlignment.MiddleLeft,
                 Size = new Size(350, 50),
+                AutoSize = true,
                 Margin = new Padding(0, 25, 0, 0)
             });
             
@@ -238,10 +239,11 @@ namespace Cave_Adventure
                 var level = levels[i];
                 var link = new LinkLabel
                 {
-                    Text = $"Arena {i + 1}",
+                    Text = $"Арена {i + 1}",
                     ActiveLinkColor = Color.LimeGreen,
                     TextAlign = ContentAlignment.MiddleCenter,
                     Size = new Size(100, 35),
+                    AutoSize = true,
                     Margin = new Padding(0, 20, 0, 5),
                     Tag = level
                 };

@@ -72,14 +72,19 @@ namespace Cave_Adventure
                 TextAlign = ContentAlignment.MiddleRight,
                 ForeColor = Color.Black,
                 Size = new Size(350, 50),
-                Margin = new Padding(30, 25, 0, 0)
+                AutoSize = true,
+                Margin = new Padding(30, 25, 0, 0),
+                Font = new Font(SystemFonts.DialogFont.FontFamily, 15)
             });
             
             var link = new LinkLabel
             {
                 Text = "Arenas",
                 TextAlign = ContentAlignment.MiddleCenter,
+                LinkColor = Color.Black,
+                ActiveLinkColor = Color.White,
                 Size = new Size(100, 35),
+                AutoSize = true,
                 Margin = new Padding(0, 20, 0, 5),
             };
             link.LinkClicked += _game.SwitchOnArenas;
