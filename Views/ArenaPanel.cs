@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Cave_Adventure.Interfaces;
 
 namespace Cave_Adventure
 {
-    public class ArenaPanel : Panel
+    public class ArenaPanel : Panel, IPanel
     {
         public readonly ArenaFieldControl ArenaFieldControl;
         private Label _infoLabel;
@@ -68,7 +69,6 @@ namespace Cave_Adventure
 
             _infoLabel.Size = new Size((int)(Width * 0.25), (int) (Height * 0.4));
             _infoLabel.Text = ArenaFieldControl.PlayerInfoToString();
-            //Invalidate();
         }
 
         private void ArenaFieldControl_ClickOnPoint(Point point, MouseEventArgs args)
@@ -146,8 +146,19 @@ namespace Cave_Adventure
                 TextAlign = ContentAlignment.MiddleCenter,
                 Dock = DockStyle.Fill,
                 Size = new Size(350, 50),
+                AutoSize = true
             };
             nextTurnButton.Click += ClickOnNextTurnButton;
+
+            var backToMenuButton = new Button()
+            {
+                Text = $"Назад в меню",
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Fill,
+                Size = new Size(350, 50),
+                AutoSize = true
+            };
+            backToMenuButton.Click += _game.SwitchOnMainMenu;
 
             var infoPanel = new FlowLayoutPanel()
             {
@@ -193,12 +204,14 @@ namespace Cave_Adventure
             thirdColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
             thirdColumnTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
             bottomTable.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-            bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
-            bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+            bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35));
+            bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35));
+            bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30));
             
             arenaLayoutPanel.Controls.Add(ArenaFieldControl);
-            bottomTable.Controls.Add(new Panel(){Dock = DockStyle.Fill,BackColor = Color.Black},0, 0);
-            bottomTable.Controls.Add(nextTurnButton,1, 0);
+            bottomTable.Controls.Add(backToMenuButton,0, 0);
+            bottomTable.Controls.Add(new Panel(){Dock = DockStyle.Fill,BackColor = Color.Black},1, 0);
+            bottomTable.Controls.Add(nextTurnButton,2, 0);
             secondColumnTable.Controls.Add(arenaLayoutPanel, 0, 0);
             secondColumnTable.Controls.Add(bottomTable, 0, 1);
             thirdColumnTable.Controls.Add(new Panel(){Dock = DockStyle.Fill,BackColor = Color.Black},0, 0);

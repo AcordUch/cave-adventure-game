@@ -26,8 +26,6 @@ namespace Cave_Adventure
         
         public ArenaForm()
         {
-            //InitializeComponent();
-            //var levels = LoadLevels().ToArray();
             _game = new Game();
             _game.ScreenChanged += OnScreenChange;
             
@@ -88,7 +86,6 @@ namespace Cave_Adventure
             HideScreens();
             _mainMenuPanel.Configure();
             _mainMenuPanel.Show();
-            //TODO
         }
 
         private void HideScreens()

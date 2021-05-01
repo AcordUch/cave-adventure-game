@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Cave_Adventure.Interfaces;
 
 namespace Cave_Adventure
 {
-    public class MainMenuPanel : Panel
+    public class MainMenuPanel : Panel, IPanel
     {
         private bool _configured = false;
         private readonly Game _game;
@@ -38,7 +39,6 @@ namespace Cave_Adventure
                 throw new InvalidOperationException();
             
             _configured = true;
-            
         }
 
         public void Drop()
@@ -82,10 +82,7 @@ namespace Cave_Adventure
                 Size = new Size(100, 35),
                 Margin = new Padding(0, 20, 0, 5),
             };
-            link.LinkClicked += (sender, args) =>
-            {
-                _game.SwitchOnArenas();
-            };
+            link.LinkClicked += _game.SwitchOnArenas;
             buttonMenu.Controls.Add(link);
         }
     }

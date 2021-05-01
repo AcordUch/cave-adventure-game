@@ -144,13 +144,12 @@ namespace Cave_Adventure
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            base.OnPaint(e);
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
             if (!_configured)
                 return;
-
-            //e.Graphics.Clear(Color.White);
+            
+            base.OnPaint(e);
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            
             var sceneSize = _arenaPainter.ArenaSize;
             
             UpdateZoomScale();
@@ -158,7 +157,6 @@ namespace Cave_Adventure
             
             _arenaPainter.Paint(e.Graphics);
             
-            //e.Graphics.ResetTransform();
             _playerPainter.SetUpAndPaint(e.Graphics, _arenaMap.Player);
             _arenaPainter.Update();       
             

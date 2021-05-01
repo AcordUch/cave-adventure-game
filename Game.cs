@@ -7,12 +7,12 @@ namespace Cave_Adventure
         public GameScreen Screen { get; private set; } = GameScreen.MainMenu;
         public event Action<GameScreen> ScreenChanged;
 
-        public void SwitchOnArenas()
+        public void SwitchOnArenas(object sender, EventArgs e)
         {
             ChangeStage(GameScreen.Arenas);
         }
 
-        public void SwitchOnMainMenu()
+        public void SwitchOnMainMenu(object sender, EventArgs e)
         {
             ChangeStage(GameScreen.MainMenu);
         }
