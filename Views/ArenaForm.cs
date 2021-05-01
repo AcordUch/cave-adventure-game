@@ -11,6 +11,7 @@ namespace Cave_Adventure
     {
         private readonly Timer _timer;
         private readonly ArenaPanel _arenaPanel;
+        private readonly MainMenuPanel _mainMenuPanel;
         private readonly Game _game;
 
         protected override void OnLoad(EventArgs e)
@@ -27,28 +28,35 @@ namespace Cave_Adventure
         {
             //InitializeComponent();
             //var levels = LoadLevels().ToArray();
+            _game = new Game();
+            _game.ScreenChanged += OnScreenChange;
             
             SuspendLayout();
             
-            _arenaPanel = new ArenaPanel()
+            _arenaPanel = new ArenaPanel(_game)
             {
                 Dock = DockStyle.Fill,
                 Size = new Size(800, 600),
                 Location = new Point(0, 0),
                 Name = "arenaPanel"
             };
+            _mainMenuPanel = new MainMenuPanel(_game)
+            {
+                Dock = DockStyle.Fill,
+                Size = new Size(800, 600),
+                Location = new Point(0, 0),
+                Name = "mainMenuPanel"
+            };
 
             Controls.Add(_arenaPanel);
+            Controls.Add(_mainMenuPanel);
             
             ResumeLayout();
 
             // KeyDown += _arenaPanel.ArenaFieldControl.OnKeyDown;
             // KeyUp += _arenaPanel.ArenaFieldControl.OnKeyUp;
-
-            _game = new Game();
-            _game.ScreenChanged += OnScreenChange;
             
-            ShowArenas();
+            ShowMainMenu();
             
             _timer = new Timer { Interval = 60 };
             _timer.Tick += TimerTick;
@@ -77,12 +85,23 @@ namespace Cave_Adventure
 
         private void ShowMainMenu()
         {
+            HideScreens();
+            _mainMenuPanel.Configure();
+            _mainMenuPanel.Show();
             //TODO
         }
 
         private void HideScreens()
         {
+            DropScreens();
             _arenaPanel.Hide();
+            _mainMenuPanel.Hide();
+        }
+
+        private void DropScreens()
+        {
+            _arenaPanel.Drop();
+            _mainMenuPanel.Drop();
         }
         
         private void TimerTick(object sender, EventArgs e)

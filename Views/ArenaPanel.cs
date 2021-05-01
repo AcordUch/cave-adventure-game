@@ -11,9 +11,12 @@ namespace Cave_Adventure
         public readonly ArenaFieldControl ArenaFieldControl;
         private Label _infoLabel;
         private ArenaMap[] _levels;
+        private bool _configured = false;
+        private readonly Game _game;
 
-        public ArenaPanel()
+        public ArenaPanel(Game game)
         {
+            _game = game;
             _levels = LoadLevels().ToArray();
             
             ArenaFieldControl = new ArenaFieldControl(_levels);
@@ -38,11 +41,24 @@ namespace Cave_Adventure
 
         public void Configure()
         {
+            if (_configured)
+                throw new InvalidOperationException();
+            
             ArenaFieldControl.Configure(_levels[0]);
+            _configured = true;
+        }
+
+        public void Drop()
+        {
+            _configured = false;
+            ArenaFieldControl.Drop();
         }
         
         public new void Update()
         {
+            if (!_configured)
+                return;
+            
             ArenaFieldControl.Update();
             
             //Вынести в метод OnSizeChange

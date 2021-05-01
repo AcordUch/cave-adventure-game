@@ -8,14 +8,21 @@ namespace Cave_Adventure
 {
     public class MainMenuPanel : Panel
     {
+        private bool _configured = false;
+        private readonly Game _game;
         
-        public MainMenuPanel()
+        public MainMenuPanel(Game game)
         {
+            _game = game;
+            
             var table = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
                 AutoSize = true
             };
+            ConfigureTable(table);
+            
+            Controls.Add(table);
         }
         
         protected override void InitLayout()
@@ -24,8 +31,22 @@ namespace Cave_Adventure
             ResizeRedraw = true;
             DoubleBuffered = true;
         }
+        
+        public void Configure()
+        {
+            if (_configured)
+                throw new InvalidOperationException();
+            
+            _configured = true;
+            
+        }
 
-        private void ConfigureTables(TableLayoutPanel table)
+        public void Drop()
+        {
+            _configured = false;
+        }
+
+        private void ConfigureTable(TableLayoutPanel table)
         {
             var buttonMenu = new FlowLayoutPanel
             {
@@ -38,18 +59,20 @@ namespace Cave_Adventure
             };
             SetUpButtonMenu(buttonMenu);
             
-            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80));
-            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 85));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15));
+            table.Controls.Add(buttonMenu, 1, 0);
         }
 
         private void SetUpButtonMenu(FlowLayoutPanel buttonMenu)
         {
             buttonMenu.Controls.Add(new Label
             {
-                Text = "Choose arena:",
+                Text = "Little TB Game",
+                TextAlign = ContentAlignment.MiddleRight,
                 ForeColor = Color.Black,
                 Size = new Size(350, 50),
-                Margin = new Padding(0, 25, 0, 0)
+                Margin = new Padding(30, 25, 0, 0)
             });
             
             var link = new LinkLabel
@@ -61,7 +84,7 @@ namespace Cave_Adventure
             };
             link.LinkClicked += (sender, args) =>
             {
-                //TODO
+                _game.SwitchOnArenas();
             };
             buttonMenu.Controls.Add(link);
         }

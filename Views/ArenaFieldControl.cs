@@ -55,6 +55,12 @@ namespace Cave_Adventure
             _configured = true;
         }
 
+        public void Drop()
+        {
+            _configured = false;
+            _arenaPainter.Drop();
+        }
+        
         public new void Update()
         {
             Invalidate();
