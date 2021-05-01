@@ -11,12 +11,13 @@ namespace Cave_Adventure
     {
         private readonly Timer _timer;
         private readonly ArenaPanel _arenaPanel;
+        private readonly Game _game;
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             DoubleBuffered = true;
-            Size = new Size(750, 450);
+            Size = new Size(800, 600);
             //WindowState = FormWindowState.Maximized;
             Text = "Здесь должны быть бои!";
             KeyPreview = true;
@@ -25,28 +26,63 @@ namespace Cave_Adventure
         public ArenaForm()
         {
             //InitializeComponent();
-            var levels = LoadLevels().ToArray();
+            //var levels = LoadLevels().ToArray();
             
-            _arenaPanel = new ArenaPanel(levels) {Dock = DockStyle.Fill};
-            _arenaPanel.Configure(levels[0]);
+            SuspendLayout();
+            
+            _arenaPanel = new ArenaPanel()
+            {
+                Dock = DockStyle.Fill,
+                Size = new Size(800, 600),
+                Location = new Point(0, 0),
+                Name = "arenaPanel"
+            };
 
             Controls.Add(_arenaPanel);
+            
+            ResumeLayout();
 
             // KeyDown += _arenaPanel.ArenaFieldControl.OnKeyDown;
             // KeyUp += _arenaPanel.ArenaFieldControl.OnKeyUp;
+
+            _game = new Game();
+            _game.ScreenChanged += OnScreenChange;
+            
+            ShowArenas();
             
             _timer = new Timer { Interval = 60 };
             _timer.Tick += TimerTick;
             _timer.Start();
         }
-
-        private static IEnumerable<ArenaMap> LoadLevels()
+        
+        private void OnScreenChange(GameScreen screen)
         {
-            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena1);
-            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena2);
-            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena3);
-            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena4);
-            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena5);
+            switch (screen)
+            {
+                case GameScreen.Arenas:
+                    ShowArenas();
+                    break;
+                case GameScreen.MainMenu:
+                    ShowMainMenu();
+                    break;
+            }
+        }
+
+        private void ShowArenas()
+        {
+            HideScreens();
+            _arenaPanel.Configure();
+            _arenaPanel.Show();
+        }
+
+        private void ShowMainMenu()
+        {
+            //TODO
+        }
+
+        private void HideScreens()
+        {
+            _arenaPanel.Hide();
         }
         
         private void TimerTick(object sender, EventArgs e)

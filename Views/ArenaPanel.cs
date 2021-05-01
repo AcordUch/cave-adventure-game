@@ -10,17 +10,20 @@ namespace Cave_Adventure
     {
         public readonly ArenaFieldControl ArenaFieldControl;
         private Label _infoLabel;
+        private ArenaMap[] _levels;
 
-        public ArenaPanel(ArenaMap[] levels)
+        public ArenaPanel()
         {
-            ArenaFieldControl = new ArenaFieldControl(levels);
+            _levels = LoadLevels().ToArray();
+            
+            ArenaFieldControl = new ArenaFieldControl(_levels);
 
-            var table = new TableLayoutPanel()
+            var table = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
                 AutoSize = true
             };
-            ConfigureTables(table, levels);
+            ConfigureTables(table, _levels);
             
             Controls.Add(table);
             ArenaFieldControl.ClickOnPoint += ArenaFieldControl_ClickOnPoint;
@@ -33,15 +36,16 @@ namespace Cave_Adventure
             DoubleBuffered = true;
         }
 
-        public void Configure(ArenaMap arenaMap)
+        public void Configure()
         {
-            ArenaFieldControl.Configure(arenaMap);
+            ArenaFieldControl.Configure(_levels[0]);
         }
         
         public new void Update()
         {
             ArenaFieldControl.Update();
             
+            //Вынести в метод OnSizeChange
             var zoom = GetZoomForController();
             ArenaFieldControl.Size =
                 new Size((int)(ArenaFieldControl.Width * zoom), (int)(ArenaFieldControl.Height * zoom));
@@ -93,6 +97,15 @@ namespace Cave_Adventure
         private void ClickOnNextTurnButton(object sender, EventArgs e)
         {
             ArenaFieldControl.ArenaMap.NextTurn();
+        }
+        
+        private static IEnumerable<ArenaMap> LoadLevels()
+        {
+            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena1);
+            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena2);
+            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena3);
+            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena4);
+            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena5);
         }
 
         #region Настройка Панелей

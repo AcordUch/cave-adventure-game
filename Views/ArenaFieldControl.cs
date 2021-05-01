@@ -152,7 +152,7 @@ namespace Cave_Adventure
             
             _arenaPainter.Paint(e.Graphics);
             
-            e.Graphics.ResetTransform();
+            //e.Graphics.ResetTransform();
             _playerPainter.SetUpAndPaint(e.Graphics, _arenaMap.Player);
             _arenaPainter.Update();       
             
