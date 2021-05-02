@@ -4,5 +4,8 @@
     <Compile Update="Views\ArenaPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="Views\MainMenuPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

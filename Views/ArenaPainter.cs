@@ -15,16 +15,16 @@ namespace Cave_Adventure
         private Bitmap _arenaImage;
         private Dictionary<Point, Rectangle> _pointToRectangle;
         private bool _configured = false;
-        public ArenaPainter(ArenaMap arena)
+        public ArenaPainter()
         {
-            _currentArena = arena;
         }
         
-        public void Configure(Dictionary<Point, Rectangle> pointToRectangle)
+        public void Configure(ArenaMap arena, Dictionary<Point, Rectangle> pointToRectangle)
         {
             if (_configured)
                 throw new InvalidOperationException();
 
+            _currentArena = arena;
             _pointToRectangle = pointToRectangle;
             CreateArena();
             _configured = true;
@@ -76,7 +76,7 @@ namespace Cave_Adventure
         public void ChangeLevel(ArenaMap newArena, Dictionary<Point, Rectangle> pointToRectangle)
         {
             if (!_configured)
-                return;
+                throw new InvalidOperationException();
             
             _currentArena = newArena;
             _pointToRectangle = pointToRectangle;
