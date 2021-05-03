@@ -43,12 +43,12 @@ namespace Cave_Adventure
         
         public event Action<Point, MouseEventArgs> ClickOnPoint;
 
-        public void Configure(ArenaMap arenaMap)
+        public void Configure(string arenaMap)
         {
             if (_configured)
                 throw new InvalidOperationException();
             
-            ArenaMap = arenaMap;
+            ArenaMap = ArenaMap.CreateNewArenaMap(arenaMap);
             _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
             ArenaPainter.Configure(ArenaMap, _pointToRectangle);
             _configured = true;
@@ -74,8 +74,7 @@ namespace Cave_Adventure
         
         public void ChangeLevel(string newMap)
         {
-            var newArena = Cave_Adventure.ArenaMap.CreateNewArenaMap(newMap);
-            ArenaMap = newArena;
+            ArenaMap = ArenaMap.CreateNewArenaMap(newMap);
             _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
             ArenaPainter.ChangeLevel(ArenaMap, _pointToRectangle);
             Invalidate();

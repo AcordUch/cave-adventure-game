@@ -9,9 +9,9 @@ namespace Cave_Adventure
 {
     public class ArenaPanel : Panel, IPanel
     {
-        public readonly ArenaFieldControl ArenaFieldControl;
+        private readonly ArenaFieldControl ArenaFieldControl;
         private Label _infoLabel;
-        private string[] _levels;
+        private readonly string[] _levels;
         private bool _configured = false;
         private readonly Game _game;
 
@@ -27,7 +27,7 @@ namespace Cave_Adventure
                 Dock = DockStyle.Fill,
                 AutoSize = true
             };
-            ConfigureTables(table, _levels);
+            ConfigureTables(table);
             
             Controls.Add(table);
             ArenaFieldControl.ClickOnPoint += ArenaFieldControl_ClickOnPoint;
@@ -45,7 +45,7 @@ namespace Cave_Adventure
             if (_configured)
                 throw new InvalidOperationException();
             
-            ArenaFieldControl.Configure(ArenaMap.CreateNewArenaMap(_levels[0]));
+            ArenaFieldControl.Configure(_levels[0]);
             _configured = true;
         }
 
@@ -135,7 +135,7 @@ namespace Cave_Adventure
 
         #region Настройка Панелей
         
-        private void ConfigureTables(TableLayoutPanel table, string[] levels)
+        private void ConfigureTables(TableLayoutPanel table)
         {
             var levelMenu = new FlowLayoutPanel
             {
@@ -146,7 +146,7 @@ namespace Cave_Adventure
                 Padding = new Padding(25, 10, 0, 0),
                 Font = new Font(SystemFonts.DialogFont.FontFamily, 12)
             };
-            SetUpLevelSwitch(levels, levelMenu);
+            SetUpLevelSwitch(levelMenu);
 
             var nextTurnButton = new Button()
             {
@@ -230,7 +230,7 @@ namespace Cave_Adventure
             table.Controls.Add(thirdColumnTable, 2, 0);
         }
         
-        private void SetUpLevelSwitch(string[] levels, Control menuPanel)
+        private void SetUpLevelSwitch(Control menuPanel)
         {
             menuPanel.Controls.Add(new Label
             {
@@ -243,10 +243,9 @@ namespace Cave_Adventure
             });
             
             var linkLabels = new List<LinkLabel>();
-            for (var i = 0; i < levels.Length; i++)
+            for (var i = 0; i < _levels.Length; i++)
             {
                 var arenaId = i;
-                //var level = ArenaMap.CreateNewArenaMap(levels[i]);
                 var link = new LinkLabel
                 {
                     Text = $"Арена {i + 1}",
@@ -255,17 +254,17 @@ namespace Cave_Adventure
                     Size = new Size(100, 35),
                     AutoSize = true,
                     Margin = new Padding(0, 20, 0, 5),
-                    Tag = levels[arenaId]
+                    Tag = _levels[arenaId]
                 };
                 link.LinkClicked += (sender, args) =>
                 {
-                    ArenaFieldControl.ChangeLevel(levels[arenaId]);
-                    UpdateLinksColors(levels[arenaId], linkLabels);
+                    ArenaFieldControl.ChangeLevel(_levels[arenaId]);
+                    UpdateLinksColors(_levels[arenaId], linkLabels);
                 };
                 menuPanel.Controls.Add(link);
                 linkLabels.Add(link);
             }
-            UpdateLinksColors(levels[0], linkLabels);
+            UpdateLinksColors(_levels[0], linkLabels);
         }
         
         private static void UpdateLinksColors(string level, List<LinkLabel> linkLabels)

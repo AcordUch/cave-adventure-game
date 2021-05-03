@@ -20,7 +20,7 @@ namespace Cave_Adventure
             DoubleBuffered = true;
             Size = new Size(800, 600);
             //WindowState = FormWindowState.Maximized;
-            Text = "Здесь должны быть бои!";
+            Text = "Заходит в бар улитка, говорит...";
             KeyPreview = true;
         }
         
@@ -31,13 +31,6 @@ namespace Cave_Adventure
             
             SuspendLayout();
             
-            _arenaPanel = new ArenaPanel(_game)
-            {
-                Dock = DockStyle.Fill,
-                Size = new Size(800, 600),
-                Location = new Point(0, 0),
-                Name = "arenaPanel"
-            };
             _mainMenuPanel = new MainMenuPanel(_game)
             {
                 Dock = DockStyle.Fill,
@@ -45,7 +38,14 @@ namespace Cave_Adventure
                 Location = new Point(0, 0),
                 Name = "mainMenuPanel"
             };
-
+            _arenaPanel = new ArenaPanel(_game)
+            {
+                Dock = DockStyle.Fill,
+                Size = new Size(800, 600),
+                Location = new Point(0, 0),
+                Name = "arenaPanel"
+            };
+            
             Controls.Add(_arenaPanel);
             Controls.Add(_mainMenuPanel);
             
