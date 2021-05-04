@@ -14,6 +14,8 @@ namespace Cave_Adventure
         public Monster[] Monsters { get; private set; }
         public bool PlayerSelected { get; set; }
         public SinglyLinkedList<Point>[] PlayerPaths { get; private set; }
+        
+        public int Step { get; private set; } = 1;
 
         public int Width => Arena.GetLength(0);
         public int Height => Arena.GetLength(1);
@@ -36,6 +38,7 @@ namespace Cave_Adventure
 
         public void NextTurn()
         {
+            Step += 1;
             Player.ResetAP();
             Player.IsSelected = false;
             PlayerSelected = false;

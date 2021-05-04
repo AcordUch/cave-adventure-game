@@ -6,8 +6,6 @@ using System.Windows.Forms;
 
 namespace Cave_Adventure
 {
-    //Это ветка development
-    //Пробный pull requests
     static class Program
     {
         /// <summary>

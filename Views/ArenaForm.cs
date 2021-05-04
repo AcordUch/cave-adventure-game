@@ -11,42 +11,94 @@ namespace Cave_Adventure
     {
         private readonly Timer _timer;
         private readonly ArenaPanel _arenaPanel;
+        private readonly MainMenuPanel _mainMenuPanel;
+        private readonly Game _game;
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             DoubleBuffered = true;
-            Size = new Size(750, 450);
+            Size = new Size(800, 600);
             //WindowState = FormWindowState.Maximized;
-            Text = "Здесь должны быть бои!";
+            Text = "Заходит в бар улитка, говорит...";
             KeyPreview = true;
         }
         
         public ArenaForm()
         {
-            //InitializeComponent();
-            var levels = LoadLevels().ToArray();
+            _game = new Game();
+            _game.ScreenChanged += OnScreenChange;
             
-            _arenaPanel = new ArenaPanel(levels) {Dock = DockStyle.Fill};
-            _arenaPanel.Configure(levels[0]);
-
+            SuspendLayout();
+            
+            _mainMenuPanel = new MainMenuPanel(_game)
+            {
+                Dock = DockStyle.Fill,
+                Size = new Size(800, 600),
+                Location = new Point(0, 0),
+                Name = "mainMenuPanel"
+            };
+            _arenaPanel = new ArenaPanel(_game)
+            {
+                Dock = DockStyle.Fill,
+                Size = new Size(800, 600),
+                Location = new Point(0, 0),
+                Name = "arenaPanel"
+            };
+            
             Controls.Add(_arenaPanel);
+            Controls.Add(_mainMenuPanel);
+            
+            ResumeLayout();
 
             // KeyDown += _arenaPanel.ArenaFieldControl.OnKeyDown;
             // KeyUp += _arenaPanel.ArenaFieldControl.OnKeyUp;
+            
+            ShowMainMenu();
             
             _timer = new Timer { Interval = 60 };
             _timer.Tick += TimerTick;
             _timer.Start();
         }
-
-        private static IEnumerable<ArenaMap> LoadLevels()
+        
+        private void OnScreenChange(GameScreen screen)
         {
-            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena1);
-            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena2);
-            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena3);
-            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena4);
-            yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena5);
+            switch (screen)
+            {
+                case GameScreen.Arenas:
+                    ShowArenas();
+                    break;
+                case GameScreen.MainMenu:
+                    ShowMainMenu();
+                    break;
+            }
+        }
+
+        private void ShowArenas()
+        {
+            HideScreens();
+            _arenaPanel.Configure();
+            _arenaPanel.Show();
+        }
+
+        private void ShowMainMenu()
+        {
+            HideScreens();
+            _mainMenuPanel.Configure();
+            _mainMenuPanel.Show();
+        }
+
+        private void HideScreens()
+        {
+            DropScreens();
+            _arenaPanel.Hide();
+            _mainMenuPanel.Hide();
+        }
+
+        private void DropScreens()
+        {
+            _arenaPanel.Drop();
+            _mainMenuPanel.Drop();
         }
         
         private void TimerTick(object sender, EventArgs e)
