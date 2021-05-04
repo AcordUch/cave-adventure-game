@@ -192,7 +192,7 @@ namespace Cave_Adventure
         public string PlayerInfoToString()
         {
             return ArenaMap == null ? "null" : 
-$@"Health: {Player.Health} |
+$@"Health: {Player.Health} | Step: {ArenaMap.Step}
 Attack: {Player.Attack} | Defense: {Player.Defense}
 Damage: {Player.Damage} | AP: {Player.AP}
 ||DEBUG||
