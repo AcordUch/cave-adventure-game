@@ -13,29 +13,28 @@ namespace Cave_Adventure
         private const int ShiftFromUpAndDownBorder = 10;
         private const int CellWidth = GlobalConst.AssetsSize;
         private const int CellHeight = GlobalConst.AssetsSize;
-        
-        private readonly ArenaPainter _arenaPainter;
+
         private readonly PlayerPainter _playerPainter;
         private readonly MonstersPainter _monstersPainter;
         private int _zoomScale;
         private PointF _logicalCenterPos;
-        private ArenaMap _arenaMap;
         private bool _configured = false;
         private Dictionary<Point, Rectangle> _pointToRectangle;
 
-        public Player Player => _arenaMap.Player;
+        public int ArenaId { get; set; }
+        public ArenaMap ArenaMap { get; private set; }
+        public ArenaPainter ArenaPainter { get; }
+        
+        public Player Player => ArenaMap.Player;
 
-        public Monster[] Monsters => _arenaMap.Monsters;
+        public Monster[] Monsters => ArenaMap.Monsters;
+        
 
-        public ArenaPainter ArenaPainter => _arenaPainter;
-
-        public ArenaMap ArenaMap => _arenaMap;
-
-        public ArenaFieldControl(ArenaMap[] levels)
+        public ArenaFieldControl()
         {
             InitializeComponent();
             DoubleBuffered = true;
-            _arenaPainter = new ArenaPainter(levels[0]);
+            ArenaPainter = new ArenaPainter();
             _playerPainter = new PlayerPainter();
             _monstersPainter = new MonstersPainter();
 
@@ -44,17 +43,23 @@ namespace Cave_Adventure
         
         public event Action<Point, MouseEventArgs> ClickOnPoint;
 
-        public void Configure(ArenaMap arenaMap)
+        public void Configure(string arenaMap)
         {
             if (_configured)
                 throw new InvalidOperationException();
             
-            _arenaMap = arenaMap;
-            _pointToRectangle = GeneratePointToRectangle(this, _arenaMap);
-            _arenaPainter.Configure(_pointToRectangle);
+            ArenaMap = ArenaMap.CreateNewArenaMap(arenaMap);
+            _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
+            ArenaPainter.Configure(ArenaMap, _pointToRectangle);
             _configured = true;
         }
 
+        public void Drop()
+        {
+            _configured = false;
+            ArenaPainter.Drop();
+        }
+        
         public new void Update()
         {
             Invalidate();
@@ -67,11 +72,11 @@ namespace Cave_Adventure
             DoubleBuffered = true;
         }
         
-        public void ChangeLevel(ArenaMap newMap)
+        public void ChangeLevel(string newMap)
         {
-            _arenaMap = newMap;
-            _pointToRectangle = GeneratePointToRectangle(this, _arenaMap);
-            _arenaPainter.ChangeLevel(newMap, _pointToRectangle);
+            ArenaMap = ArenaMap.CreateNewArenaMap(newMap);
+            _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
+            ArenaPainter.ChangeLevel(ArenaMap, _pointToRectangle);
             Invalidate();
         }
 
@@ -138,25 +143,23 @@ namespace Cave_Adventure
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            base.OnPaint(e);
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
             if (!_configured)
                 return;
-
-            //e.Graphics.Clear(Color.White);
-            var sceneSize = _arenaPainter.ArenaSize;
+            
+            base.OnPaint(e);
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            
+            var sceneSize = ArenaPainter.ArenaSize;
             
             UpdateZoomScale();
             _logicalCenterPos = new PointF(sceneSize.Width / 2f, sceneSize.Height / 2f);
             
-            _arenaPainter.Paint(e.Graphics);
+            ArenaPainter.Paint(e.Graphics);
             
-            e.Graphics.ResetTransform();
-            _playerPainter.SetUpAndPaint(e.Graphics, _arenaMap.Player);
-            _arenaPainter.Update();       
+            _playerPainter.SetUpAndPaint(e.Graphics, ArenaMap.Player);
+            ArenaPainter.Update();       
             
-            _monstersPainter.SetUpAndPaint(e.Graphics, _arenaMap.Monsters);
+            _monstersPainter.SetUpAndPaint(e.Graphics, ArenaMap.Monsters);
         }
         
         private PointF GetShift()
@@ -167,7 +170,7 @@ namespace Cave_Adventure
         
         private void UpdateZoomScale()
         {
-            _zoomScale = ClientSize.Height / _arenaPainter.ArenaSize.Height - ShiftFromUpAndDownBorder;
+            _zoomScale = ClientSize.Height / ArenaPainter.ArenaSize.Height - ShiftFromUpAndDownBorder;
         }
         
         private static PointF ToLogical(ArenaFieldControl arenaFieldControl, Point point)
@@ -189,14 +192,14 @@ namespace Cave_Adventure
         public string PlayerInfoToString()
         {
             return ArenaMap == null ? "null" : 
-$@"Health: {Player.Health} |
+$@"Health: {Player.Health} | Step: {ArenaMap.Step}
 Attack: {Player.Attack} | Defense: {Player.Defense}
 Damage: {Player.Damage} | AP: {Player.AP}
 ||DEBUG||
 Zoom: {_zoomScale} | ArenaLogPos: {_logicalCenterPos}
 Position: {Player.Position} | Target: {Player.TargetPoint}
 IsSelected: {Player.IsSelected} | IsMoving: {Player.IsMoving}
-State: {Player.CurrentStates} | PlayerSelected: {_arenaMap.PlayerSelected} 
+State: {Player.CurrentStates} | PlayerSelected: {ArenaMap.PlayerSelected} 
 Monster: {MonsterPositionsToString()}
 ";
         }
@@ -205,7 +208,7 @@ Monster: {MonsterPositionsToString()}
         {
             var result = new StringBuilder();
             var counter = 0;
-            foreach (var monster in _arenaMap.Monsters)
+            foreach (var monster in ArenaMap.Monsters)
             {
                 result.Append($"{monster.Position} ");
                 counter++;

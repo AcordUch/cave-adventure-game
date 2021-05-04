@@ -14,20 +14,25 @@ namespace Cave_Adventure
         private ArenaMap _currentArena;
         private Bitmap _arenaImage;
         private Dictionary<Point, Rectangle> _pointToRectangle;
-        private bool _configured;
-        public ArenaPainter(ArenaMap arena)
+        private bool _configured = false;
+        public ArenaPainter()
         {
-            _currentArena = arena;
         }
         
-        public void Configure(Dictionary<Point, Rectangle> pointToRectangle)
+        public void Configure(ArenaMap arena, Dictionary<Point, Rectangle> pointToRectangle)
         {
             if (_configured)
                 throw new InvalidOperationException();
 
+            _currentArena = arena;
             _pointToRectangle = pointToRectangle;
             CreateArena();
             _configured = true;
+        }
+
+        public void Drop()
+        {
+            _configured = false;
         }
         
         public void Paint(Graphics graphics)
@@ -49,18 +54,6 @@ namespace Cave_Adventure
                         Brushes.Black, new Point(monster.Position.X * CellWidth,
                                                     monster.Position.Y * CellHeight));
                 }
-                // if(!_player.IsSelected)
-                // {
-                //     graphics.DrawString("P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
-                //         Brushes.Black, new Point(_player.Position.X * CellWidth,
-                //             _player.Position.Y * CellHeight));
-                // }
-                // else
-                // {
-                //     graphics.DrawString("P!", new Font(SystemFonts.DefaultFont.FontFamily, 32),
-                //         Brushes.Black, new Point(_player.Position.X * CellWidth,
-                //             _player.Position.Y * CellHeight));
-                // }
                 graphics.DrawString(_currentArena.Player.IsSelected ? "P!" : "P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
                     Brushes.Black, new Point(_currentArena.Player.Position.X * CellWidth,
                         _currentArena.Player.Position.Y * CellHeight));
@@ -82,6 +75,9 @@ namespace Cave_Adventure
         
         public void ChangeLevel(ArenaMap newArena, Dictionary<Point, Rectangle> pointToRectangle)
         {
+            if (!_configured)
+                throw new InvalidOperationException();
+            
             _currentArena = newArena;
             _pointToRectangle = pointToRectangle;
             CreateArena();
