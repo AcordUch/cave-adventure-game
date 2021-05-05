@@ -24,15 +24,16 @@ namespace Cave_Adventure
                     monster.Position.Y * GlobalConst.AssetsSize);
             _mirroring = (int)monster.ViewDirection;
             _currentAnimation = (int)monster.CurrentStates;
-            SetFrameLimit(monster.CurrentStates);
             Image monsterImage = _snake;
             switch (monster.Tag)
             {
                 case MonsterType.Snake:
                     monsterImage = _snake;
+                    SetFrameLimitSnake(monster.CurrentStates);
                     break;
                 case MonsterType.Spider:
                     monsterImage = _spider;
+                    SetFrameLimitSpider(monster.CurrentStates);
                     break;
             }
             PlayAnimation(graphics, monsterPosition, monsterImage);
@@ -60,21 +61,40 @@ namespace Cave_Adventure
                 );
         }
 
-        private void SetFrameLimit(StatesOfAnimation currentAnimation)
+        private void SetFrameLimitSpider(StatesOfAnimation currentAnimation)
         {
             switch (currentAnimation)
             {
                 case StatesOfAnimation.Idle:
-                    _currentFrameLimit = AmountHeroFrames.IdleFrames;
+                    _currentFrameLimit = AmountSpiderFrames.IdleFrames;
                     break;
                 case StatesOfAnimation.Run:
-                    _currentFrameLimit = AmountHeroFrames.RunFrames;
+                    _currentFrameLimit = AmountSpiderFrames.RunFrames;
                     break;
                 case StatesOfAnimation.Attack:
-                    _currentFrameLimit = AmountHeroFrames.AttackFrames;
+                    _currentFrameLimit = AmountSpiderFrames.AttackFrames;
                     break;
                 case StatesOfAnimation.Death:
-                    _currentFrameLimit = AmountHeroFrames.DeathFrames;
+                    _currentFrameLimit = AmountSpiderFrames.DeathFrames;
+                    break;
+            }
+        }
+        
+        private void SetFrameLimitSnake(StatesOfAnimation currentAnimation)
+        {
+            switch (currentAnimation)
+            {
+                case StatesOfAnimation.Idle:
+                    _currentFrameLimit = AmountSnakeFrames.IdleFrames;
+                    break;
+                case StatesOfAnimation.Run:
+                    _currentFrameLimit = AmountSnakeFrames.RunFrames;
+                    break;
+                case StatesOfAnimation.Attack:
+                    _currentFrameLimit = AmountSnakeFrames.AttackFrames;
+                    break;
+                case StatesOfAnimation.Death:
+                    _currentFrameLimit = AmountSnakeFrames.DeathFrames;
                     break;
             }
         }
