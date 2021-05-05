@@ -10,7 +10,7 @@ namespace Cave_Adventure
     class MonstersPainter
     {
         private readonly Image _spider = Properties.Resources.Spider;
-        private readonly Image _cobra = Properties.Resources.Cobra;
+        private readonly Image _snake = Properties.Resources.Cobra;
         private const int ImageSize = 32;
 
         private int _mirroring = 1;
@@ -30,7 +30,7 @@ namespace Cave_Adventure
                 if (i == 0)
                     PlayAnimation(graphics, monsterPosition, _spider);
                 else
-                    PlayAnimation(graphics, monsterPosition, _cobra);
+                    PlayAnimation(graphics, monsterPosition, _snake);
             }
         }
 

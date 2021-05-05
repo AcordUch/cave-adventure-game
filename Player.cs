@@ -74,8 +74,8 @@ namespace Cave_Adventure
                 SetAnimation(StatesOfAnimation.Run);
             }
         }
-        
-        public void SetAnimation(StatesOfAnimation currentAnimation)
+
+        private void SetAnimation(StatesOfAnimation currentAnimation)
         {
             CurrentStates = currentAnimation;
         }
