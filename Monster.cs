@@ -7,9 +7,7 @@ namespace Cave_Adventure
     public class Monster: IMonster
     {
         private Point _position;
-        private int _dX;
-        private int _dY;
-
+        
         public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
         public ViewDirection ViewDirection { get; set; } = ViewDirection.Right;
         public MonsterType Tag { get; set; }
@@ -34,6 +32,11 @@ namespace Cave_Adventure
             AP = 2;
         }
         
+        public virtual void Attacking()
+        {
+        }
+
+        #region Moving
         public void Move(int dx, int dy)
         {
             _position.X += dx;
@@ -75,7 +78,8 @@ namespace Cave_Adventure
                 SetAnimation(StatesOfAnimation.Run);
             }
         }
-
+        #endregion
+        
         private void SetAnimation(StatesOfAnimation currentAnimation)
         {
             CurrentStates = currentAnimation;

@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System;
 using System.Drawing;
+using System.Linq;
 
 namespace Cave_Adventure
 {
@@ -21,13 +22,13 @@ namespace Cave_Adventure
             {
                 "P .  .  .",
                 "  .  .  .",
-                "  .  .M ."
+                "  .  .Sn."
             };
             var expected = new[,]
             {
                 {"P ", "  ", "  "},
                 {"  ", "  ", "  "},
-                {"  ", "  ", "M "},
+                {"  ", "  ", "Sn"},
             };
             AssertsArena(ArenaParser.PublicGetterForTestsDaYaDurakChtoTakDelau(TextArena), expected);
         }
@@ -88,7 +89,7 @@ namespace Cave_Adventure
         {
             var textArena = new string[0];
             AssertsArena(ArenaParser.ParsingMap(textArena), new CellType[0,0],
-                new Point[0], Point.Empty);
+                new Point[0], new Point().NegativePoint());
         }
 
         [Test]
@@ -105,7 +106,7 @@ namespace Cave_Adventure
                 {CellType.Floor, CellType.Floor}
             };
             AssertsArena(ArenaParser.ParsingMap(textArena), expectedArena,
-                new Point[0], Point.Empty);
+                new Point[0], new Point().NegativePoint());
         }
 
         [Test]
@@ -134,8 +135,10 @@ namespace Cave_Adventure
             {
                 "  .P .  .",
                 "  .  .  .",
-                "M .M .M ."
+                "Sn.Sp.Sn."
             };
+            var actualArena = ArenaParser.ParsingMap(textArena);
+            var actualMonstersType = actualArena.monsters.Select(m => m.Tag).ToArray();
             
             var expectedArena = new[,]
             {
@@ -143,13 +146,18 @@ namespace Cave_Adventure
                 {CellType.Floor, CellType.Floor, CellType.Floor},
                 {CellType.Floor, CellType.Floor, CellType.Floor}
             };
-            var expectedMonsters = new[]
+            var expectedMonstersPosition = new[]
             {
                 new Point(0, 2), new Point(1, 2), new Point(2, 2)
             };
+            var expectedMonstersType = new[]
+            {
+                MonsterType.Snake, MonsterType.Spider, MonsterType.Snake
+            };
                 
-            AssertsArena(ArenaParser.ParsingMap(textArena), expectedArena,
-                expectedMonsters, new Point(1, 0));
+            AssertsArena(actualArena, expectedArena,
+                expectedMonstersPosition, new Point(1, 0));
+            AssertMonstersType(actualMonstersType, expectedMonstersType);
         }
         
         [Test]
@@ -200,9 +208,11 @@ namespace Cave_Adventure
             {
                 "# .P .# .# .",
                 "# .  .  .  .",
-                "# .M .  .M .",
+                "# .Sn.  .Sn.",
                 "  .  .  .  ."
             };
+            var actualArena = ArenaParser.ParsingMap(textArena);
+            var actualMonstersType = actualArena.monsters.Select(m => m.Tag).ToArray();
             
             var expectedArena = new[,]
             {
@@ -215,9 +225,14 @@ namespace Cave_Adventure
             {
                 new Point(1, 2), new Point(3, 2)
             };
+            var expectedMonstersType = new[]
+            {
+                MonsterType.Snake, MonsterType.Snake
+            };
                 
-            AssertsArena(ArenaParser.ParsingMap(textArena), expectedArena,
+            AssertsArena(actualArena, expectedArena,
                 expectedMonsters, new Point(1, 0));
+            AssertMonstersType(actualMonstersType, expectedMonstersType);
         }
         
         [Test]
@@ -226,7 +241,9 @@ namespace Cave_Adventure
             var textArena =
 @"# .P .  .
 # .  .  .
-# .# .M .";
+# .# .Sp.";
+            var actualArena = ArenaParser.ParsingMap(textArena);
+            var actualMonstersType = actualArena.monsters.Select(m => m.Tag).ToArray();
 
             var expectedArena = new[,]
             {
@@ -234,17 +251,22 @@ namespace Cave_Adventure
                 {CellType.Wall, CellType.Floor, CellType.Floor},
                 {CellType.Wall, CellType.Wall, CellType.Floor}
             };
+            var expectedMonstersType = new[]
+            {
+                MonsterType.Spider
+            };
             
-            AssertsArena(ArenaParser.ParsingMap(textArena), expectedArena,
+            AssertsArena(actualArena, expectedArena,
                 new []{new Point(2, 2)}, new Point(1, 0));
+            AssertMonstersType(actualMonstersType, expectedMonstersType);
         }
 
-        private static void AssertsArena((CellType[,] arenaMap, Point playerPosition, Point[] monsters) arena,
+        private static void AssertsArena((CellType[,] arenaMap, Player player, Monster[] monsters) arena,
             CellType[,] expectedArena, Point[] expextedMonsters, Point player)
         {
             Assert.AreEqual(expectedArena.Length, arena.arenaMap.Length, "Размеры не совпадают с ожидаемыми");
-            Assert.AreEqual(expextedMonsters, arena.monsters, "Расположение монстров не совпадает с ожидаемым");
-            Assert.AreEqual(player, arena.playerPosition, "Расположение игрока не совпадает с ожидаемым");
+            Assert.AreEqual(expextedMonsters, arena.monsters.Select(m => m.Position), "Расположение монстров не совпадает с ожидаемым");
+            Assert.AreEqual(player, arena.player.Position, "Расположение игрока не совпадает с ожидаемым");
             for (int y = 0; y < expectedArena.GetLength(0); y++)
             for (int x = 0; x < expectedArena.GetLength(1); x++)
             {
@@ -252,6 +274,12 @@ namespace Cave_Adventure
             }
             //Примечание: На выходе мы как бы получаем транспонированную матрицу
             //То есть: Раньше по первому измерению хранились строки(y), после хранятся стобцы(x)
+        }
+
+        private static void AssertMonstersType(MonsterType[] actualMonsters, MonsterType[] expextedMonsters)
+        {
+            Assert.AreEqual(expextedMonsters.Length, actualMonsters.Length, "Количество монстров не совпадает с ожидаемым");
+            Assert.AreEqual(expextedMonsters, actualMonsters, "Содержимое массивов монстров разное");
         }
     }
 }
