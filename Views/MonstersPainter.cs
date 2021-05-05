@@ -18,20 +18,24 @@ namespace Cave_Adventure
         private int _currentFrame = 0;
         private int _currentFrameLimit = 0;
 
-        public void SetUpAndPaint(Graphics graphics, Monster[] monsters)
+        public void SetUpAndPaint(Graphics graphics, Monster monster)
         {
-            for (var i = 0; i < monsters.Length; i++)
+            var monsterPosition = new Point(monster.Position.X * GlobalConst.AssetsSize,
+                    monster.Position.Y * GlobalConst.AssetsSize);
+            _mirroring = (int)monster.ViewDirection;
+            _currentAnimation = (int)monster.CurrentStates;
+            SetFrameLimit(monster.CurrentStates);
+            Image monsterImage = _snake;
+            switch (monster.Tag)
             {
-                var monsterPosition = new Point(monsters[i].Position.X * GlobalConst.AssetsSize,
-                    monsters[i].Position.Y * GlobalConst.AssetsSize);
-                _mirroring = (int)monsters[i].ViewDirection;
-                _currentAnimation = (int)monsters[i].CurrentStates;
-                SetFrameLimit(monsters[i].CurrentStates);
-                if (i == 0)
-                    PlayAnimation(graphics, monsterPosition, _spider);
-                else
-                    PlayAnimation(graphics, monsterPosition, _snake);
+                case MonsterType.Snake:
+                    monsterImage = _snake;
+                    break;
+                case MonsterType.Spider:
+                    monsterImage = _spider;
+                    break;
             }
+            PlayAnimation(graphics, monsterPosition, monsterImage);
         }
 
         private void PlayAnimation(Graphics graphics, Point monsterPosition, Image image)

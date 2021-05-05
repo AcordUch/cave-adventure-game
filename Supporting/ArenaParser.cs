@@ -7,7 +7,7 @@ namespace Cave_Adventure
 {
     public class ArenaParser
     {
-        private static Dictionary<string, Func<Point, Monster>> _stringCodeToEntity =
+        private static readonly Dictionary<string, Func<Point, Monster>> StringCodeToEntity =
             new()
             {
                 ["Sp"] = point => new Spider(point){ Tag = MonsterType.Spider },
@@ -45,7 +45,7 @@ namespace Cave_Adventure
                     case "Sp":
                     case "Sn":
                         arena[x, y] = CellType.Floor;
-                        monsters.Add(_stringCodeToEntity[cell].Invoke(new Point(x, y)));
+                        monsters.Add(StringCodeToEntity[cell].Invoke(new Point(x, y)));
                         break;
                     default:
                         throw new ArgumentException("Неизвестный тип клетки");

@@ -50,11 +50,21 @@ namespace Cave_Adventure
             {
                 foreach (var monster in _currentArena.Monsters)
                 {
-                    graphics.DrawString("M", new Font(SystemFonts.DefaultFont.FontFamily, 32),
+                    var label = "";
+                    switch (monster.Tag)
+                    {
+                        case MonsterType.Snake:
+                            label = "Sn";
+                            break;
+                        case MonsterType.Spider:
+                            label = "Sp";
+                            break;
+                    }
+                    graphics.DrawString(label, new Font(SystemFonts.DefaultFont.FontFamily, 22),
                         Brushes.Black, new Point(monster.Position.X * CellWidth,
-                                                    monster.Position.Y * CellHeight));
+                            monster.Position.Y * CellHeight));
                 }
-                graphics.DrawString(_currentArena.Player.IsSelected ? "P!" : "P", new Font(SystemFonts.DefaultFont.FontFamily, 32),
+                graphics.DrawString(_currentArena.Player.IsSelected ? "P!" : "P", new Font(SystemFonts.DefaultFont.FontFamily, 30),
                     Brushes.Black, new Point(_currentArena.Player.Position.X * CellWidth,
                         _currentArena.Player.Position.Y * CellHeight));
             }
