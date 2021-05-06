@@ -5,13 +5,14 @@ using System.Linq;
 
 namespace Cave_Adventure
 {
-    public class Player : IPlayer
+    public class Player : IEntity
     {
         private const int DefaultAP = 3;
         private Point _position;
 
         public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
         public ViewDirection ViewDirection { get; set; } = ViewDirection.Right;
+        public EntityType Tag { get; } = EntityType.Player;
         public bool IsSelected { get; set; }
         public bool IsMoving { get; private set; }
         public Point TargetPoint { get; private set; }

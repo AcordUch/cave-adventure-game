@@ -152,7 +152,7 @@ namespace Cave_Adventure
             };
             var expectedMonstersType = new[]
             {
-                MonsterType.Snake, MonsterType.Spider, MonsterType.Snake
+                EntityType.Snake, EntityType.Spider, EntityType.Snake
             };
                 
             AssertsArena(actualArena, expectedArena,
@@ -227,7 +227,7 @@ namespace Cave_Adventure
             };
             var expectedMonstersType = new[]
             {
-                MonsterType.Snake, MonsterType.Snake
+                EntityType.Snake, EntityType.Snake
             };
                 
             AssertsArena(actualArena, expectedArena,
@@ -253,7 +253,7 @@ namespace Cave_Adventure
             };
             var expectedMonstersType = new[]
             {
-                MonsterType.Spider
+                EntityType.Spider
             };
             
             AssertsArena(actualArena, expectedArena,
@@ -276,7 +276,7 @@ namespace Cave_Adventure
             //То есть: Раньше по первому измерению хранились строки(y), после хранятся стобцы(x)
         }
 
-        private static void AssertMonstersType(MonsterType[] actualMonsters, MonsterType[] expextedMonsters)
+        private static void AssertMonstersType(EntityType[] actualMonsters, EntityType[] expextedMonsters)
         {
             Assert.AreEqual(expextedMonsters.Length, actualMonsters.Length, "Количество монстров не совпадает с ожидаемым");
             Assert.AreEqual(expextedMonsters, actualMonsters, "Содержимое массивов монстров разное");

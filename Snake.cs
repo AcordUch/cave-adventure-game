@@ -4,7 +4,7 @@ namespace Cave_Adventure
 {
     public class Snake: Monster
     {
-        public Snake(Point position) : base(position)
+        public Snake(Point position, EntityType tag) : base(position, tag)
         {
         }
 

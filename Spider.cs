@@ -4,7 +4,7 @@ namespace Cave_Adventure
 {
     public class Spider : Monster
     {
-        public Spider(Point position) : base(position)
+        public Spider(Point position, EntityType tag) : base(position, tag)
         {
         }
 

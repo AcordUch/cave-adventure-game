@@ -7,6 +7,7 @@ namespace Cave_Adventure
         Point Position { get; set; }
         StatesOfAnimation CurrentStates { get; }
         ViewDirection ViewDirection { get; set; }
+        EntityType Tag { get; }
         bool IsMoving { get; }
         bool IsSelected { get; set; }
         Point TargetPoint { get; }

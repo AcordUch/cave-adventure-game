@@ -4,13 +4,13 @@ using System.Drawing;
 
 namespace Cave_Adventure
 {
-    public class Monster: IMonster
+    public class Monster: IEntity
     {
         private Point _position;
         
         public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
         public ViewDirection ViewDirection { get; set; } = ViewDirection.Right;
-        public MonsterType Tag { get; set; }
+        public EntityType Tag { get; }
         public bool IsMoving { get; private set; }
         public bool IsSelected { get; set; }
         public Point TargetPoint { get; private set; }
@@ -26,8 +26,9 @@ namespace Cave_Adventure
             set => _position = value;
         }
 
-        public Monster(Point position)
+        public Monster(Point position, EntityType tag)
         {
+            Tag = tag;
             _position = position;
             AP = 2;
         }
