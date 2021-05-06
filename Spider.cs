@@ -12,5 +12,10 @@ namespace Cave_Adventure
         {
             base.Attacking();
         }
+
+        public override void ResetAP()
+        {
+            AP = GlobalConst.SpiderAP;
+        }
     }
 }
