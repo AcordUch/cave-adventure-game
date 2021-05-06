@@ -7,5 +7,10 @@ namespace Cave_Adventure
         public Player(Point position) : base(position, EntityType.Player)
         {
         }
+
+        public override void ResetAP()
+        {
+            AP = GlobalConst.PlayerAP;
+        }
     }
 }
