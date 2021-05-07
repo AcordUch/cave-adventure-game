@@ -37,7 +37,7 @@ namespace Cave_Adventure
         {
             var textArena =
 @"# .P .
-# .M .";
+# .Sn.";
             var arena = ArenaMap.CreateNewArenaMap(textArena);
             var paths = GetPaths(arena, 3);
             Assert.IsEmpty(paths);
@@ -48,7 +48,7 @@ namespace Cave_Adventure
         {
             var textArena =
 @"# .P .
-  .M .";
+  .Sn.";
             var arena = ArenaMap.CreateNewArenaMap(textArena);
             var paths = GetPaths(arena, 3);
             // AssertPaths(paths, arena, new []{2});
@@ -84,7 +84,7 @@ namespace Cave_Adventure
         {
             var textArena =
 @"P .  .  .
-# .M .# .
+# .Sn.# .
 # .  .# .";
             var arena = ArenaMap.CreateNewArenaMap(textArena);
             var paths = GetPaths(arena, 2);

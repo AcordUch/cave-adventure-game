@@ -131,6 +131,7 @@ namespace Cave_Adventure
             yield return Properties.Resources.Arena3;
             yield return Properties.Resources.Arena4;
             yield return Properties.Resources.Arena5;
+            yield return Properties.Resources.Arena6;
         }
 
         #region Настройка Панелей

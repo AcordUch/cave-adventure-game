@@ -10,7 +10,7 @@ namespace Cave_Adventure
     class MonstersPainter
     {
         private readonly Image _spider = Properties.Resources.Spider;
-        private readonly Image _cobra = Properties.Resources.Cobra;
+        private readonly Image _snake = Properties.Resources.Cobra;
         private const int ImageSize = 32;
 
         private int _mirroring = 1;
@@ -18,20 +18,25 @@ namespace Cave_Adventure
         private int _currentFrame = 0;
         private int _currentFrameLimit = 0;
 
-        public void SetUpAndPaint(Graphics graphics, Monster[] monsters)
+        public void SetUpAndPaint(Graphics graphics, Monster monster)
         {
-            for (var i = 0; i < monsters.Length; i++)
+            var monsterPosition = new Point(monster.Position.X * GlobalConst.AssetsSize,
+                    monster.Position.Y * GlobalConst.AssetsSize);
+            _mirroring = (int)monster.ViewDirection;
+            _currentAnimation = (int)monster.CurrentStates;
+            Image monsterImage = _snake;
+            switch (monster.Tag)
             {
-                var monsterPosition = new Point(monsters[i].Position.X * GlobalConst.AssetsSize,
-                    monsters[i].Position.Y * GlobalConst.AssetsSize);
-                _mirroring = (int)monsters[i].ViewDirection;
-                _currentAnimation = (int)monsters[i].CurrentStates;
-                SetFrameLimit(monsters[i].CurrentStates);
-                if (i == 0)
-                    PlayAnimation(graphics, monsterPosition, _spider);
-                else
-                    PlayAnimation(graphics, monsterPosition, _cobra);
+                case EntityType.Snake:
+                    monsterImage = _snake;
+                    SetFrameLimitSnake(monster.CurrentStates);
+                    break;
+                case EntityType.Spider:
+                    monsterImage = _spider;
+                    SetFrameLimitSpider(monster.CurrentStates);
+                    break;
             }
+            PlayAnimation(graphics, monsterPosition, monsterImage);
         }
 
         private void PlayAnimation(Graphics graphics, Point monsterPosition, Image image)
@@ -56,21 +61,40 @@ namespace Cave_Adventure
                 );
         }
 
-        private void SetFrameLimit(StatesOfAnimation currentAnimation)
+        private void SetFrameLimitSpider(StatesOfAnimation currentAnimation)
         {
             switch (currentAnimation)
             {
                 case StatesOfAnimation.Idle:
-                    _currentFrameLimit = AmountHeroFrames.IdleFrames;
+                    _currentFrameLimit = AmountSpiderFrames.IdleFrames;
                     break;
                 case StatesOfAnimation.Run:
-                    _currentFrameLimit = AmountHeroFrames.RunFrames;
+                    _currentFrameLimit = AmountSpiderFrames.RunFrames;
                     break;
                 case StatesOfAnimation.Attack:
-                    _currentFrameLimit = AmountHeroFrames.AttackFrames;
+                    _currentFrameLimit = AmountSpiderFrames.AttackFrames;
                     break;
                 case StatesOfAnimation.Death:
-                    _currentFrameLimit = AmountHeroFrames.DeathFrames;
+                    _currentFrameLimit = AmountSpiderFrames.DeathFrames;
+                    break;
+            }
+        }
+        
+        private void SetFrameLimitSnake(StatesOfAnimation currentAnimation)
+        {
+            switch (currentAnimation)
+            {
+                case StatesOfAnimation.Idle:
+                    _currentFrameLimit = AmountSnakeFrames.IdleFrames;
+                    break;
+                case StatesOfAnimation.Run:
+                    _currentFrameLimit = AmountSnakeFrames.RunFrames;
+                    break;
+                case StatesOfAnimation.Attack:
+                    _currentFrameLimit = AmountSnakeFrames.AttackFrames;
+                    break;
+                case StatesOfAnimation.Death:
+                    _currentFrameLimit = AmountSnakeFrames.DeathFrames;
                     break;
             }
         }

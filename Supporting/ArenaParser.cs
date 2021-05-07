@@ -1,27 +1,35 @@
 using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Cave_Adventure
 {
     public class ArenaParser
     {
-        public static (CellType[,] arenaMap, Point playerPosition, Point[] monstersPosition) ParsingMap(string arena)
+        private static readonly Dictionary<string, Func<Point, Monster>> StringCodeToEntity =
+            new()
+            {
+                ["Sp"] = point => new Spider(point),
+                ["Sn"] = point => new Snake(point)
+            };
+        
+        public static (CellType[,] arenaMap, Player player, Monster[] monsters) ParsingMap(string arena)
         {
             var lines = arena.Split(new[] { "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
             return ParsingMap(lines);
         }
 
-        public static (CellType[,] arenaMap, Point playerPosition, Point[] monstersPosition) ParsingMap(string[] arena)
+        public static (CellType[,] arenaMap, Player player, Monster[] monsters) ParsingMap(string[] arena)
         {
             return ParsingMap(SplitOnCell(arena));
         }
 
-        public static (CellType[,] arenaMap, Point playerPosition, Point[] monstersPosition) ParsingMap(string[,] map)
+        public static (CellType[,] arenaMap, Player player, Monster[] monsters) ParsingMap(string[,] map)
         {
             var arena = new CellType[map.GetLength(1), map.GetLength(0)];
-            var playerPos = Point.Empty;
-            var monsters = new List<Point>();
+            var player = new Player(new Point().NegativePoint());
+            var monsters = new List<Monster>();
             for (int y = 0; y < map.GetLength(0); y++)
             for (int x = 0; x < map.GetLength(1); x++)
             {
@@ -32,21 +40,23 @@ namespace Cave_Adventure
                     case "  ": arena[x, y] = CellType.Floor; break;
                     case "P ":
                         arena[x, y] = CellType.Floor;
-                        playerPos = new Point(x, y);
+                        player = new Player(new Point(x, y));
                         break;
-                    case "M ":
+                    case "Sp":
+                    case "Sn":
                         arena[x, y] = CellType.Floor;
-                        monsters.Add(new Point(x, y));
+                        monsters.Add(StringCodeToEntity[cell].Invoke(new Point(x, y)));
                         break;
                     default:
                         throw new ArgumentException("Неизвестный тип клетки");
                 }
             }
 
-            return (arenaMap: arena, playerPosition: playerPos, monstersPosition: monsters.ToArray());
+            // if (player.Position.X < 0) throw new WarningException("На карте нет игрока");
+            return (arenaMap: arena, player: player, monsters: monsters.ToArray());
         }
 
-        private static string[,] SplitOnCell(string[] map) //переименовать
+        private static string[,] SplitOnCell(string[] map)
         {
             if (map.Length == 0) return new string[0, 0];
             

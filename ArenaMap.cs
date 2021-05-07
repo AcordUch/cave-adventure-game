@@ -94,12 +94,9 @@ namespace Cave_Adventure
         }
 
         private static ArenaMap CreateNewArenaMap(
-            (CellType[,] arenaMap, Point playerPosition, Point[] monstersPosition) arenaInfo)
+            (CellType[,] arenaMap, Player player, Monster[] monsters) arenaInfo)
         {
-            var newPlayer = new Player(arenaInfo.playerPosition);
-            var newMonsters = arenaInfo.monstersPosition.Select(e => new Monster(e)).ToArray();
-            //Переделать под фабрику, что бы получать классы монстров
-            return new ArenaMap(arenaInfo.arenaMap, newPlayer, newMonsters);
+            return new ArenaMap(arenaInfo.arenaMap, arenaInfo.player, arenaInfo.monsters);
         }
         #endregion
         
