@@ -53,10 +53,10 @@ namespace Cave_Adventure
                     var label = "";
                     switch (monster.Tag)
                     {
-                        case MonsterType.Snake:
+                        case EntityType.Snake:
                             label = "Sn";
                             break;
-                        case MonsterType.Spider:
+                        case EntityType.Spider:
                             label = "Sp";
                             break;
                     }

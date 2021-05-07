@@ -10,8 +10,8 @@ namespace Cave_Adventure
         private static readonly Dictionary<string, Func<Point, Monster>> StringCodeToEntity =
             new()
             {
-                ["Sp"] = point => new Spider(point){ Tag = MonsterType.Spider },
-                ["Sn"] = point => new Snake(point){ Tag = MonsterType.Snake }
+                ["Sp"] = point => new Spider(point),
+                ["Sn"] = point => new Snake(point)
             };
         
         public static (CellType[,] arenaMap, Player player, Monster[] monsters) ParsingMap(string arena)
@@ -56,7 +56,7 @@ namespace Cave_Adventure
             return (arenaMap: arena, player: player, monsters: monsters.ToArray());
         }
 
-        private static string[,] SplitOnCell(string[] map) //переименовать
+        private static string[,] SplitOnCell(string[] map)
         {
             if (map.Length == 0) return new string[0, 0];
             

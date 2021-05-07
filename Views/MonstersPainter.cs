@@ -27,11 +27,11 @@ namespace Cave_Adventure
             Image monsterImage = _snake;
             switch (monster.Tag)
             {
-                case MonsterType.Snake:
+                case EntityType.Snake:
                     monsterImage = _snake;
                     SetFrameLimitSnake(monster.CurrentStates);
                     break;
-                case MonsterType.Spider:
+                case EntityType.Spider:
                     monsterImage = _spider;
                     SetFrameLimitSpider(monster.CurrentStates);
                     break;
