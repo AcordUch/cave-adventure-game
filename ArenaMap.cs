@@ -19,7 +19,7 @@ namespace Cave_Adventure
 
         public int Width => Arena.GetLength(0);
         public int Height => Arena.GetLength(1);
-
+        
         public ArenaMap(CellType[,] arena, Player player, Monster[] monsters)
         {
             Arena = arena;
@@ -104,6 +104,13 @@ namespace Cave_Adventure
         {
             var bounds = new Rectangle(0, 0, Arena.GetLength(0), Arena.GetLength(1));
             return bounds.Contains(point);
+        }
+        
+        public List<Entity> GetListOfEntities()
+        {
+            var entities = new List<Entity> { Player };
+            entities.AddRange(Monsters);
+            return entities;
         }
     }
 }

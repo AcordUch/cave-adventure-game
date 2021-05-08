@@ -16,6 +16,7 @@ namespace Cave_Adventure
 
         private readonly PlayerPainter _playerPainter;
         private readonly MonstersPainter _monstersPainter;
+        private readonly EntityPainter _entityPainter;
         private int _zoomScale;
         private PointF _logicalCenterPos;
         private bool _configured = false;
@@ -37,6 +38,7 @@ namespace Cave_Adventure
             ArenaPainter = new ArenaPainter();
             _playerPainter = new PlayerPainter();
             _monstersPainter = new MonstersPainter();
+            _entityPainter = new EntityPainter();
 
             Click += HandleClick;
         }
@@ -51,13 +53,15 @@ namespace Cave_Adventure
             ArenaMap = ArenaMap.CreateNewArenaMap(arenaMap);
             _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
             ArenaPainter.Configure(ArenaMap, _pointToRectangle);
+            _entityPainter.Configure(ArenaMap.GetListOfEntities());
             _configured = true;
         }
 
         public void Drop()
         {
-            _configured = false;
             ArenaPainter.Drop();
+            _entityPainter.Drop();
+            _configured = false;
         }
         
         public new void Update()
@@ -77,6 +81,7 @@ namespace Cave_Adventure
             ArenaMap = ArenaMap.CreateNewArenaMap(newMap);
             _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
             ArenaPainter.ChangeLevel(ArenaMap, _pointToRectangle);
+            _entityPainter.ReConfigure(ArenaMap.GetListOfEntities());
             Invalidate();
         }
 
@@ -156,12 +161,14 @@ namespace Cave_Adventure
             
             ArenaPainter.Paint(e.Graphics);
             
-            _playerPainter.SetUpAndPaint(e.Graphics, ArenaMap.Player);
+            // _playerPainter.SetUpAndPaint(e.Graphics, ArenaMap.Player);
+            _entityPainter.SetUpAndPaint(e.Graphics, ArenaMap.Player);
             ArenaPainter.Update();       
             
             foreach (var monster in ArenaMap.Monsters)
             {
-                _monstersPainter.SetUpAndPaint(e.Graphics, monster);
+               // _monstersPainter.SetUpAndPaint(e.Graphics, monster);
+               _entityPainter.SetUpAndPaint(e.Graphics, monster);
             }
         }
         
