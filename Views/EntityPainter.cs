@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Cave_Adventure.EntitiesFrames;
 
 namespace Cave_Adventure
@@ -7,17 +10,41 @@ namespace Cave_Adventure
     {
         private const int ImageSize = 32;
 
+        private bool _configured = false;
+        private Dictionary<Entity, int> _currentFrames;
+        private Entity _currentEntity;
         private int _mirroring = 1;
         private int _currentAnimation;
-        private int _currentFrame = 0;
         private int _currentFrameLimit = 0;
         
         public int DisplacementStage { get; set; } = 0;
+
+        public void Configure(List<Entity> entities)
+        {
+            if (_configured)
+                throw new InvalidOperationException();
+            ReConfigure(entities);
+            _configured = true;
+        }
+
+        public void Drop()
+        {
+            _currentFrames = null;
+            _configured = false;
+        }
+
+        public void ReConfigure(List<Entity> entities)
+        {
+            _currentFrames = entities.ToDictionary(k => k, v => 0);
+        }
         
         public void SetUpAndPaint(Graphics graphics, Entity entity)
         {
-            var playerPositionReal = GetGraphicPosition(entity);
+            if(!_configured)
+                return;
             
+            var playerPositionReal = GetGraphicPosition(entity);
+            _currentEntity = entity;
             _mirroring = (int) entity.ViewDirection;
             _currentAnimation = (int) entity.CurrentStates;
             AnimationSetUp.SetUp(entity, out _currentFrameLimit, out var entityImage);
@@ -26,9 +53,9 @@ namespace Cave_Adventure
         
         private void PlayAnimation(Graphics graphics, Point playerPosition, Image entityImage)
         {
-            if (_currentFrame < _currentFrameLimit - 1)
-                _currentFrame++;
-            else _currentFrame = 0;
+            if (_currentFrames[_currentEntity] < _currentFrameLimit - 1)
+                _currentFrames[_currentEntity]++;
+            else _currentFrames[_currentEntity] = 0;
             
             graphics.DrawImage(
                 entityImage,
@@ -38,7 +65,7 @@ namespace Cave_Adventure
                     _mirroring * ImageSize * 2,
                     ImageSize * 2
                     ), 
-                32*_currentFrame,
+                32*_currentFrames[_currentEntity],
                 32*_currentAnimation,
                 ImageSize,
                 ImageSize,

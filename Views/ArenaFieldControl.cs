@@ -53,13 +53,15 @@ namespace Cave_Adventure
             ArenaMap = ArenaMap.CreateNewArenaMap(arenaMap);
             _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
             ArenaPainter.Configure(ArenaMap, _pointToRectangle);
+            _entityPainter.Configure(ArenaMap.GetListOfEntities());
             _configured = true;
         }
 
         public void Drop()
         {
-            _configured = false;
             ArenaPainter.Drop();
+            _entityPainter.Drop();
+            _configured = false;
         }
         
         public new void Update()
@@ -79,6 +81,7 @@ namespace Cave_Adventure
             ArenaMap = ArenaMap.CreateNewArenaMap(newMap);
             _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
             ArenaPainter.ChangeLevel(ArenaMap, _pointToRectangle);
+            _entityPainter.ReConfigure(ArenaMap.GetListOfEntities());
             Invalidate();
         }
 
