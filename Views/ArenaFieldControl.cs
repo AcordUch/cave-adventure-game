@@ -13,9 +13,7 @@ namespace Cave_Adventure
         private const int ShiftFromUpAndDownBorder = 10;
         private const int CellWidth = GlobalConst.AssetsSize;
         private const int CellHeight = GlobalConst.AssetsSize;
-
-        private readonly PlayerPainter _playerPainter;
-        private readonly MonstersPainter _monstersPainter;
+        
         private readonly EntityPainter _entityPainter;
         private int _zoomScale;
         private PointF _logicalCenterPos;
@@ -36,8 +34,6 @@ namespace Cave_Adventure
             InitializeComponent();
             DoubleBuffered = true;
             ArenaPainter = new ArenaPainter();
-            _playerPainter = new PlayerPainter();
-            _monstersPainter = new MonstersPainter();
             _entityPainter = new EntityPainter();
 
             Click += HandleClick;
@@ -161,15 +157,11 @@ namespace Cave_Adventure
             
             ArenaPainter.Paint(e.Graphics);
             
-            // _playerPainter.SetUpAndPaint(e.Graphics, ArenaMap.Player);
             _entityPainter.SetUpAndPaint(e.Graphics, ArenaMap.Player);
             ArenaPainter.Update();       
             
             foreach (var monster in ArenaMap.Monsters)
-            {
-               // _monstersPainter.SetUpAndPaint(e.Graphics, monster);
-               _entityPainter.SetUpAndPaint(e.Graphics, monster);
-            }
+                _entityPainter.SetUpAndPaint(e.Graphics, monster);
         }
         
         private PointF GetShift()
