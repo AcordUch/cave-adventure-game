@@ -19,7 +19,7 @@ namespace Cave_Adventure
 
         public int Width => Arena.GetLength(0);
         public int Height => Arena.GetLength(1);
-
+        
         public ArenaMap(CellType[,] arena, Player player, Monster[] monsters)
         {
             Arena = arena;
@@ -94,12 +94,9 @@ namespace Cave_Adventure
         }
 
         private static ArenaMap CreateNewArenaMap(
-            (CellType[,] arenaMap, Point playerPosition, Point[] monstersPosition) arenaInfo)
+            (CellType[,] arenaMap, Player player, Monster[] monsters) arenaInfo)
         {
-            var newPlayer = new Player(arenaInfo.playerPosition);
-            var newMonsters = arenaInfo.monstersPosition.Select(e => new Monster(e)).ToArray();
-            //Переделать под фабрику, что бы получать классы монстров
-            return new ArenaMap(arenaInfo.arenaMap, newPlayer, newMonsters);
+            return new ArenaMap(arenaInfo.arenaMap, arenaInfo.player, arenaInfo.monsters);
         }
         #endregion
         
@@ -107,6 +104,13 @@ namespace Cave_Adventure
         {
             var bounds = new Rectangle(0, 0, Arena.GetLength(0), Arena.GetLength(1));
             return bounds.Contains(point);
+        }
+        
+        public List<Entity> GetListOfEntities()
+        {
+            var entities = new List<Entity> { Player };
+            entities.AddRange(Monsters);
+            return entities;
         }
     }
 }
