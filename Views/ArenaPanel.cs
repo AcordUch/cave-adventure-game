@@ -169,6 +169,16 @@ namespace Cave_Adventure
             };
             backToMenuButton.Click += _game.SwitchOnMainMenu;
 
+            //var attackMonsterButton = new Button()
+            //{
+            //    Text = $"Атака!",
+            //    TextAlign = ContentAlignment.MiddleCenter,
+            //    Dock = DockStyle.Fill,
+            //    Size = new Size(350, 50),
+            //    AutoSize = true
+            //};
+            //attackMonsterButton.Click += DoIt();
+
             var infoPanel = new FlowLayoutPanel()
             {
                 FlowDirection = FlowDirection.LeftToRight,
@@ -220,6 +230,7 @@ namespace Cave_Adventure
             arenaLayoutPanel.Controls.Add(ArenaFieldControl);
             bottomTable.Controls.Add(backToMenuButton,0, 0);
             bottomTable.Controls.Add(new Panel(){Dock = DockStyle.Fill,BackColor = Color.Black},1, 0);
+            //bottomTable.Controls.Add(attackMonsterButton, 1, 0);
             bottomTable.Controls.Add(nextTurnButton,2, 0);
             secondColumnTable.Controls.Add(arenaLayoutPanel, 0, 0);
             secondColumnTable.Controls.Add(bottomTable, 0, 1);
@@ -235,7 +246,7 @@ namespace Cave_Adventure
         {
             menuPanel.Controls.Add(new Label
             {
-                Text = "Выберете Арену:",
+                Text = "Выберите Арену:",
                 ForeColor = Color.Black,
                 TextAlign = ContentAlignment.MiddleLeft,
                 Size = new Size(350, 50),

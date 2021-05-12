@@ -11,6 +11,7 @@ namespace Cave_Adventure
         public EntityType Tag { get; }
         public bool IsSelected { get; set; }
         public bool IsMoving { get; private set; }
+        public bool IsMonsterNearby { get; set; }
         public Point TargetPoint { get; private set; }
         public double Health { get; }
         public int AP { get; protected set; }
@@ -29,6 +30,8 @@ namespace Cave_Adventure
             Tag = tag;
             _position = position;
             AP = GlobalConst.PlayerAP;
+            Attack = GlobalConst.PlayerAttack;
+            Health = GlobalConst.PlayerHP;
         }
         
         public virtual void Attacking()
