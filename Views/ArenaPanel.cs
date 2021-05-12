@@ -169,15 +169,15 @@ namespace Cave_Adventure
             };
             backToMenuButton.Click += _game.SwitchOnMainMenu;
 
-            //var attackMonsterButton = new Button()
-            //{
-            //    Text = $"Атака!",
-            //    TextAlign = ContentAlignment.MiddleCenter,
-            //    Dock = DockStyle.Fill,
-            //    Size = new Size(350, 50),
-            //    AutoSize = true
-            //};
-            //attackMonsterButton.Click += DoIt();
+            // var attackMonsterButton = new Button()
+            // {
+            //     Text = $"Атака!",
+            //     TextAlign = ContentAlignment.MiddleCenter,
+            //     Dock = DockStyle.Fill,
+            //     Size = new Size(350, 50),
+            //     AutoSize = true
+            // };
+            // attackMonsterButton.Click += DoIt();
 
             var infoPanel = new FlowLayoutPanel()
             {
