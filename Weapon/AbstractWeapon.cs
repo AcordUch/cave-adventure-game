@@ -10,9 +10,12 @@ namespace Cave_Adventure
     {
         private readonly double _weaponFactor;
 
-        protected AbstractWeapon(double weaponFactor)
+        public int WeaponRadius { get; }
+
+        protected AbstractWeapon(double weaponFactor, int weaponRadius)
         {
             _weaponFactor = weaponFactor;
+            WeaponRadius = weaponRadius;
         }
 
         public virtual double GetDamage(in Entity entity)
