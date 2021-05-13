@@ -2,7 +2,7 @@ using System.Drawing;
 
 namespace Cave_Adventure
 {
-    public class Entity: IEntity
+    public abstract class Entity: IEntity
     {
         private Point _position;
 
@@ -11,13 +11,13 @@ namespace Cave_Adventure
         public EntityType Tag { get; }
         public bool IsSelected { get; set; }
         public bool IsMoving { get; private set; }
-        public bool IsMonsterNearby { get; set; }
         public Point TargetPoint { get; private set; }
         public double Health { get; }
         public int AP { get; protected set; }
         public double Attack { get; }
         public double Defense { get; }
         public double Damage { get; }
+        public int Initiative { get; protected set; }
 
         public Point Position
         {
@@ -25,7 +25,7 @@ namespace Cave_Adventure
             set => _position = value;
         }
 
-        public Entity(Point position, EntityType tag)
+        protected Entity(Point position, EntityType tag)
         {
             Tag = tag;
             _position = position;

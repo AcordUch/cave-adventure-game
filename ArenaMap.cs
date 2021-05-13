@@ -13,6 +13,7 @@ namespace Cave_Adventure
         public Player Player { get; private set; }
         public Monster[] Monsters { get; private set; }
         public bool PlayerSelected { get; set; }
+        public bool IsPlayerTurnNow { get; private set; }
         public SinglyLinkedList<Point>[] PlayerPaths { get; private set; }
         
         public int Step { get; private set; } = 1;
@@ -41,10 +42,25 @@ namespace Cave_Adventure
             Step += 1;
             Player.ResetAP();
             Player.IsSelected = false;
+            PlayerPaths = null;
             PlayerSelected = false;
+            IsPlayerTurnNow = !IsPlayerTurnNow;
+            MonstersMove_tempName();
+            //ход монстров
         }
 
-        public async void MoveAlongThePath(Point targetPoint)
+        private void MonstersMove_tempName()
+        {
+            var monsters = Monsters.ToList().OrderBy(m => m.Initiative);
+            foreach (var monster in monsters)
+            {
+                monster.IsSelected = true;
+                MoveEntityAlongThePath(monster.Position + new Size(0, -1), monster);
+                monster.IsSelected = false;
+            }
+        }
+
+        public async void MovePlayerAlongThePath(Point targetPoint)
         {
             if (PlayerSelected)
             {
@@ -77,6 +93,45 @@ namespace Cave_Adventure
                 }
 
                 Player.IsSelected = false;
+            });
+            task.Start();
+            return task;
+        }
+        
+        private async void MoveEntityAlongThePath(Point targetPoint, Entity entity)
+        {
+            if(entity.IsSelected)
+            {
+                var path = (BFS.FindPaths(this, entity.Position, entity.AP)
+                                .FirstOrDefault(p => p.Value == targetPoint)
+                            ?? throw new InvalidOperationException(
+                                "Среди доступных точек нет необходимой. В методе откуда вызов нет проверки?"))
+                    .Select(p => p).Reverse().ToArray();
+                await StartMoveEntity(path, entity);
+            }
+        }
+        
+        private Task StartMoveEntity(Point[] path, Entity entity)
+        {
+            var pathEnumerator = path.GetEnumerator();
+            if (!pathEnumerator.MoveNext())
+                return new Task(() => {});
+            var task = new Task(() =>
+            {
+                while (true)
+                {
+                    if(!entity.IsMoving)
+                    {
+                        if (pathEnumerator.Current == null) break;
+                        var nextPoint = (Point) pathEnumerator.Current;
+                        if (nextPoint != entity.Position)
+                            entity.SetTargetPoint(nextPoint);
+                        if (!pathEnumerator.MoveNext())
+                            break;
+                    }
+                }
+
+                entity.IsSelected = false;
             });
             task.Start();
             return task;

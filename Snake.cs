@@ -6,6 +6,7 @@ namespace Cave_Adventure
     {
         public Snake(Point position) : base(position, EntityType.Snake)
         {
+            Initiative = 7;
         }
 
         public override void Attacking()

@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Drawing;
+
 namespace Cave_Adventure
 {
     public static class GlobalConst
