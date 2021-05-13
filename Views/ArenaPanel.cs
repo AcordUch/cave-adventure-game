@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Timers;
 using System.Windows.Forms;
 using Cave_Adventure.Interfaces;
 
@@ -14,12 +15,16 @@ namespace Cave_Adventure
         private readonly string[] _levels;
         private bool _configured = false;
         private readonly Game _game;
+        private Button attackMonsterButton;
+        private Monster monster;
+        private double monsterHealth;
+        private System.Timers.Timer timer;
 
         public ArenaPanel(Game game)
         {
             _game = game;
             _levels = LoadLevels().ToArray();
-            
+
             ArenaFieldControl = new ArenaFieldControl();
 
             var table = new TableLayoutPanel
@@ -28,11 +33,11 @@ namespace Cave_Adventure
                 AutoSize = true
             };
             ConfigureTables(table);
-            
+
             Controls.Add(table);
             ArenaFieldControl.ClickOnPoint += ArenaFieldControl_ClickOnPoint;
         }
-        
+
         protected override void InitLayout()
         {
             base.InitLayout();
@@ -44,7 +49,7 @@ namespace Cave_Adventure
         {
             if (_configured)
                 throw new InvalidOperationException();
-            
+
             ArenaFieldControl.Configure(_levels[0]);
             _configured = true;
         }
@@ -54,20 +59,20 @@ namespace Cave_Adventure
             _configured = false;
             ArenaFieldControl.Drop();
         }
-        
+
         public new void Update()
         {
             if (!_configured)
                 return;
-            
+
             ArenaFieldControl.Update();
-            
+
             //Вынести в метод OnSizeChange
             var zoom = GetZoomForController();
             ArenaFieldControl.Size =
                 new Size((int)(ArenaFieldControl.Width * zoom), (int)(ArenaFieldControl.Height * zoom));
 
-            _infoLabel.Size = new Size((int)(Width * 0.25), (int) (Height * 0.4));
+            _infoLabel.Size = new Size((int)(Width * 0.25), (int)(Height * 0.4));
             _infoLabel.Text = ArenaFieldControl.PlayerInfoToString();
         }
 
@@ -86,6 +91,15 @@ namespace Cave_Adventure
                     }
                     else
                     {
+                        foreach (var neighborPoint in ArenaFieldControl.Player.GetNeighbors())
+                            if (ArenaFieldControl.Monsters.Any(monster => monster.Position == neighborPoint))
+                            {
+                                attackMonsterButton.Enabled = true;
+                                monster = 
+                                    ArenaFieldControl.Monsters.Where(monster => monster.Position == neighborPoint).FirstOrDefault();
+                                monsterHealth = monster.Health;
+                            }
+
                         var path = BFS.FindPaths(
                             ArenaFieldControl.ArenaMap,
                             ArenaFieldControl.Player.Position,
@@ -97,13 +111,14 @@ namespace Cave_Adventure
                     }
                     actionCompleted = true;
                 }
-                
+
                 if (ArenaFieldControl.Player.IsSelected && !actionCompleted)
                 {
                     if (ArenaFieldControl.ArenaMap.PlayerPaths.Any(p => p.Contains(point)))
                     {
                         ArenaFieldControl.ArenaMap.MoveAlongThePath(point);
                         ArenaFieldControl.ArenaMap.PlayerSelected = false;
+                        attackMonsterButton.Enabled = false;
                     }
                     actionCompleted = true;
                 }
@@ -114,7 +129,17 @@ namespace Cave_Adventure
         {
             ArenaFieldControl.ArenaMap.NextTurn();
         }
-        
+
+        private void Attack(object sender, EventArgs e)
+        {
+            timer = new System.Timers.Timer { Interval = 2000 };
+            timer.Elapsed += OnTimedEvent;
+            timer.Enabled = true;
+            ArenaFieldControl.Player.Attacking(monsterHealth);
+            monsterHealth -= ArenaFieldControl.Player.Attack;
+            attackMonsterButton.Enabled = false;
+        }
+
         // private static IEnumerable<ArenaMap> LoadLevels()
         // {
         //     yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena1);
@@ -135,7 +160,7 @@ namespace Cave_Adventure
         }
 
         #region Настройка Панелей
-        
+
         private void ConfigureTables(TableLayoutPanel table)
         {
             var levelMenu = new FlowLayoutPanel
@@ -169,15 +194,16 @@ namespace Cave_Adventure
             };
             backToMenuButton.Click += _game.SwitchOnMainMenu;
 
-            // var attackMonsterButton = new Button()
-            // {
-            //     Text = $"Атака!",
-            //     TextAlign = ContentAlignment.MiddleCenter,
-            //     Dock = DockStyle.Fill,
-            //     Size = new Size(350, 50),
-            //     AutoSize = true
-            // };
-            // attackMonsterButton.Click += DoIt();
+            attackMonsterButton = new Button()
+            {
+                Text = $"Атака!",
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Fill,
+                Size = new Size(350, 50),
+                AutoSize = true,
+                Enabled = false,
+            };
+            attackMonsterButton.Click += Attack;
 
             var infoPanel = new FlowLayoutPanel()
             {
@@ -210,7 +236,9 @@ namespace Cave_Adventure
                 Dock = DockStyle.Fill,
                 AutoSize = true
             };
-            
+
+            #region AddingControls
+
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65));
@@ -223,25 +251,28 @@ namespace Cave_Adventure
             thirdColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
             thirdColumnTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
             bottomTable.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            bottomTable.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
             bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35));
             bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35));
             bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30));
-            
+
             arenaLayoutPanel.Controls.Add(ArenaFieldControl);
-            bottomTable.Controls.Add(backToMenuButton,0, 0);
-            bottomTable.Controls.Add(new Panel(){Dock = DockStyle.Fill,BackColor = Color.Black},1, 0);
-            //bottomTable.Controls.Add(attackMonsterButton, 1, 0);
-            bottomTable.Controls.Add(nextTurnButton,2, 0);
+            bottomTable.Controls.Add(attackMonsterButton, 2, 0);
+            bottomTable.Controls.Add(backToMenuButton, 0, 1);
+            bottomTable.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 1, 1);
+            bottomTable.Controls.Add(nextTurnButton, 2, 1);
             secondColumnTable.Controls.Add(arenaLayoutPanel, 0, 0);
             secondColumnTable.Controls.Add(bottomTable, 0, 1);
-            thirdColumnTable.Controls.Add(new Panel(){Dock = DockStyle.Fill,BackColor = Color.Black},0, 0);
-            thirdColumnTable.Controls.Add(infoPanel,0, 1);
-            thirdColumnTable.Controls.Add(new Panel(){Dock = DockStyle.Fill,BackColor = Color.Black},0, 2);
+            thirdColumnTable.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 0, 0);
+            thirdColumnTable.Controls.Add(infoPanel, 0, 1);
+            thirdColumnTable.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 0, 2);
             table.Controls.Add(levelMenu, 0, 0);
             table.Controls.Add(secondColumnTable, 1, 0);
             table.Controls.Add(thirdColumnTable, 2, 0);
+
+            #endregion
         }
-        
+
         private void SetUpLevelSwitch(Control menuPanel)
         {
             menuPanel.Controls.Add(new Label
@@ -253,7 +284,7 @@ namespace Cave_Adventure
                 AutoSize = true,
                 Margin = new Padding(0, 25, 0, 0)
             });
-            
+
             var linkLabels = new List<LinkLabel>();
             for (var i = 0; i < _levels.Length; i++)
             {
@@ -278,7 +309,7 @@ namespace Cave_Adventure
             }
             UpdateLinksColors(_levels[0], linkLabels);
         }
-        
+
         private static void UpdateLinksColors(string level, List<LinkLabel> linkLabels)
         {
             foreach (var linkLabel in linkLabels)
@@ -305,9 +336,9 @@ namespace Cave_Adventure
             };
             infoPanel.Controls.Add(_infoLabel);
         }
-        
+
         #endregion
-        
+
         private double GetZoomForController()
         {
             return ArenaFieldControl.Height != 0 && ClientSize.Height != 0
@@ -319,6 +350,15 @@ namespace Cave_Adventure
         {
             base.OnPaint(e);
             e.Graphics.Clear(Color.White);
+        }
+
+        private void OnTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            if (monsterHealth <= 0.0)
+                monster.SetAnimation(StatesOfAnimation.Death);
+            else
+                monster.Attacking(monsterHealth);
+            timer.Stop();
         }
     }
 }

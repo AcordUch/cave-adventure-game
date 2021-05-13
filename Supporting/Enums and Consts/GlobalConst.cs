@@ -1,3 +1,6 @@
+using System.Drawing;
+using System.Collections.Generic;
+
 namespace Cave_Adventure
 {
     public static class GlobalConst
@@ -25,5 +28,18 @@ namespace Cave_Adventure
         public const int PlayerHP = 30;
         public const int SpiderHP = 20;
         public const int SnakeHP = 25;
+
+        public readonly static List<Size> listOfNeighbors = 
+            new()
+            { 
+                new Size(-1, -1), 
+                new Size(-1, 0), 
+                new Size(-1, 1),
+                new Size(0, 1),
+                new Size(1, 1),
+                new Size(1, 0),
+                new Size(1, -1),
+                new Size(0, -1),
+            };
     }
 }

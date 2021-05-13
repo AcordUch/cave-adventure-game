@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace Cave_Adventure
 {
@@ -11,11 +12,10 @@ namespace Cave_Adventure
         public EntityType Tag { get; }
         public bool IsSelected { get; set; }
         public bool IsMoving { get; private set; }
-        public bool IsMonsterNearby { get; set; }
         public Point TargetPoint { get; private set; }
-        public double Health { get; }
+        public double Health { get; protected set; }
         public int AP { get; protected set; }
-        public double Attack { get; }
+        public double Attack { get; protected set; }
         public double Defense { get; }
         public double Damage { get; }
 
@@ -29,12 +29,9 @@ namespace Cave_Adventure
         {
             Tag = tag;
             _position = position;
-            AP = GlobalConst.PlayerAP;
-            Attack = GlobalConst.PlayerAttack;
-            Health = GlobalConst.PlayerHP;
         }
         
-        public virtual void Attacking()
+        public virtual void Attacking(in double heatlh)
         {
         }
 
@@ -84,7 +81,17 @@ namespace Cave_Adventure
         
         #endregion
 
-        private void SetAnimation(StatesOfAnimation currentAnimation)
+        public List<Point> GetNeighbors()
+        {
+            var resultList = new List<Point>();
+
+            foreach (var size in GlobalConst.listOfNeighbors)
+                 resultList.Add(_position + size);
+
+            return resultList;
+        }
+
+        public void SetAnimation(StatesOfAnimation currentAnimation)
         {
             CurrentStates = currentAnimation;
         }
