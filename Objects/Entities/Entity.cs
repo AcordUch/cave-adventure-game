@@ -1,9 +1,10 @@
 using System.Drawing;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cave_Adventure
 {
-    public class Entity: IEntity
+    public abstract class Entity: IEntity
     {
         private Point _position;
 
@@ -15,25 +16,35 @@ namespace Cave_Adventure
         public Point TargetPoint { get; private set; }
         public double Health { get; protected set; }
         public int AP { get; protected set; }
-        public double Attack { get; protected set; }
-        public double Defense { get; }
-        public double Damage { get; }
-
+        public double Attack { get; protected init; }
+        public double Defense { get; protected init; }
+        public double Damage { get; protected init; }
+        public AbstractWeapon Weapon { get; protected init; }
+        
         public Point Position
         {
             get => _position;
             set => _position = value;
         }
 
-        public Entity(Point position, EntityType tag)
+        public bool IsAlive => Health > 0;
+
+        protected Entity(Point position, EntityType tag)
         {
             Tag = tag;
             _position = position;
         }
         
-        public virtual void Attacking(in double heatlh)
+        public virtual double Attacking()
         {
+            return Weapon.GetDamage(this);
         }
+
+        public virtual void Defending(in Entity enemy)
+        {
+            Health -= enemy.Attacking();
+        }
+        
 
         #region Moving
         
@@ -81,17 +92,12 @@ namespace Cave_Adventure
         
         #endregion
 
-        public List<Point> GetNeighbors()
+        public IEnumerable<Point> GetNeighbors()
         {
-            var resultList = new List<Point>();
-
-            foreach (var size in GlobalConst.listOfNeighbors)
-                 resultList.Add(_position + size);
-
-            return resultList;
+            return GlobalConst.PossibleDirections.Select(size => _position + size).ToList();
         }
 
-        public void SetAnimation(StatesOfAnimation currentAnimation)
+        protected void SetAnimation(StatesOfAnimation currentAnimation)
         {
             CurrentStates = currentAnimation;
         }

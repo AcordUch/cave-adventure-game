@@ -12,13 +12,13 @@ namespace Cave_Adventure
     {
         private readonly ArenaFieldControl ArenaFieldControl;
         private Label _infoLabel;
+        private Button _attackMonsterButton;
         private readonly string[] _levels;
         private bool _configured = false;
         private readonly Game _game;
-        private Button attackMonsterButton;
-        private Monster monster;
-        private double monsterHealth;
-        private System.Timers.Timer timer;
+        //private Monster _monster;
+        //private double _monsterHealth;
+        private System.Timers.Timer _timer;
 
         public ArenaPanel(Game game)
         {
@@ -92,13 +92,16 @@ namespace Cave_Adventure
                     else
                     {
                         foreach (var neighborPoint in ArenaFieldControl.Player.GetNeighbors())
+                        {
                             if (ArenaFieldControl.Monsters.Any(monster => monster.Position == neighborPoint))
                             {
-                                attackMonsterButton.Enabled = true;
-                                monster = 
-                                    ArenaFieldControl.Monsters.Where(monster => monster.Position == neighborPoint).FirstOrDefault();
-                                monsterHealth = monster.Health;
+                                _attackMonsterButton.Enabled = true;
+                                // _monster =
+                                //     ArenaFieldControl.Monsters.FirstOrDefault(monster =>
+                                //         monster.Position == neighborPoint);
+                                // _monsterHealth = _monster.Health;
                             }
+                        }
 
                         var path = BFS.FindPaths(
                             ArenaFieldControl.ArenaMap,
@@ -114,13 +117,22 @@ namespace Cave_Adventure
 
                 if (ArenaFieldControl.Player.IsSelected && !actionCompleted)
                 {
-                    if (ArenaFieldControl.ArenaMap.PlayerPaths.Any(p => p.Contains(point)))
+                    if (!actionCompleted && ArenaFieldControl.ArenaMap.Monsters.Any(p => p.Position == point))
+                    {
+                        //Происходит атака
+                        ArenaFieldControl.ArenaMap.Attacking(ArenaFieldControl.Player, point);
+                        ArenaFieldControl.ArenaMap.AttackButtonPressed = false;
+                        _attackMonsterButton.Enabled = false;
+                        actionCompleted = true;
+                    }
+                    
+                    if (!actionCompleted && ArenaFieldControl.ArenaMap.PlayerPaths.Any(p => p.Contains(point)))
                     {
                         ArenaFieldControl.ArenaMap.MoveAlongThePath(point);
                         ArenaFieldControl.ArenaMap.PlayerSelected = false;
-                        attackMonsterButton.Enabled = false;
+                        _attackMonsterButton.Enabled = false;
+                        actionCompleted = true;
                     }
-                    actionCompleted = true;
                 }
             }
         }
@@ -132,23 +144,15 @@ namespace Cave_Adventure
 
         private void Attack(object sender, EventArgs e)
         {
-            timer = new System.Timers.Timer { Interval = 2000 };
-            timer.Elapsed += OnTimedEvent;
-            timer.Enabled = true;
-            ArenaFieldControl.Player.Attacking(monsterHealth);
-            monsterHealth -= ArenaFieldControl.Player.Attack;
-            attackMonsterButton.Enabled = false;
+            // _timer = new System.Timers.Timer { Interval = 2000 };
+            // _timer.Elapsed += OnTimedEvent;
+            // _timer.Enabled = true;
+            // ArenaFieldControl.Player.Attacking(_monsterHealth);
+            // _monsterHealth -= ArenaFieldControl.Player.Attack;
+            // _attackMonsterButton.Enabled = false;
+            ArenaFieldControl.ArenaMap.AttackButtonPressed = true;
         }
-
-        // private static IEnumerable<ArenaMap> LoadLevels()
-        // {
-        //     yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena1);
-        //     yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena2);
-        //     yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena3);
-        //     yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena4);
-        //     yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena5);
-        // }
-
+        
         private static IEnumerable<String> LoadLevels()
         {
             yield return Properties.Resources.Arena1;
@@ -194,7 +198,7 @@ namespace Cave_Adventure
             };
             backToMenuButton.Click += _game.SwitchOnMainMenu;
 
-            attackMonsterButton = new Button()
+            _attackMonsterButton = new Button()
             {
                 Text = $"Атака!",
                 TextAlign = ContentAlignment.MiddleCenter,
@@ -203,7 +207,7 @@ namespace Cave_Adventure
                 AutoSize = true,
                 Enabled = false,
             };
-            attackMonsterButton.Click += Attack;
+            _attackMonsterButton.Click += Attack;
 
             var infoPanel = new FlowLayoutPanel()
             {
@@ -257,7 +261,7 @@ namespace Cave_Adventure
             bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30));
 
             arenaLayoutPanel.Controls.Add(ArenaFieldControl);
-            bottomTable.Controls.Add(attackMonsterButton, 2, 0);
+            bottomTable.Controls.Add(_attackMonsterButton, 2, 0);
             bottomTable.Controls.Add(backToMenuButton, 0, 1);
             bottomTable.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 1, 1);
             bottomTable.Controls.Add(nextTurnButton, 2, 1);
@@ -354,11 +358,12 @@ namespace Cave_Adventure
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
-            if (monsterHealth <= 0.0)
-                monster.SetAnimation(StatesOfAnimation.Death);
-            else
-                monster.Attacking(monsterHealth);
-            timer.Stop();
+            /*if (_monsterHealth <= 0.0)
+                _monster.SetAnimation(StatesOfAnimation.Death);
+            else*/
+                // _monster.Attacking(_monsterHealth);
+            
+            _timer.Stop();
         }
     }
 }

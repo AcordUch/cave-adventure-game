@@ -201,8 +201,8 @@ Damage: {Player.Damage} | AP: {Player.AP}
 Zoom: {_zoomScale} | ArenaLogPos: {_logicalCenterPos}
 Position: {Player.Position} | Target: {Player.TargetPoint}
 IsSelected: {Player.IsSelected} | IsMoving: {Player.IsMoving}
-State: {Player.CurrentStates} | PlayerSelected: {ArenaMap.PlayerSelected} 
-Monster: {MonsterPositionsToString()}
+State: {Player.CurrentStates} | AttackButtonPres: {ArenaMap.AttackButtonPressed} 
+Monster: {GetMonsterInfo()}
 ";
         }
 
@@ -220,6 +220,17 @@ Monster: {MonsterPositionsToString()}
                     counter = 0;
                 }
             }
+            return result.ToString();
+        }
+
+        private string GetMonsterInfo()
+        {
+            var result = new StringBuilder();
+            foreach (var monster in ArenaMap.Monsters)
+            {
+                result.Append($"{monster.ToString()}: HP: {monster.Health}; {monster.Position}\n");
+            }
+
             return result.ToString();
         }
     }

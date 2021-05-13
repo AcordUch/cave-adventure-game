@@ -13,6 +13,7 @@ namespace Cave_Adventure
         public Player Player { get; private set; }
         public Monster[] Monsters { get; private set; }
         public bool PlayerSelected { get; set; }
+        public bool AttackButtonPressed { get; set; }
         public SinglyLinkedList<Point>[] PlayerPaths { get; private set; }
         
         public int Step { get; private set; } = 1;
@@ -42,6 +43,12 @@ namespace Cave_Adventure
             Player.ResetAP();
             Player.IsSelected = false;
             PlayerSelected = false;
+        }
+
+        public void Attacking(Entity attacker, Point targetPoint)
+        {
+            var target = GetListOfEntities().FirstOrDefault(p => p.Position == targetPoint);
+            target?.Defending(attacker);
         }
 
         public async void MoveAlongThePath(Point targetPoint)
