@@ -40,9 +40,16 @@ namespace Cave_Adventure
             return Weapon.GetDamage(this);
         }
 
-        public virtual void Defending(in Entity enemy)
+        public virtual void Defending(in Entity attacker)
         {
-            Health -= enemy.Attacking();
+            if (attacker.Attack > this.Defense)
+            {
+                this.Health -= attacker.Attack >= 1.25 * this.Defense ? attacker.Attacking() * 1.5 : attacker.Attacking();
+            }
+            else
+            {
+                this.Health -= attacker.Attack <= 0.75 * this.Defense ? attacker.Attacking() * 0.5 : attacker.Attacking() * 0.75;
+            }
         }
         
 
