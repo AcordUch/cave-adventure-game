@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Cave_Adventure
 {
-    public abstract class AbstractWeapon
+    public abstract class Weapon
     {
         private readonly double _weaponFactor;
 
         public int WeaponRadius { get; }
 
-        protected AbstractWeapon(double weaponFactor, int weaponRadius)
+        protected Weapon(double weaponFactor, int weaponRadius)
         {
             _weaponFactor = weaponFactor;
             WeaponRadius = weaponRadius;

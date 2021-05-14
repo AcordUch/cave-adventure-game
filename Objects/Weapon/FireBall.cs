@@ -1,14 +1,14 @@
 namespace Cave_Adventure
 {
-    public class FangsAndClaws : Weapon
+    public class FireBall : Weapon
     {
-        public FangsAndClaws() : base(GlobalConst.FangsAndClawsFactor, GlobalConst.FangsAndClawsRadius)
+        public FireBall() : base(GlobalConst.FireBallFactor, GlobalConst.FireBallRadius)
         {
         }
 
         public override double GetDamage(in Entity entity)
         {
-            entity.ReduceAP(entity.AP);
+            entity.ReduceAP(2);
             return base.GetDamage(in entity);
         }
     }

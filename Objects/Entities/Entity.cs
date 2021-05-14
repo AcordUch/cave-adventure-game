@@ -19,7 +19,7 @@ namespace Cave_Adventure
         public double Attack { get; protected init; }
         public double Defense { get; protected init; }
         public double Damage { get; protected init; }
-        public AbstractWeapon Weapon { get; protected init; }
+        public Weapon Weapon { get; protected init; }
         
         public Point Position
         {
@@ -99,6 +99,16 @@ namespace Cave_Adventure
         
         #endregion
 
+        public void ReduceAP(int dAP)
+        {
+            AP = AP - dAP > 0 ? AP - dAP : 0;
+        }
+
+        public void IncreaseAP(int dAP)
+        {
+            AP = AP + dAP > 0 ? AP + dAP : 0;
+        }
+        
         public IEnumerable<Point> GetNeighbors()
         {
             return GlobalConst.PossibleDirections.Select(size => _position + size).ToList();

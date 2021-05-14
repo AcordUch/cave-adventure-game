@@ -16,7 +16,7 @@ namespace Cave_Adventure
         double Attack { get; }
         double Defense { get; }
         double Damage { get; }
-        AbstractWeapon Weapon { get; }
+        Weapon Weapon { get; }
         bool IsAlive { get; }
         
         void Move(int dx, int dy);

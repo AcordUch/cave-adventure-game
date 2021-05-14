@@ -96,10 +96,6 @@ namespace Cave_Adventure
                             if (ArenaFieldControl.Monsters.Any(monster => monster.Position == neighborPoint))
                             {
                                 _attackMonsterButton.Enabled = true;
-                                // _monster =
-                                //     ArenaFieldControl.Monsters.FirstOrDefault(monster =>
-                                //         monster.Position == neighborPoint);
-                                // _monsterHealth = _monster.Health;
                             }
                         }
 
@@ -119,9 +115,10 @@ namespace Cave_Adventure
                 {
                     if (!actionCompleted && ArenaFieldControl.ArenaMap.Monsters.Any(p => p.Position == point))
                     {
-                        //Происходит атака
                         ArenaFieldControl.ArenaMap.Attacking(ArenaFieldControl.Player, point);
                         ArenaFieldControl.ArenaMap.AttackButtonPressed = false;
+                        ArenaFieldControl.ArenaMap.PlayerSelected = false;
+                        ArenaFieldControl.Player.IsSelected = false;
                         _attackMonsterButton.Enabled = false;
                         actionCompleted = true;
                     }

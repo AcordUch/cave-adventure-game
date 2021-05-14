@@ -53,7 +53,7 @@ namespace Cave_Adventure
 
         public async void MoveAlongThePath(Point targetPoint)
         {
-            if (PlayerSelected)
+            if (PlayerSelected && Player.AP > 0)
             {
                 var path = (PlayerPaths
                         .FirstOrDefault(p => p.Value == targetPoint) 
