@@ -1,6 +1,8 @@
+using System;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
+using System.Timers;
 using Cave_Adventure.Views;
 
 namespace Cave_Adventure
@@ -22,6 +24,8 @@ namespace Cave_Adventure
         public double Defense { get; protected init; }
         public double Damage { get; protected init; }
         public Weapon Weapon { get; protected init; }
+
+        public event Action<Entity> ContrattackMustStart;
         
         public Point Position
         {
@@ -50,7 +54,7 @@ namespace Cave_Adventure
             return Weapon.GetDamage(this);
         }
 
-        public virtual void Defending(in Entity attacker)
+        public virtual void Defending(in Entity attacker, bool isfirstAttack = true)
         {
             if (attacker.Attack > this.Defense)
             {
@@ -60,9 +64,21 @@ namespace Cave_Adventure
             {
                 this.Health -= attacker.Attack <= 0.75 * this.Defense ? attacker.Attacking() * 0.5 : attacker.Attacking() * 0.75;
             }
+            if (isfirstAttack)
+                Counterattack(attacker);
+        }
+
+        private void Counterattack(Entity attacker)
+        {
+            var timer = new Timer() {Interval = 2100};
+            timer.Elapsed += (_, __) =>
+            {
+                attacker.Defending(this, false);
+                timer.Stop();
+            };
+            timer.Start();
         }
         
-
         #region Moving
         
         public void Move(int dx, int dy)

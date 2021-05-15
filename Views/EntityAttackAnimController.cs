@@ -15,15 +15,13 @@ namespace Cave_Adventure.Views
         
         public void PlayAttackAnimation()
         {
-            _timer.Elapsed += OnTimedEvent;
+            _timer.Elapsed += (_, __) =>
+            {
+                _entity.SetAnimation(StatesOfAnimation.Idle);
+                _timer?.Stop();
+            };
             _timer.Start();
             _entity.SetAnimation(StatesOfAnimation.Attack);
-        }
-        
-        private void OnTimedEvent(object sender, ElapsedEventArgs e)
-        {
-            _entity.SetAnimation(StatesOfAnimation.Idle);
-            _timer?.Stop();
         }
     }
 }
