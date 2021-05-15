@@ -1,6 +1,9 @@
+using System;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
+using System.Timers;
+using Cave_Adventure.Views;
 
 namespace Cave_Adventure
 {
@@ -8,6 +11,7 @@ namespace Cave_Adventure
     {
         private Point _position;
         private double _health;
+        private readonly EntityAttackAnimController _attackAnimController;
 
         public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
         public ViewDirection ViewDirection { get; set; } = ViewDirection.Right;
@@ -39,14 +43,16 @@ namespace Cave_Adventure
         {
             Tag = tag;
             _position = position;
+            _attackAnimController = new EntityAttackAnimController(this);
         }
         
         public virtual double Attacking()
         {
+            _attackAnimController.PlayAttackAnimation();
             return Weapon.GetDamage(this);
         }
 
-        public virtual void Defending(in Entity attacker)
+        public virtual void Defending(in Entity attacker, bool isfirstAttack = true)
         {
             if (attacker.Attack > this.Defense)
             {
@@ -56,9 +62,21 @@ namespace Cave_Adventure
             {
                 this.Health -= attacker.Attack <= 0.75 * this.Defense ? attacker.Attacking() * 0.5 : attacker.Attacking() * 0.75;
             }
+            if (isfirstAttack)
+                Counterattack(attacker);
+        }
+
+        private void Counterattack(Entity attacker)
+        {
+            var timer = new Timer() {Interval = 2100};
+            timer.Elapsed += (_, __) =>
+            {
+                attacker.Defending(this, false);
+                timer.Stop();
+            };
+            timer.Start();
         }
         
-
         #region Moving
         
         public void Move(int dx, int dy)
@@ -127,7 +145,7 @@ namespace Cave_Adventure
             return GlobalConst.PossibleDirections.Select(size => _position + size).ToList();
         }
 
-        protected void SetAnimation(StatesOfAnimation currentAnimation)
+        public void SetAnimation(StatesOfAnimation currentAnimation)
         {
             CurrentStates = currentAnimation;
         }

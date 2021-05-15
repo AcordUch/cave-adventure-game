@@ -47,14 +47,20 @@ namespace Cave_Adventure
 
         public void Attacking(Entity attacker, Point targetPoint)
         {
-            if(attacker.AP > 0)
-            {
-                var target = GetListOfEntities().FirstOrDefault(p => p.Position == targetPoint);
-                target?.Defending(attacker);
-                target?.CheckIsAliveAndChangeState();
-            }
+            var target = GetListOfEntities().FirstOrDefault(p => p.Position == targetPoint);
+            if(target != null)
+                Attacking(attacker, target);
         }
 
+        public void Attacking(Entity attacker, Entity target)
+        {
+            if(attacker.AP > 0)
+            {
+                target.Defending(attacker);
+                target.CheckIsAliveAndChangeState();
+            }
+        }
+        
         public async void MoveAlongThePath(Point targetPoint)
         {
             if (PlayerSelected && Player.AP > 0)
