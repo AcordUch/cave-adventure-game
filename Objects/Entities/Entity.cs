@@ -1,11 +1,13 @@
 using System.Drawing;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cave_Adventure
 {
-    public class Entity: IEntity
+    public abstract class Entity: IEntity
     {
         private Point _position;
+        private double _health;
 
         public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
         public ViewDirection ViewDirection { get; set; } = ViewDirection.Right;
@@ -13,27 +15,49 @@ namespace Cave_Adventure
         public bool IsSelected { get; set; }
         public bool IsMoving { get; private set; }
         public Point TargetPoint { get; private set; }
-        public double Health { get; protected set; }
         public int AP { get; protected set; }
-        public double Attack { get; protected set; }
-        public double Defense { get; }
-        public double Damage { get; }
-
+        public double Attack { get; protected init; }
+        public double Defense { get; protected init; }
+        public double Damage { get; protected init; }
+        public Weapon Weapon { get; protected init; }
+        
         public Point Position
         {
             get => _position;
             set => _position = value;
         }
 
-        public Entity(Point position, EntityType tag)
+        public double Health
+        {
+            get => _health;
+            protected set => _health = value >= 0 ? value : 0;
+        }
+
+        public bool IsAlive => Health > 0;
+
+        protected Entity(Point position, EntityType tag)
         {
             Tag = tag;
             _position = position;
         }
         
-        public virtual void Attacking(in double heatlh)
+        public virtual double Attacking()
         {
+            return Weapon.GetDamage(this);
         }
+
+        public virtual void Defending(in Entity attacker)
+        {
+            if (attacker.Attack > this.Defense)
+            {
+                this.Health -= attacker.Attack >= 1.25 * this.Defense ? attacker.Attacking() * 1.5 : attacker.Attacking();
+            }
+            else
+            {
+                this.Health -= attacker.Attack <= 0.75 * this.Defense ? attacker.Attacking() * 0.5 : attacker.Attacking() * 0.75;
+            }
+        }
+        
 
         #region Moving
         
@@ -81,17 +105,29 @@ namespace Cave_Adventure
         
         #endregion
 
-        public List<Point> GetNeighbors()
+        public void ReduceAP(int dAP)
         {
-            var resultList = new List<Point>();
-
-            foreach (var size in GlobalConst.listOfNeighbors)
-                 resultList.Add(_position + size);
-
-            return resultList;
+            AP = AP - dAP > 0 ? AP - dAP : 0;
         }
 
-        public void SetAnimation(StatesOfAnimation currentAnimation)
+        public void IncreaseAP(int dAP)
+        {
+            AP = AP + dAP > 0 ? AP + dAP : 0;
+        }
+
+        public bool CheckIsAliveAndChangeState()
+        {
+            if(Health <= 0)
+                SetAnimation(StatesOfAnimation.Death);
+            return Health > 0;
+        }
+        
+        public IEnumerable<Point> GetNeighbors()
+        {
+            return GlobalConst.PossibleDirections.Select(size => _position + size).ToList();
+        }
+
+        protected void SetAnimation(StatesOfAnimation currentAnimation)
         {
             CurrentStates = currentAnimation;
         }

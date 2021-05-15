@@ -12,14 +12,17 @@ namespace Cave_Adventure
             AP = GlobalConst.SnakeAP;
             Attack = GlobalConst.SnakeAttack;
             Health = GlobalConst.SnakeHP;
+            Damage = GlobalConst.SnakeDamage;
+            Defense = GlobalConst.SnakeDefence;
         }
 
-        public override void Attacking(in double playerHealth)
+        public override double Attacking()
         {
             timer = new Timer { Interval = 2000 };
             timer.Elapsed += OnTimedEvent;
             timer.Enabled = true;
             SetAnimation(StatesOfAnimation.Attack);
+            return base.Attacking();
         }
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
@@ -29,7 +32,12 @@ namespace Cave_Adventure
 
         public override void ResetAP()
         {
-            AP = GlobalConst.SnakeAP;
+            AP = Health > 0 ? GlobalConst.SnakeAP : 0;
+        }
+
+        public override string ToString()
+        {
+            return "Snake";
         }
     }
 }

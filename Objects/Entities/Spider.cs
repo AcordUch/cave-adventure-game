@@ -12,14 +12,17 @@ namespace Cave_Adventure
             AP = GlobalConst.SpiderAP;
             Attack = GlobalConst.SpiderAttack;
             Health = GlobalConst.SpiderHP;
+            Damage = GlobalConst.SpiderDamage;
+            Defense = GlobalConst.SpiderDefence;
         }
 
-        public override void Attacking(in double playerHealth)
+        public override double Attacking()
         {
             timer = new Timer { Interval = 2000 };
             timer.Elapsed += OnTimedEvent;
             timer.Enabled = true;
             SetAnimation(StatesOfAnimation.Attack);
+            return base.Attacking();
         }
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
@@ -29,7 +32,12 @@ namespace Cave_Adventure
 
         public override void ResetAP()
         {
-            AP = GlobalConst.SpiderAP;
+            AP = Health > 0 ? GlobalConst.SpiderAP : 0;
+        }
+
+        public override string ToString()
+        {
+            return "Spider";
         }
     }
 }
