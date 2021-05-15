@@ -24,8 +24,6 @@ namespace Cave_Adventure
         public double Defense { get; protected init; }
         public double Damage { get; protected init; }
         public Weapon Weapon { get; protected init; }
-
-        public event Action<Entity> ContrattackMustStart;
         
         public Point Position
         {
