@@ -5,7 +5,7 @@ namespace Cave_Adventure
 {
     public class Snake: Monster
     {
-        Timer timer;
+        private Timer _timer;
 
         public Snake(Point position) : base(position, EntityType.Snake)
         {
@@ -18,9 +18,9 @@ namespace Cave_Adventure
 
         public override double Attacking()
         {
-            timer = new Timer { Interval = 2000 };
-            timer.Elapsed += OnTimedEvent;
-            timer.Enabled = true;
+            _timer = new Timer { Interval = 2000 };
+            _timer.Elapsed += OnTimedEvent;
+            _timer.Enabled = true;
             SetAnimation(StatesOfAnimation.Attack);
             return base.Attacking();
         }
@@ -28,6 +28,8 @@ namespace Cave_Adventure
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
             SetAnimation(StatesOfAnimation.Idle);
+            _timer.Stop();
+            _timer = null;
         }
 
         public override void ResetAP()
