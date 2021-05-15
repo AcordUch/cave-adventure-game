@@ -19,7 +19,7 @@ namespace Cave_Adventure
 
         public override void ResetAP()
         {
-            AP = GlobalConst.PlayerAP;
+            AP = Health > 0 ? GlobalConst.PlayerAP : 0;
         }
 
         public override double Attacking()

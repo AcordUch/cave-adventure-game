@@ -7,6 +7,7 @@ namespace Cave_Adventure
     public abstract class Entity: IEntity
     {
         private Point _position;
+        private double _health;
 
         public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
         public ViewDirection ViewDirection { get; set; } = ViewDirection.Right;
@@ -14,7 +15,6 @@ namespace Cave_Adventure
         public bool IsSelected { get; set; }
         public bool IsMoving { get; private set; }
         public Point TargetPoint { get; private set; }
-        public double Health { get; protected set; }
         public int AP { get; protected set; }
         public double Attack { get; protected init; }
         public double Defense { get; protected init; }
@@ -25,6 +25,12 @@ namespace Cave_Adventure
         {
             get => _position;
             set => _position = value;
+        }
+
+        public double Health
+        {
+            get => _health;
+            protected set => _health = value >= 0 ? value : 0;
         }
 
         public bool IsAlive => Health > 0;
@@ -107,6 +113,13 @@ namespace Cave_Adventure
         public void IncreaseAP(int dAP)
         {
             AP = AP + dAP > 0 ? AP + dAP : 0;
+        }
+
+        public bool CheckIsAliveAndChangeState()
+        {
+            if(Health <= 0)
+                SetAnimation(StatesOfAnimation.Death);
+            return Health > 0;
         }
         
         public IEnumerable<Point> GetNeighbors()

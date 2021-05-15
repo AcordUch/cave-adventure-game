@@ -32,7 +32,7 @@ namespace Cave_Adventure
 
         public override void ResetAP()
         {
-            AP = GlobalConst.SpiderAP;
+            AP = Health > 0 ? GlobalConst.SpiderAP : 0;
         }
 
         public override string ToString()
