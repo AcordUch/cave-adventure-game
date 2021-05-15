@@ -16,9 +16,6 @@ namespace Cave_Adventure
         private readonly string[] _levels;
         private bool _configured = false;
         private readonly Game _game;
-        //private Monster _monster;
-        //private double _monsterHealth;
-        private System.Timers.Timer _timer;
 
         public ArenaPanel(Game game)
         {
@@ -244,24 +241,24 @@ namespace Cave_Adventure
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            secondColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 93));
-            secondColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 7));
+            secondColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 90));
+            secondColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 10));
             secondColumnTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
             thirdColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
             thirdColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
             thirdColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
             thirdColumnTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-            bottomTable.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-            bottomTable.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            bottomTable.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
+            bottomTable.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
             bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35));
             bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35));
             bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30));
 
             arenaLayoutPanel.Controls.Add(ArenaFieldControl);
-            bottomTable.Controls.Add(_attackMonsterButton, 2, 0);
             bottomTable.Controls.Add(backToMenuButton, 0, 1);
             bottomTable.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 1, 1);
             bottomTable.Controls.Add(nextTurnButton, 2, 1);
+            bottomTable.Controls.Add(_attackMonsterButton, 2, 0);
             secondColumnTable.Controls.Add(arenaLayoutPanel, 0, 0);
             secondColumnTable.Controls.Add(bottomTable, 0, 1);
             thirdColumnTable.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 0, 0);
@@ -351,16 +348,6 @@ namespace Cave_Adventure
         {
             base.OnPaint(e);
             e.Graphics.Clear(Color.White);
-        }
-
-        private void OnTimedEvent(object sender, ElapsedEventArgs e)
-        {
-            /*if (_monsterHealth <= 0.0)
-                _monster.SetAnimation(StatesOfAnimation.Death);
-            else*/
-                // _monster.Attacking(_monsterHealth);
-            
-            _timer.Stop();
         }
     }
 }
