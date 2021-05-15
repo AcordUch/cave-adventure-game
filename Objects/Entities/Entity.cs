@@ -1,6 +1,7 @@
 using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
+using Cave_Adventure.Views;
 
 namespace Cave_Adventure
 {
@@ -8,6 +9,7 @@ namespace Cave_Adventure
     {
         private Point _position;
         private double _health;
+        private readonly EntityAttackAnimController _attackAnimController;
 
         public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
         public ViewDirection ViewDirection { get; set; } = ViewDirection.Right;
@@ -39,10 +41,12 @@ namespace Cave_Adventure
         {
             Tag = tag;
             _position = position;
+            _attackAnimController = new EntityAttackAnimController(this);
         }
         
         public virtual double Attacking()
         {
+            _attackAnimController.PlayAttackAnimation();
             return Weapon.GetDamage(this);
         }
 
@@ -127,7 +131,7 @@ namespace Cave_Adventure
             return GlobalConst.PossibleDirections.Select(size => _position + size).ToList();
         }
 
-        protected void SetAnimation(StatesOfAnimation currentAnimation)
+        public void SetAnimation(StatesOfAnimation currentAnimation)
         {
             CurrentStates = currentAnimation;
         }
