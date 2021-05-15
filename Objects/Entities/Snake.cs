@@ -5,8 +5,6 @@ namespace Cave_Adventure
 {
     public class Snake: Monster
     {
-        private Timer _timer;
-
         public Snake(Point position) : base(position, EntityType.Snake)
         {
             AP = GlobalConst.SnakeAP;

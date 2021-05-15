@@ -5,8 +5,6 @@ namespace Cave_Adventure
 {
     public class Spider : Monster
     {
-        private Timer _timer;
-
         public Spider(Point position) : base(position, EntityType.Spider)
         {
             AP = GlobalConst.SpiderAP;

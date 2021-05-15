@@ -5,8 +5,6 @@ namespace Cave_Adventure
 {
     public class Player : Entity
     {
-        private Timer _timer;
-
         public Player(Point position) : base(position, EntityType.Player)
         {
             AP = GlobalConst.PlayerAP;

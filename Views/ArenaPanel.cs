@@ -138,12 +138,6 @@ namespace Cave_Adventure
 
         private void Attack(object sender, EventArgs e)
         {
-            // _timer = new System.Timers.Timer { Interval = 2000 };
-            // _timer.Elapsed += OnTimedEvent;
-            // _timer.Enabled = true;
-            // ArenaFieldControl.Player.Attacking(_monsterHealth);
-            // _monsterHealth -= ArenaFieldControl.Player.Attack;
-            // _attackMonsterButton.Enabled = false;
             ArenaFieldControl.ArenaMap.AttackButtonPressed = true;
         }
         
