@@ -13,13 +13,14 @@ namespace Cave_Adventure
         public Player Player { get; private set; }
         public Monster[] Monsters { get; private set; }
         public bool PlayerSelected { get; set; }
-        public bool IsPlayerTurnNow { get; private set; }
+        public bool IsPlayerTurnNow { get; private set; } = true;
         public SinglyLinkedList<Point>[] PlayerPaths { get; private set; }
         
         public int Step { get; private set; } = 1;
 
         public int Width => Arena.GetLength(0);
         public int Height => Arena.GetLength(1);
+        public event Action ChangeStateOfUI; 
         
         public ArenaMap(CellType[,] arena, Player player, Monster[] monsters)
         {
@@ -37,21 +38,30 @@ namespace Cave_Adventure
             }
         }
 
-        public void NextTurn()
+        public async void NextTurn()
         {
-            Step += 1;
+            BlockUnblockUI();
             Player.ResetAP();
             Player.IsSelected = false;
             PlayerPaths = null;
             PlayerSelected = false;
-            IsPlayerTurnNow = !IsPlayerTurnNow;
-            MonsterTurnController();
+            await MonsterTurnController();
+            Step += 1;
+            BlockUnblockUI();
+            // IsPlayerTurnNow = !IsPlayerTurnNow;
+
         }
 
-        private async void MonsterTurnController()
+        private void BlockUnblockUI()
+        {
+            IsPlayerTurnNow = !IsPlayerTurnNow;
+            ChangeStateOfUI?.Invoke();
+        }
+
+        private Task MonsterTurnController()
         {
             var monsters = Monsters.ToList().OrderBy(m => m.Initiative);
-            await MoveEntityControl(monsters);
+            return MoveEntityControl(monsters);
         }
 
         public async void MovePlayerAlongThePath(Point targetPoint)

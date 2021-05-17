@@ -11,8 +11,10 @@ namespace Cave_Adventure
     {
         private readonly ArenaFieldControl ArenaFieldControl;
         private Label _infoLabel;
+        private Button _nextTurnButton;
         private readonly string[] _levels;
         private bool _configured = false;
+        private bool _UIBlocked = false;
         private readonly Game _game;
 
         public ArenaPanel(Game game)
@@ -46,6 +48,9 @@ namespace Cave_Adventure
                 throw new InvalidOperationException();
             
             ArenaFieldControl.Configure(_levels[0]);
+            ArenaFieldControl.ArenaMap.ChangeStateOfUI += OnBlockUnblockUI;
+            if(_UIBlocked)
+                OnBlockUnblockUI();
             _configured = true;
         }
 
@@ -75,6 +80,8 @@ namespace Cave_Adventure
         {
             if (args.Button == MouseButtons.Left)
             {
+                if (!ArenaFieldControl.ArenaMap.IsPlayerTurnNow)
+                    return;
                 var actionCompleted = false;
                 if (point == ArenaFieldControl.Player.Position && !actionCompleted)
                 {
@@ -115,15 +122,6 @@ namespace Cave_Adventure
             ArenaFieldControl.ArenaMap.NextTurn();
         }
         
-        // private static IEnumerable<ArenaMap> LoadLevels()
-        // {
-        //     yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena1);
-        //     yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena2);
-        //     yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena3);
-        //     yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena4);
-        //     yield return ArenaMap.CreateNewArenaMap(Properties.Resources.Arena5);
-        // }
-
         private static IEnumerable<String> LoadLevels()
         {
             yield return Properties.Resources.Arena1;
@@ -150,7 +148,7 @@ namespace Cave_Adventure
             };
             SetUpLevelSwitch(levelMenu);
 
-            var nextTurnButton = new Button()
+            _nextTurnButton = new Button()
             {
                 Text = $"Следующий ход",
                 TextAlign = ContentAlignment.MiddleCenter,
@@ -158,7 +156,7 @@ namespace Cave_Adventure
                 Size = new Size(350, 50),
                 AutoSize = true
             };
-            nextTurnButton.Click += ClickOnNextTurnButton;
+            _nextTurnButton.Click += ClickOnNextTurnButton;
 
             var backToMenuButton = new Button()
             {
@@ -232,7 +230,7 @@ namespace Cave_Adventure
             bottomTable.Controls.Add(backToMenuButton,0, 0);
             bottomTable.Controls.Add(new Panel(){Dock = DockStyle.Fill,BackColor = Color.Black},1, 0);
             //bottomTable.Controls.Add(attackMonsterButton, 1, 0);
-            bottomTable.Controls.Add(nextTurnButton,2, 0);
+            bottomTable.Controls.Add(_nextTurnButton,2, 0);
             secondColumnTable.Controls.Add(arenaLayoutPanel, 0, 0);
             secondColumnTable.Controls.Add(bottomTable, 0, 1);
             thirdColumnTable.Controls.Add(new Panel(){Dock = DockStyle.Fill,BackColor = Color.Black},0, 0);
@@ -272,7 +270,10 @@ namespace Cave_Adventure
                 link.LinkClicked += (sender, args) =>
                 {
                     ArenaFieldControl.ChangeLevel(_levels[arenaId]);
+                    ArenaFieldControl.ArenaMap.ChangeStateOfUI += OnBlockUnblockUI;
                     UpdateLinksColors(_levels[arenaId], linkLabels);
+                    if(_UIBlocked)
+                        OnBlockUnblockUI();
                 };
                 menuPanel.Controls.Add(link);
                 linkLabels.Add(link);
@@ -305,6 +306,12 @@ namespace Cave_Adventure
                 Margin = new Padding(10, 0, 0, 0)
             };
             infoPanel.Controls.Add(_infoLabel);
+        }
+
+        private void OnBlockUnblockUI()
+        {
+            _nextTurnButton.Enabled = !_nextTurnButton.Enabled;
+            _UIBlocked = !_UIBlocked;
         }
         
         #endregion
