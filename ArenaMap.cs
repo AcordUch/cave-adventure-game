@@ -46,18 +46,17 @@ namespace Cave_Adventure
             PlayerSelected = false;
             IsPlayerTurnNow = !IsPlayerTurnNow;
             MonstersMove_tempName();
+            // foreach (var monster in Monsters)
+            // {
+            //     monster.ResetAP();
+            // }
             //ход монстров
         }
 
-        private void MonstersMove_tempName()
+        private async void MonstersMove_tempName()
         {
             var monsters = Monsters.ToList().OrderBy(m => m.Initiative);
-            foreach (var monster in monsters)
-            {
-                monster.IsSelected = true;
-                MoveEntityAlongThePath(monster.Position + new Size(0, -1), monster);
-                monster.IsSelected = false;
-            }
+            await MoveEntityControl(monsters);
         }
 
         public async void MovePlayerAlongThePath(Point targetPoint)
@@ -98,6 +97,26 @@ namespace Cave_Adventure
             return task;
         }
         
+        private Task MoveEntityControl(IEnumerable<Entity> entities)
+        {
+            var task = new Task(() =>
+            {
+                foreach (var entity in entities)
+                {
+                    entity.IsSelected = true;
+                    MoveEntityAlongThePath(entity.Position + new Size(0, -2), entity);
+                    while (true)
+                    {
+                        if(!entity.IsSelected)
+                            break;
+                    }
+                    entity.ResetAP();
+                }
+            });
+            task.Start();
+            return task;
+        }
+
         private async void MoveEntityAlongThePath(Point targetPoint, Entity entity)
         {
             if(entity.IsSelected)
@@ -122,12 +141,12 @@ namespace Cave_Adventure
                 {
                     if(!entity.IsMoving)
                     {
+                        if (!pathEnumerator.MoveNext())
+                            break;
                         if (pathEnumerator.Current == null) break;
                         var nextPoint = (Point) pathEnumerator.Current;
                         if (nextPoint != entity.Position)
                             entity.SetTargetPoint(nextPoint);
-                        if (!pathEnumerator.MoveNext())
-                            break;
                     }
                 }
 
