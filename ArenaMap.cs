@@ -45,15 +45,10 @@ namespace Cave_Adventure
             PlayerPaths = null;
             PlayerSelected = false;
             IsPlayerTurnNow = !IsPlayerTurnNow;
-            MonstersMove_tempName();
-            // foreach (var monster in Monsters)
-            // {
-            //     monster.ResetAP();
-            // }
-            //ход монстров
+            MonsterTurnController();
         }
 
-        private async void MonstersMove_tempName()
+        private async void MonsterTurnController()
         {
             var monsters = Monsters.ToList().OrderBy(m => m.Initiative);
             await MoveEntityControl(monsters);
@@ -67,35 +62,35 @@ namespace Cave_Adventure
                         .FirstOrDefault(p => p.Value == targetPoint) 
                             ?? throw new InvalidOperationException("Среди доступных точек нет необходимой. В методе откуда вызов нет проверки?"))
                     .Select(p => p).Reverse().ToArray();
-                await StartMovePlayer(path);
+                await StartMoveEntity(path, Player);
             }
         }
         
-        private Task StartMovePlayer(Point[] path)
-        {
-            var pathEnumerator = path.GetEnumerator();
-            if (!pathEnumerator.MoveNext())
-                return new Task(() => {});
-            var task = new Task(() =>
-            {
-                while (true)
-                {
-                    if(!Player.IsMoving)
-                    {
-                        if (pathEnumerator.Current == null) break;
-                        var nextPoint = (Point)pathEnumerator.Current;
-                        if(nextPoint != Player.Position)
-                            Player.SetTargetPoint(nextPoint);
-                        if(!pathEnumerator.MoveNext())
-                            break;
-                    }
-                }
-
-                Player.IsSelected = false;
-            });
-            task.Start();
-            return task;
-        }
+        // private Task StartMovePlayer(Point[] path)
+        // {
+        //     var pathEnumerator = path.GetEnumerator();
+        //     if (!pathEnumerator.MoveNext())
+        //         return new Task(() => {});
+        //     var task = new Task(() =>
+        //     {
+        //         while (true)
+        //         {
+        //             if(!Player.IsMoving)
+        //             {
+        //                 if (pathEnumerator.Current == null) break;
+        //                 var nextPoint = (Point)pathEnumerator.Current;
+        //                 if(nextPoint != Player.Position)
+        //                     Player.SetTargetPoint(nextPoint);
+        //                 if(!pathEnumerator.MoveNext())
+        //                     break;
+        //             }
+        //         }
+        //
+        //         Player.IsSelected = false;
+        //     });
+        //     task.Start();
+        //     return task;
+        // }
         
         private Task MoveEntityControl(IEnumerable<Entity> entities)
         {
@@ -130,26 +125,19 @@ namespace Cave_Adventure
             }
         }
         
-        private Task StartMoveEntity(Point[] path, Entity entity)
+        private Task StartMoveEntity(IEnumerable<Point> path, Entity entity)
         {
-            var pathEnumerator = path.GetEnumerator();
-            if (!pathEnumerator.MoveNext())
-                return new Task(() => {});
             var task = new Task(() =>
             {
-                while (true)
+                foreach (var point in path)
                 {
-                    if(!entity.IsMoving)
+                    if (point != entity.Position)
+                        entity.SetTargetPoint(point);
+                    
+                    while (entity.IsMoving)
                     {
-                        if (!pathEnumerator.MoveNext())
-                            break;
-                        if (pathEnumerator.Current == null) break;
-                        var nextPoint = (Point) pathEnumerator.Current;
-                        if (nextPoint != entity.Position)
-                            entity.SetTargetPoint(nextPoint);
                     }
                 }
-
                 entity.IsSelected = false;
             });
             task.Start();
