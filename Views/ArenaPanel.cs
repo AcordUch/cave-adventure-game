@@ -9,7 +9,7 @@ namespace Cave_Adventure
 {
     public class ArenaPanel : Panel, IPanel
     {
-        private readonly ArenaFieldControl ArenaFieldControl;
+        public readonly ArenaFieldControl ArenaFieldControl;
         private Label _infoLabel;
         private Button _nextTurnButton;
         private readonly string[] _levels;
