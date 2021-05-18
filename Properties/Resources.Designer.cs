@@ -133,7 +133,7 @@ namespace Cave_Adventure.Properties {
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на # .# .# .# .# .# .# .# .# .# .
-        ///# .P .Sp.Sp.Sp.Sp.Sp.Sp.Sp.# .
+        ///# .P .  .Sp.Sp.Sp.Sp.Sp.Sp.# .
         ///# .Sn.Sn.Sn.Sn.Sn.Sn.Sn.Sn.# .
         ///# .Sp.Sp.Sp.Sp.Sp.Sp.Sp.Sp.# .
         ///# .Sn.Sn.Sn.Sn.Sn.Sn.Sn.Sn.# .
@@ -161,6 +161,27 @@ namespace Cave_Adventure.Properties {
         internal static string Arena6 {
             get {
                 return ResourceManager.GetString("Arena6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на # .# .# .# .# .# .# .# .# .# .
+        ///# .P .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .Sp.Sn.Sp.Sn.Sp.Sn.Sp.Sn.# .
+        ///# .# .# .# .# .# .# .# .# .# ..
+        /// </summary>
+        internal static string Arena7 {
+            get {
+                return ResourceManager.GetString("Arena7", resourceCulture);
             }
         }
         

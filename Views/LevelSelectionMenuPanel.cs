@@ -5,16 +5,19 @@ using System.Linq;
 using System.Windows.Forms;
 using Cave_Adventure.Interfaces;
 
-namespace Cave_Adventure
+namespace Cave_Adventure.Views
 {
-    public class MainMenuPanel : Panel, IPanel
+    public class LevelSelectionMenuPanel: Panel, IPanel
     {
+        private readonly string[] _levels;
         private readonly Game _game;
         private bool _configured = false;
+        public event Action<string> LoadLevel;
 
-        public MainMenuPanel(Game game)
+        public LevelSelectionMenuPanel(Game game)
         {
             _game = game;
+            _levels = LoadLevels().ToArray();
             
             var table = new TableLayoutPanel
             {
@@ -57,16 +60,27 @@ namespace Cave_Adventure
                 Padding = new Padding(25, 10, 0, 0),
                 Font = new Font(SystemFonts.DialogFont.FontFamily, 12)
             };
-            SetUpButtonMenu(buttonMenu);
+            SetUpLevelSwitch(buttonMenu);
             
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 85));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15));
             table.Controls.Add(buttonMenu, 1, 0);
         }
-
-        private void SetUpButtonMenu(FlowLayoutPanel buttonMenu)
+        
+        private static IEnumerable<String> LoadLevels()
         {
-            buttonMenu.Controls.Add(new Label
+            yield return Properties.Resources.Arena1;
+            yield return Properties.Resources.Arena2;
+            yield return Properties.Resources.Arena3;
+            yield return Properties.Resources.Arena4;
+            yield return Properties.Resources.Arena5;
+            yield return Properties.Resources.Arena6;
+            yield return Properties.Resources.Arena7;
+        }
+        
+        private void SetUpLevelSwitch(Control menuPanel)
+        {
+            menuPanel.Controls.Add(new Label
             {
                 Text = "Little TB Game",
                 TextAlign = ContentAlignment.MiddleRight,
@@ -77,32 +91,30 @@ namespace Cave_Adventure
                 Font = new Font(SystemFonts.DialogFont.FontFamily, 15)
             });
             
-            var Arenas = new LinkLabel
+            var linkLabels = new List<LinkLabel>();
+            for (var i = 0; i < _levels.Length; i++)
             {
-                Text = "Arenas",
-                TextAlign = ContentAlignment.MiddleCenter,
-                LinkColor = Color.Black,
-                ActiveLinkColor = Color.White,
-                Size = new Size(100, 35),
-                AutoSize = true,
-                Margin = new Padding(0, 20, 0, 5),
-            };
-            Arenas.LinkClicked += _game.SwitchOnArenas;
-            
-            var levelSelectionMenu = new LinkLabel
-            {
-                Text = "levels",
-                TextAlign = ContentAlignment.MiddleCenter,
-                LinkColor = Color.Black,
-                ActiveLinkColor = Color.White,
-                Size = new Size(100, 35),
-                AutoSize = true,
-                Margin = new Padding(0, 20, 0, 5),
-            };
-            levelSelectionMenu.LinkClicked += _game.SwitchOnLevelSelectionMenu;
-            
-            buttonMenu.Controls.Add(Arenas);
-            buttonMenu.Controls.Add(levelSelectionMenu);
+                var arenaId = i;
+                var link = new LinkLabel
+                {
+                    Text = $"Арена {i + 1}",
+                    ActiveLinkColor = Color.LimeGreen,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Size = new Size(100, 35),
+                    AutoSize = true,
+                    Margin = new Padding(0, 20, 0, 5),
+                    Tag = _levels[arenaId]
+                };
+                link.LinkClicked += (sender, args) =>
+                {
+                    // ArenaFieldControl.ChangeLevel(_levels[arenaId]);
+                    _game.SwitchOnArenas(sender, args);
+                    LoadLevel?.Invoke(_levels[arenaId]);
+                };
+                
+                menuPanel.Controls.Add(link);
+                linkLabels.Add(link);
+            }
         }
     }
 }

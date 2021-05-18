@@ -13,6 +13,7 @@ namespace Cave_Adventure
         public Player Player { get; private set; }
         public Monster[] Monsters { get; private set; }
         public bool PlayerSelected { get; set; }
+        public bool IsPlayerTurnNow { get; private set; } = true;
         public bool AttackButtonPressed { get; set; }
         public SinglyLinkedList<Point>[] PlayerPaths { get; private set; }
         
@@ -20,6 +21,7 @@ namespace Cave_Adventure
 
         public int Width => Arena.GetLength(0);
         public int Height => Arena.GetLength(1);
+        public event Action ChangeStateOfUI; 
         
         public ArenaMap(CellType[,] arena, Player player, Monster[] monsters)
         {
@@ -37,14 +39,20 @@ namespace Cave_Adventure
             }
         }
 
-        public void NextTurn()
+        public async void NextTurn()
         {
-            Step += 1;
+            BlockUnblockUI();
             Player.ResetAP();
             Player.IsSelected = false;
+            PlayerPaths = null;
             PlayerSelected = false;
-        }
+            await MonsterTurnController();
+            Step += 1;
+            BlockUnblockUI();
+            // IsPlayerTurnNow = !IsPlayerTurnNow;
 
+        }
+        
         public void Attacking(Entity attacker, Point targetPoint)
         {
             var target = GetListOfEntities().FirstOrDefault(p => p.Position == targetPoint);
@@ -60,8 +68,20 @@ namespace Cave_Adventure
                 target.CheckIsAliveAndChangeState();
             }
         }
-        
-        public async void MoveAlongThePath(Point targetPoint)
+
+        private void BlockUnblockUI()
+        {
+            IsPlayerTurnNow = !IsPlayerTurnNow;
+            ChangeStateOfUI?.Invoke();
+        }
+
+        private Task MonsterTurnController()
+        {
+            var monsters = Monsters.ToList().OrderBy(m => m.Initiative);
+            return MoveEntityControl(monsters);
+        }
+
+        public async void MovePlayerAlongThePath(Point targetPoint)
         {
             if (PlayerSelected && Player.AP > 0)
             {
@@ -69,31 +89,57 @@ namespace Cave_Adventure
                         .FirstOrDefault(p => p.Value == targetPoint) 
                             ?? throw new InvalidOperationException("Среди доступных точек нет необходимой. В методе откуда вызов нет проверки?"))
                     .Select(p => p).Reverse().ToArray();
-                await StartMovePlayer(path);
+                await StartMoveEntity(path, Player);
             }
         }
         
-        private Task StartMovePlayer(Point[] path)
+        private Task MoveEntityControl(IEnumerable<Entity> entities)
         {
-            var pathEnumerator = path.GetEnumerator();
-            if (!pathEnumerator.MoveNext())
-                return new Task(() => {});
             var task = new Task(() =>
             {
-                while (true)
+                foreach (var entity in entities)
                 {
-                    if(!Player.IsMoving)
+                    entity.IsSelected = true;
+                    MoveEntityAlongThePath(entity.Position + new Size(0, -2), entity);
+                    while (true)
                     {
-                        if (pathEnumerator.Current == null) break;
-                        var nextPoint = (Point)pathEnumerator.Current;
-                        if(nextPoint != Player.Position)
-                            Player.SetTargetPoint(nextPoint);
-                        if(!pathEnumerator.MoveNext())
+                        if(!entity.IsSelected)
                             break;
                     }
+                    entity.ResetAP();
                 }
+            });
+            task.Start();
+            return task;
+        }
 
-                Player.IsSelected = false;
+        private async void MoveEntityAlongThePath(Point targetPoint, Entity entity)
+        {
+            if(entity.IsSelected)
+            {
+                var path = (BFS.FindPaths(this, entity.Position, entity.AP)
+                                .FirstOrDefault(p => p.Value == targetPoint)
+                            ?? throw new InvalidOperationException(
+                                "Среди доступных точек нет необходимой. В методе откуда вызов нет проверки?"))
+                    .Select(p => p).Reverse().ToArray();
+                await StartMoveEntity(path, entity);
+            }
+        }
+        
+        private Task StartMoveEntity(IEnumerable<Point> path, Entity entity)
+        {
+            var task = new Task(() =>
+            {
+                foreach (var point in path)
+                {
+                    if (point != entity.Position)
+                        entity.SetTargetPoint(point);
+                    
+                    while (entity.IsMoving)
+                    {
+                    }
+                }
+                entity.IsSelected = false;
             });
             task.Start();
             return task;

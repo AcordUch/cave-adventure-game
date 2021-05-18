@@ -12,12 +12,13 @@ namespace Cave_Adventure
 
         private bool _configured = false;
         private Dictionary<Entity, int> _currentFrames;
+        private Dictionary<Entity, int> _displacementStage;
         private Entity _currentEntity;
         private int _mirroring = 1;
         private int _currentAnimation;
         private int _currentFrameLimit = 0;
         
-        public int DisplacementStage { get; set; } = 0;
+        //public int DisplacementStage { get; set; } = 0;
 
         public void Configure(List<Entity> entities)
         {
@@ -30,12 +31,14 @@ namespace Cave_Adventure
         public void Drop()
         {
             _currentFrames = null;
+            _displacementStage = null;
             _configured = false;
         }
 
         public void ReConfigure(List<Entity> entities)
         {
             _currentFrames = entities.ToDictionary(k => k, v => 0);
+            _displacementStage = entities.ToDictionary(k => k, v => 0);
         }
         
         public void SetUpAndPaint(Graphics graphics, Entity entity)
@@ -60,7 +63,7 @@ namespace Cave_Adventure
             graphics.DrawImage(
                 entityImage,
                 new Rectangle(
-                    playerPosition.X - _mirroring * ImageSize / 2,
+                    playerPosition.X - _mirroring * ImageSize / 4,
                     playerPosition.Y,
                     _mirroring * ImageSize * 2,
                     ImageSize * 2
@@ -76,19 +79,22 @@ namespace Cave_Adventure
         private Point GetGraphicPosition(Entity entity)
         {
             var dPoint = Point.Empty;
-            if(entity.IsMoving)
+            lock(new object())
             {
-                dPoint = entity.GetDeltaPoint();
-                DisplacementStage++;
-                if (DisplacementStage == 15)
+                if (entity.IsMoving)
                 {
-                    DisplacementStage = 0;
-                    entity.Move(dPoint.X, dPoint.Y);
+                    dPoint = entity.GetDeltaPoint();
+                    _displacementStage[entity]++;
+                    if (_displacementStage[entity] == 15)
+                    {
+                        _displacementStage[entity] = 0;
+                        entity.Move(dPoint.X, dPoint.Y);
+                    }
                 }
             }
             
-            return new Point(entity.Position.X * GlobalConst.AssetsSize + DisplacementStage * dPoint.X * GlobalConst.AssetsSize / 16,
-                entity.Position.Y * GlobalConst.AssetsSize + DisplacementStage * dPoint.Y * GlobalConst.AssetsSize / 16);
+            return new Point(entity.Position.X * GlobalConst.AssetsSize + _displacementStage[entity] * dPoint.X * GlobalConst.AssetsSize / 16,
+                entity.Position.Y * GlobalConst.AssetsSize + _displacementStage[entity] * dPoint.Y * GlobalConst.AssetsSize / 16);
         }
     }
 }
