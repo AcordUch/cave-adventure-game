@@ -12,6 +12,7 @@ namespace Cave_Adventure
             Health = GlobalConst.PlayerHP;
             Damage = GlobalConst.PlayerDamage;
             Defense = GlobalConst.PlayerDefence;
+            Initiative = 10;
             Weapon = new Sword();
         }
 

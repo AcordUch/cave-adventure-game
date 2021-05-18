@@ -12,6 +12,7 @@ namespace Cave_Adventure
             Health = GlobalConst.SnakeHP;
             Damage = GlobalConst.SnakeDamage;
             Defense = GlobalConst.SnakeDefence;
+            Initiative = 7;
         }
 
         public override void ResetAP()

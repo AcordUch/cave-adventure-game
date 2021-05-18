@@ -23,6 +23,7 @@ namespace Cave_Adventure
         public double Attack { get; protected init; }
         public double Defense { get; protected init; }
         public double Damage { get; protected init; }
+        public int Initiative { get; protected set; }
         public Weapon Weapon { get; protected init; }
         
         public Point Position
