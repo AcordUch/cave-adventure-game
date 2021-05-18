@@ -16,6 +16,8 @@ namespace Cave_Adventure
         double Attack { get; }
         double Defense { get; }
         double Damage { get; }
+        Weapon Weapon { get; }
+        bool IsAlive { get; }
         
         void Move(int dx, int dy);
         void TeleportToPoint(Point point);
