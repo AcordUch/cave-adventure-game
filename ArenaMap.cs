@@ -100,7 +100,7 @@ namespace Cave_Adventure
                 foreach (var entity in entities)
                 {
                     entity.IsSelected = true;
-                    MoveEntityAlongThePath(entity.Position + new Size(0, -2), entity);
+                    MoveEntityAlongThePath(entity.Position + new Size(0, 1), entity);
                     while (true)
                     {
                         if(!entity.IsSelected)
@@ -117,11 +117,20 @@ namespace Cave_Adventure
         {
             if(entity.IsSelected)
             {
-                var path = (BFS.FindPaths(this, entity.Position, entity.AP)
+                var path = new Point[0];
+                try
+                {
+                    path = (BFS.FindPaths(this, entity.Position, entity.AP)
                                 .FirstOrDefault(p => p.Value == targetPoint)
                             ?? throw new InvalidOperationException(
                                 "Среди доступных точек нет необходимой. В методе откуда вызов нет проверки?"))
-                    .Select(p => p).Reverse().ToArray();
+                        .Select(p => p).Reverse().ToArray();
+                }
+                catch
+                {
+                    // ignored
+                }
+
                 await StartMoveEntity(path, entity);
             }
         }

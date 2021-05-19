@@ -19,8 +19,7 @@ namespace Cave_Adventure
         private PointF _logicalCenterPos;
         private bool _configured = false;
         private Dictionary<Point, Rectangle> _pointToRectangle;
-
-        public int ArenaId { get; set; }
+        
         public ArenaMap ArenaMap { get; private set; }
         public ArenaPainter ArenaPainter { get; }
         
@@ -30,7 +29,6 @@ namespace Cave_Adventure
 
         public event Action BindUIChangeEvent;
         
-
         public ArenaFieldControl()
         {
             InitializeComponent();

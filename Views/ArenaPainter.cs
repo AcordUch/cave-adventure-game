@@ -38,6 +38,9 @@ namespace Cave_Adventure
         
         public void Paint(Graphics graphics)
         {
+            if(!_configured)
+                return;
+            
             TypeEntity();
             if(_currentArena.PlayerSelected)
                 PaintPath();

@@ -5,20 +5,29 @@ using System.Linq;
 using System.Timers;
 using System.Windows.Forms;
 using Cave_Adventure.Interfaces;
+using Cave_Adventure.Views;
 
 namespace Cave_Adventure
 {
     public class ArenaPanel : Panel, IPanel
     {
         public readonly ArenaFieldControl ArenaFieldControl;
+        private readonly string[] _levels;
+        private readonly Game _game;
+        private readonly HealBar _healBar;
         private Label _infoLabel;
         private Button _nextTurnButton;
         private Button _attackMonsterButton;
         private Button _nextLevelButton;
-        private readonly string[] _levels;
         private bool _configured = false;
         private bool _UIBlocked = false;
-        private readonly Game _game;
+        private int _currentArenaId;
+
+        public int CurrentArenaId
+        {
+            get => _currentArenaId;
+            private set => _currentArenaId = value >= _levels.Length ? 0 : value;
+        }
 
         public ArenaPanel(Game game)
         {
@@ -28,6 +37,11 @@ namespace Cave_Adventure
             ArenaFieldControl = new ArenaFieldControl();
             ArenaFieldControl.BindUIChangeEvent += OnBindUIChangeEvent;
 
+            _healBar = new HealBar()
+            {
+                Dock = DockStyle.Fill,
+                AutoSize = true
+            };
             var table = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
@@ -55,6 +69,8 @@ namespace Cave_Adventure
 
             arenaMap ??= _levels[0];
             ArenaFieldControl.Configure(arenaMap);
+            _healBar.Configure(ArenaFieldControl.ArenaMap);
+            CurrentArenaId = Array.IndexOf(_levels, arenaMap);
             // ArenaFieldControl.ArenaMap.ChangeStateOfUI += OnBlockUnblockUI;
             if(_UIBlocked)
                 OnBlockUnblockUI();
@@ -73,6 +89,7 @@ namespace Cave_Adventure
                 return;
 
             ArenaFieldControl.Update();
+            _healBar.Invalidate();
 
             //Вынести в метод OnSizeChange
             var zoom = GetZoomForController();
@@ -148,9 +165,15 @@ namespace Cave_Adventure
             ArenaFieldControl.ArenaMap.NextTurn();
         }
         
-        private void Attack(object sender, EventArgs e)
+        private void OnAttackButtonClick(object sender, EventArgs e)
         {
             ArenaFieldControl.ArenaMap.AttackButtonPressed = true;
+        }
+
+        private void OnNextLevelButtonClick(object sender, EventArgs e)
+        {
+            CurrentArenaId++;
+            ArenaFieldControl.LoadLevel(_levels[_currentArenaId]);
         }
         
         private static IEnumerable<String> LoadLevels()
@@ -207,7 +230,7 @@ namespace Cave_Adventure
                 Size = new Size(350, 50),
                 AutoSize = true
             };
-            // backToMenuButton.Click += _game.SwitchOnMainMenu;
+            _nextLevelButton.Click += OnNextLevelButtonClick;
 
             _attackMonsterButton = new Button()
             {
@@ -218,7 +241,7 @@ namespace Cave_Adventure
                 AutoSize = true,
                 Enabled = false,
             };
-            _attackMonsterButton.Click += Attack;
+            _attackMonsterButton.Click += OnAttackButtonClick;
 
             var infoPanel = new FlowLayoutPanel()
             {
@@ -278,7 +301,7 @@ namespace Cave_Adventure
             bottomTable.Controls.Add(_attackMonsterButton, 2, 0);
             secondColumnTable.Controls.Add(arenaLayoutPanel, 0, 0);
             secondColumnTable.Controls.Add(bottomTable, 0, 1);
-            thirdColumnTable.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 0, 0);
+            thirdColumnTable.Controls.Add(_healBar, 0, 0); //Тут ошибка null
             thirdColumnTable.Controls.Add(infoPanel, 0, 1);
             thirdColumnTable.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 0, 2);
             table.Controls.Add(levelMenu, 0, 0);
@@ -365,6 +388,11 @@ namespace Cave_Adventure
         private void OnBindUIChangeEvent()
         {
             ArenaFieldControl.ArenaMap.ChangeStateOfUI += OnBlockUnblockUI;
+        }
+
+        public void OnSetCurrentArenaId(int arenaId)
+        {
+            CurrentArenaId = arenaId;
         }
 
         private double GetZoomForController()

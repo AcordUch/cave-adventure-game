@@ -13,6 +13,7 @@ namespace Cave_Adventure.Views
         private readonly Game _game;
         private bool _configured = false;
         public event Action<string> LoadLevel;
+        public event Action<int> SetLevelId;
 
         public LevelSelectionMenuPanel(Game game)
         {
@@ -54,7 +55,7 @@ namespace Cave_Adventure.Views
         {
             var buttonMenu = new FlowLayoutPanel
             {
-                FlowDirection = FlowDirection.RightToLeft,
+                FlowDirection = FlowDirection.TopDown,
                 Dock = DockStyle.Fill,
                 AutoSize = true,
                 BackColor = Color.Chartreuse,
@@ -109,6 +110,7 @@ namespace Cave_Adventure.Views
                 {
                     _game.SwitchOnArenas(sender, args);
                     LoadLevel?.Invoke(_levels[arenaId]);
+                    SetLevelId?.Invoke(arenaId);
                 };
                 
                 menuPanel.Controls.Add(link);

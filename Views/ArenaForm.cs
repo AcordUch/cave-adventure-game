@@ -56,8 +56,8 @@ namespace Cave_Adventure
             };
 
             _levelSelectionMenuPanel.LoadLevel += _arenaPanel.ArenaFieldControl.LoadLevel;
-            // _levelSelectionMenuPanel.LoadLevel += _arenaPanel.Configure;
-            
+            _levelSelectionMenuPanel.SetLevelId += _arenaPanel.OnSetCurrentArenaId;
+
             Controls.Add(_arenaPanel);
             Controls.Add(_mainMenuPanel);
             Controls.Add(_levelSelectionMenuPanel);
