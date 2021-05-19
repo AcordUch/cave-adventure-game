@@ -22,8 +22,8 @@ namespace Cave_Adventure
 
         public void Configure(List<Entity> entities)
         {
-            if (_configured)
-                throw new InvalidOperationException();
+            // if (_configured)
+            //     throw new InvalidOperationException();
             ReConfigure(entities);
             _configured = true;
         }

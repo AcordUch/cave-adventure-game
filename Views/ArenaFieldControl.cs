@@ -27,6 +27,8 @@ namespace Cave_Adventure
         public Player Player => ArenaMap.Player;
 
         public Monster[] Monsters => ArenaMap.Monsters;
+
+        public event Action BindUIChangeEvent;
         
 
         public ArenaFieldControl()
@@ -46,10 +48,11 @@ namespace Cave_Adventure
             if (_configured)
                 throw new InvalidOperationException();
             
-            ArenaMap = ArenaMap.CreateNewArenaMap(arenaMap);
-            _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
-            ArenaPainter.Configure(ArenaMap, _pointToRectangle);
-            _entityPainter.Configure(ArenaMap.GetListOfEntities());
+            // ArenaMap = ArenaMap.CreateNewArenaMap(arenaMap);
+            // _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
+            // ArenaPainter.Configure(ArenaMap, _pointToRectangle);
+            // _entityPainter.Configure(ArenaMap.GetListOfEntities());
+            LoadLevel(arenaMap);
             _configured = true;
         }
 
@@ -72,12 +75,13 @@ namespace Cave_Adventure
             DoubleBuffered = true;
         }
         
-        public void ChangeLevel(string newMap)
+        public void LoadLevel(string newMap)
         {
             ArenaMap = ArenaMap.CreateNewArenaMap(newMap);
             _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
-            ArenaPainter.ChangeLevel(ArenaMap, _pointToRectangle);
-            _entityPainter.ReConfigure(ArenaMap.GetListOfEntities());
+            ArenaPainter.Configure(ArenaMap, _pointToRectangle);
+            _entityPainter.Configure(ArenaMap.GetListOfEntities());
+            BindUIChangeEvent?.Invoke();
             Invalidate();
         }
 

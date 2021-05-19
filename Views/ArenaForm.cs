@@ -55,10 +55,12 @@ namespace Cave_Adventure
                 Name = "arenaPanel"
             };
 
-            _levelSelectionMenuPanel.LoadLevel += _arenaPanel.ArenaFieldControl.ChangeLevel;
+            _levelSelectionMenuPanel.LoadLevel += _arenaPanel.ArenaFieldControl.LoadLevel;
+            // _levelSelectionMenuPanel.LoadLevel += _arenaPanel.Configure;
             
             Controls.Add(_arenaPanel);
             Controls.Add(_mainMenuPanel);
+            Controls.Add(_levelSelectionMenuPanel);
             
             ResumeLayout();
 
@@ -114,12 +116,14 @@ namespace Cave_Adventure
             DropScreens();
             _arenaPanel.Hide();
             _mainMenuPanel.Hide();
+            _levelSelectionMenuPanel.Hide();
         }
 
         private void DropScreens()
         {
             _arenaPanel.Drop();
             _mainMenuPanel.Drop();
+            _levelSelectionMenuPanel.Drop();
         }
         
         private void TimerTick(object sender, EventArgs e)

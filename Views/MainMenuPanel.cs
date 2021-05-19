@@ -50,7 +50,7 @@ namespace Cave_Adventure
         {
             var buttonMenu = new FlowLayoutPanel
             {
-                FlowDirection = FlowDirection.RightToLeft,
+                FlowDirection = FlowDirection.TopDown,
                 Dock = DockStyle.Fill,
                 AutoSize = true,
                 BackColor = Color.Red,
@@ -79,7 +79,7 @@ namespace Cave_Adventure
             
             var Arenas = new LinkLabel
             {
-                Text = "Arenas",
+                Text = "Start Play Arena Mode",
                 TextAlign = ContentAlignment.MiddleCenter,
                 LinkColor = Color.Black,
                 ActiveLinkColor = Color.White,
@@ -91,7 +91,7 @@ namespace Cave_Adventure
             
             var levelSelectionMenu = new LinkLabel
             {
-                Text = "levels",
+                Text = "Levels",
                 TextAlign = ContentAlignment.MiddleCenter,
                 LinkColor = Color.Black,
                 ActiveLinkColor = Color.White,

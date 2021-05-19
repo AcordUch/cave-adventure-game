@@ -21,12 +21,13 @@ namespace Cave_Adventure
         
         public void Configure(ArenaMap arena, Dictionary<Point, Rectangle> pointToRectangle)
         {
-            if (_configured)
-                throw new InvalidOperationException();
+            // if (_configured)
+            //     throw new InvalidOperationException();
 
-            _currentArena = arena;
-            _pointToRectangle = pointToRectangle;
-            CreateArena();
+            // _currentArena = arena;
+            // _pointToRectangle = pointToRectangle;
+            // CreateArena();
+            ChangeLevel(arena, pointToRectangle);
             _configured = true;
         }
 
@@ -85,9 +86,9 @@ namespace Cave_Adventure
         
         public void ChangeLevel(ArenaMap newArena, Dictionary<Point, Rectangle> pointToRectangle)
         {
-            if (!_configured)
-                throw new InvalidOperationException();
-            
+            // if (!_configured)
+            //     throw new InvalidOperationException();
+            //
             _currentArena = newArena;
             _pointToRectangle = pointToRectangle;
             CreateArena();
