@@ -65,7 +65,7 @@ namespace Cave_Adventure
             if(attacker.AP > 0)
             {
                 target.Defending(attacker);
-                target.CheckIsAliveAndChangeState();
+                //target.CheckIsAliveAndChangeState();
             }
         }
 

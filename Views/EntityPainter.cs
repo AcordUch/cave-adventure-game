@@ -13,6 +13,7 @@ namespace Cave_Adventure
         private bool _configured = false;
         private Dictionary<Entity, int> _currentFrames;
         private Dictionary<Entity, int> _displacementStage;
+        private Dictionary<Entity, bool> _animationShouldStop;
         private Entity _currentEntity;
         private int _mirroring = 1;
         private int _currentAnimation;
@@ -32,6 +33,7 @@ namespace Cave_Adventure
         {
             _currentFrames = null;
             _displacementStage = null;
+            _animationShouldStop = null;
             _configured = false;
         }
 
@@ -39,6 +41,7 @@ namespace Cave_Adventure
         {
             _currentFrames = entities.ToDictionary(k => k, v => 0);
             _displacementStage = entities.ToDictionary(k => k, v => 0);
+            _animationShouldStop = entities.ToDictionary(k => k, v => false);
         }
         
         public void SetUpAndPaint(Graphics graphics, Entity entity)
@@ -56,9 +59,7 @@ namespace Cave_Adventure
         
         private void PlayAnimation(Graphics graphics, Point playerPosition, Image entityImage)
         {
-            if (_currentFrames[_currentEntity] < _currentFrameLimit - 1)
-                _currentFrames[_currentEntity]++;
-            else _currentFrames[_currentEntity] = 0;
+            ChangeCurrentFrame();
             
             graphics.DrawImage(
                 entityImage,
@@ -74,6 +75,24 @@ namespace Cave_Adventure
                 ImageSize,
                 GraphicsUnit.Pixel
                 );
+        }
+
+        private void ChangeCurrentFrame()
+        {
+            if(_animationShouldStop[_currentEntity])
+                return;
+            
+            if (_currentFrames[_currentEntity] < _currentFrameLimit - 1)
+                _currentFrames[_currentEntity]++;
+            else
+            {
+                if (_currentEntity.IsDead && !_animationShouldStop[_currentEntity])
+                {
+                    _animationShouldStop[_currentEntity] = true;
+                    return;
+                }
+                _currentFrames[_currentEntity] = 0;
+            }
         }
 
         private Point GetGraphicPosition(Entity entity)

@@ -38,7 +38,8 @@ namespace Cave_Adventure
             protected set => _health = value >= 0 ? value : 0;
         }
 
-        public bool IsAlive => Health > 0;
+        public bool IsAlive => CurrentStates != StatesOfAnimation.Death;
+        public bool IsDead => !IsAlive;
 
         protected Entity(Point position, EntityType tag)
         {
@@ -63,12 +64,17 @@ namespace Cave_Adventure
             {
                 this.Health -= attacker.Attack <= 0.75 * this.Defense ? attacker.Attacking() * 0.5 : attacker.Attacking() * 0.75;
             }
+
+            CheckIsAliveAndChangeState();
             if (isfirstAttack)
                 Counterattack(attacker);
         }
 
         private void Counterattack(Entity attacker)
         {
+            if(IsDead)
+                return;
+            
             var timer = new Timer() {Interval = 2100};
             timer.Elapsed += (_, __) =>
             {
