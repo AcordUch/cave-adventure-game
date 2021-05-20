@@ -69,13 +69,14 @@ namespace Cave_Adventure
             
             ShowMainMenu();
             
-            _timer = new Timer { Interval = 60 };
+            _timer = new Timer { Interval = GlobalConst.MainTimerInterval };
             _timer.Tick += TimerTick;
             _timer.Start();
         }
         
         private void OnScreenChange(GameScreen screen)
         {
+            SuspendLayout();
             switch (screen)
             {
                 case GameScreen.Arenas:
@@ -88,6 +89,7 @@ namespace Cave_Adventure
                     ShowLevelSelectionMenu();
                     break;
             }
+            ResumeLayout();
         }
 
         private void ShowArenas()

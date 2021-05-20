@@ -46,10 +46,6 @@ namespace Cave_Adventure
             if (_configured)
                 throw new InvalidOperationException();
             
-            // ArenaMap = ArenaMap.CreateNewArenaMap(arenaMap);
-            // _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
-            // ArenaPainter.Configure(ArenaMap, _pointToRectangle);
-            // _entityPainter.Configure(ArenaMap.GetListOfEntities());
             LoadLevel(arenaMap);
             _configured = true;
         }
@@ -84,39 +80,46 @@ namespace Cave_Adventure
         }
 
         #region KeyControl
-        // public void OnKeyUp(object sender, KeyEventArgs e)
-        // {
-        //     _player.Move(0, 0);
-        //     _player.SetAnimationConfiguration(StatesOfAnimation.Idle);
-        // }
 
-        // public void OnKeyDown(object sender, KeyEventArgs e)
-        // {
-        //     switch (e.KeyCode)
-        //     {
-        //         case Keys.W:
-        //             _player.Move(0, -5);
-        //             _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-        //             break;
-        //         case Keys.S:
-        //             _player.Move(0, 5);
-        //             _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-        //             break;
-        //         case Keys.A:
-        //             _player.Move(-5, 0);
-        //             _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-        //             _player.ViewDirection = ViewDirection.Left;
-        //             break;
-        //         case Keys.D:
-        //             _player.Move(5, 0);
-        //             _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-        //             _player.ViewDirection = ViewDirection.Right;
-        //             break;
-        //         case Keys.Space:
-        //             _player.SetAnimationConfiguration(StatesOfAnimation.Attack);
-        //             break;
-        //     }
-        // }
+        protected override void OnKeyPress(KeyPressEventArgs e)
+        {
+        }
+
+        /*
+        public void OnKeyUp(object sender, KeyEventArgs e)
+        {
+            _player.Move(0, 0);
+            _player.SetAnimationConfiguration(StatesOfAnimation.Idle);
+        }
+
+        public void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.W:
+                    _player.Move(0, -5);
+                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
+                    break;
+                case Keys.S:
+                    _player.Move(0, 5);
+                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
+                    break;
+                case Keys.A:
+                    _player.Move(-5, 0);
+                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
+                    _player.ViewDirection = ViewDirection.Left;
+                    break;
+                case Keys.D:
+                    _player.Move(5, 0);
+                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
+                    _player.ViewDirection = ViewDirection.Right;
+                    break;
+                case Keys.Space:
+                    _player.SetAnimationConfiguration(StatesOfAnimation.Attack);
+                    break;
+            }
+        }
+        */
         #endregion
         
         private void HandleClick(object sender, EventArgs e)

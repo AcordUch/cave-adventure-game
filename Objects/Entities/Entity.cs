@@ -75,7 +75,7 @@ namespace Cave_Adventure
             if(IsDead)
                 return;
             
-            var timer = new Timer() {Interval = 2100};
+            var timer = new Timer() {Interval = GlobalConst.AnimTimerInterval + 100};
             timer.Elapsed += (_, __) =>
             {
                 attacker.Defending(this, false);

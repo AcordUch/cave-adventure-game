@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Timers;
 using System.Windows.Forms;
 using Cave_Adventure.Interfaces;
 using Cave_Adventure.Views;
@@ -12,6 +11,7 @@ namespace Cave_Adventure
     public class ArenaPanel : Panel, IPanel
     {
         public readonly ArenaFieldControl ArenaFieldControl;
+        private readonly List<Keys> _pressedKeys = new List<Keys>();
         private readonly string[] _levels;
         private readonly Game _game;
         private readonly HealBar _healBar;
@@ -37,7 +37,7 @@ namespace Cave_Adventure
             ArenaFieldControl = new ArenaFieldControl();
             ArenaFieldControl.BindEvent += OnBindArenaMapEvent;
             ArenaFieldControl.ClickOnPoint += ArenaFieldControl_ClickOnPoint;
-
+            
             _healBar = new HealBar()
             {
                 Dock = DockStyle.Fill,
@@ -50,6 +50,9 @@ namespace Cave_Adventure
             };
             ConfigureTables(table);
 
+            ArenaFieldControl.KeyDown += OnKeyDown;
+            ArenaFieldControl.KeyUp += OnKeyUp;
+            
             Controls.Add(table);
         }
 
@@ -71,7 +74,6 @@ namespace Cave_Adventure
             ArenaFieldControl.Configure(arenaMap);
             _healBar.Configure(ArenaFieldControl.ArenaMap);
             CurrentArenaId = Array.IndexOf(_levels, arenaMap);
-            // ArenaFieldControl.ArenaMap.ChangeStateOfUI += OnBlockUnblockUI;
             if(_UIBlocked)
                 OnBlockUnblockUI();
             _configured = true;
@@ -327,7 +329,6 @@ namespace Cave_Adventure
                 link.LinkClicked += (sender, args) =>
                 {
                     ArenaFieldControl.LoadLevel(_levels[arenaId]);
-                    // ArenaFieldControl.ArenaMap.ChangeStateOfUI += OnBlockUnblockUI;
                     UpdateLinksColors(_levels[arenaId], linkLabels);
                     _nextLevelButton.Enabled = false;
                     if(_UIBlocked)
@@ -366,6 +367,26 @@ namespace Cave_Adventure
             infoPanel.Controls.Add(_infoLabel);
         }
         #endregion
+
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            _pressedKeys.Add(e.KeyCode);
+            if (_pressedKeys.Contains(Keys.ControlKey) && _pressedKeys.Contains(Keys.Oemtilde) && _pressedKeys.Count == 2)
+            {
+                if(!Application.OpenForms.OfType<CheatMenu>().Any())
+                {
+                    var cheatMenu = new CheatMenu();
+                    cheatMenu.Configure(ArenaFieldControl);
+                    cheatMenu.Show();
+                }
+                _pressedKeys.Clear();
+            }
+        }
+
+        private void OnKeyUp(object sender, KeyEventArgs e)
+        {
+            _pressedKeys.Remove(e.KeyCode);
+        }
         
         private void OnBlockUnblockUI()
         {
@@ -417,14 +438,21 @@ namespace Cave_Adventure
 
         private void OnPlayerDead()
         {
-            MessageBox.Show(
-                "Ты умер :с!\nДавай по новой",
-                "Не повезло, не повезло",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.None,
-                MessageBoxDefaultButton.Button1,
-                MessageBoxOptions.DefaultDesktopOnly);
-            ArenaFieldControl.LoadLevel(_levels[CurrentArenaId]);
+            var timer = new System.Timers.Timer{Interval = GlobalConst.AnimTimerInterval / 2};
+            timer.Elapsed += (_, __) =>
+            {
+                timer.Stop();
+                MessageBox.Show(
+                    "Ты умер :с!\nДавай по новой",
+                    "Не повезло, не повезло",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.None,
+                    MessageBoxDefaultButton.Button1,
+                    MessageBoxOptions.DefaultDesktopOnly);
+                ArenaFieldControl.LoadLevel(_levels[CurrentArenaId]);
+                timer.Close();
+            };
+            timer.Start();
         }
 
         private double GetZoomForController()
