@@ -21,7 +21,7 @@ namespace Cave_Adventure
             base.OnLoad(e);
             DoubleBuffered = true;
             Size = new Size(800, 600);
-            //WindowState = FormWindowState.Maximized;
+            WindowState = FormWindowState.Maximized;
             Text = "Заходит в бар улитка, говорит...";
             KeyPreview = true;
         }

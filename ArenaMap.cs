@@ -23,6 +23,7 @@ namespace Cave_Adventure
         public int Height => Arena.GetLength(1);
         public event Action ChangeStateOfUI;
         public event Action AllMonsterDead;
+        public event Action PlayerDead;
         
         public ArenaMap(CellType[,] arena, Player player, Monster[] monsters)
         {
@@ -66,6 +67,11 @@ namespace Cave_Adventure
             if(attacker.AP > 0)
             {
                 target.Defending(attacker);
+                if(Player.IsDead)
+                {
+                    PlayerDead?.Invoke();
+                    return;
+                }
                 if(Monsters.All(m => m.IsDead))
                     AllMonsterDead?.Invoke();
             }

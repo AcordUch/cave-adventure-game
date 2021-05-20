@@ -139,7 +139,7 @@ namespace Cave_Adventure
 
                 if (ArenaFieldControl.Player.IsSelected && !actionCompleted)
                 {
-                    if (!actionCompleted && ArenaFieldControl.ArenaMap.Monsters.Any(p => p.Position == point))
+                    if (!actionCompleted && ArenaFieldControl.ArenaMap.Monsters.Any(p => p.Position == point && p.IsAlive))
                     {
                         ArenaFieldControl.ArenaMap.Attacking(ArenaFieldControl.Player, point);
                         ArenaFieldControl.ArenaMap.AttackButtonPressed = false;
@@ -266,27 +266,29 @@ namespace Cave_Adventure
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            secondColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 90));
-            secondColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 10));
+            secondColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 86));
+            secondColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 14));
             secondColumnTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
             thirdColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
             thirdColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
             thirdColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
             thirdColumnTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-            bottomTable.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
-            bottomTable.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
-            bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35));
+            bottomTable.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
+            bottomTable.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
+            bottomTable.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
             bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35));
             bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30));
+            bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35));
 
             arenaLayoutPanel.Controls.Add(ArenaFieldControl);
-            bottomTable.Controls.Add(backToMenuButton, 0, 1);
-            bottomTable.Controls.Add(_nextLevelButton, 1, 1);
-            bottomTable.Controls.Add(_nextTurnButton, 2, 1);
-            bottomTable.Controls.Add(_attackMonsterButton, 2, 0);
+            bottomTable.Controls.Add(backToMenuButton, 0, 2);
+            bottomTable.Controls.Add(_nextLevelButton, 0, 1);
+            bottomTable.Controls.Add(new Panel{ Dock = DockStyle.Fill, BackColor = Color.Black }, 2, 0);
+            bottomTable.Controls.Add(_attackMonsterButton, 2, 1);
+            bottomTable.Controls.Add(_nextTurnButton, 2, 2);
             secondColumnTable.Controls.Add(arenaLayoutPanel, 0, 0);
             secondColumnTable.Controls.Add(bottomTable, 0, 1);
-            thirdColumnTable.Controls.Add(_healBar, 0, 0); //Тут ошибка null
+            thirdColumnTable.Controls.Add(_healBar, 0, 0);
             thirdColumnTable.Controls.Add(infoPanel, 0, 1);
             thirdColumnTable.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 0, 2);
             table.Controls.Add(levelMenu, 0, 0);
@@ -375,6 +377,7 @@ namespace Cave_Adventure
         {
             ArenaFieldControl.ArenaMap.ChangeStateOfUI += OnBlockUnblockUI;
             ArenaFieldControl.ArenaMap.AllMonsterDead += OnAllMonsterDead;
+            ArenaFieldControl.ArenaMap.PlayerDead += OnPlayerDead;
             _healBar.Configure(ArenaFieldControl.ArenaMap);
         }
 
@@ -403,6 +406,25 @@ namespace Cave_Adventure
         private void OnAllMonsterDead()
         {
             _nextLevelButton.Enabled = true;
+            MessageBox.Show(
+                "Ты выиграл!\nСледуй дальше",
+                "Победа!",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.None,
+                MessageBoxDefaultButton.Button1,
+                MessageBoxOptions.DefaultDesktopOnly);
+        }
+
+        private void OnPlayerDead()
+        {
+            MessageBox.Show(
+                "Ты умер :с!\nДавай по новой",
+                "Не повезло, не повезло",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.None,
+                MessageBoxDefaultButton.Button1,
+                MessageBoxOptions.DefaultDesktopOnly);
+            ArenaFieldControl.LoadLevel(_levels[CurrentArenaId]);
         }
 
         private double GetZoomForController()

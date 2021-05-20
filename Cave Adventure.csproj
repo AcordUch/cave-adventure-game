@@ -60,6 +60,9 @@
       <Compile Update="Views\ArenaFieldControl.cs">
         <SubType>UserControl</SubType>
       </Compile>
+      <Compile Update="Views\CheatMenu.cs">
+        <SubType>Form</SubType>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

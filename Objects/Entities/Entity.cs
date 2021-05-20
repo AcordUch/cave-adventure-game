@@ -47,8 +47,8 @@ namespace Cave_Adventure
             _position = position;
             _attackAnimController = new EntityAttackAnimController(this);
         }
-        
-        public virtual double Attacking()
+
+        protected virtual double Attacking()
         {
             _attackAnimController.PlayAttackAnimation();
             return Weapon.GetDamage(this);
