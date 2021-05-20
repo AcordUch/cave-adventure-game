@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cave_Adventure.Views;
 
 namespace Cave_Adventure
 {
@@ -191,6 +192,14 @@ namespace Cave_Adventure
             var entities = new List<Entity> { Player };
             entities.AddRange(Monsters);
             return entities;
+        }
+
+        public void CompleteLevel(CheatMenu cheatMenu)
+        {
+            if(cheatMenu.ArenaMap == this)
+            {
+                AllMonsterDead?.Invoke();
+            }
         }
     }
 }

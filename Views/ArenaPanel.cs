@@ -19,8 +19,10 @@ namespace Cave_Adventure
         private Button _nextTurnButton;
         private Button _attackMonsterButton;
         private Button _nextLevelButton;
+        private Button _inspectEntityButton;
         private bool _configured = false;
         private bool _UIBlocked = false;
+        private bool _needInspect = false;
         private int _currentArenaId;
 
         public int CurrentArenaId
@@ -102,65 +104,110 @@ namespace Cave_Adventure
             _infoLabel.Text = ArenaFieldControl.PlayerInfoToString();
         }
 
+        #region ClickOnPointHandler
+        
         private void ArenaFieldControl_ClickOnPoint(Point point, MouseEventArgs args)
         {
             if (args.Button == MouseButtons.Left)
             {
                 if (!ArenaFieldControl.ArenaMap.IsPlayerTurnNow)
                     return;
+                
                 var actionCompleted = false;
+
+                if (_needInspect)
+                {
+                   InspectMonster(point);
+                    actionCompleted = true;
+                }
+
                 if (point == ArenaFieldControl.Player.Position && !actionCompleted)
                 {
                     if (ArenaFieldControl.Player.IsSelected)
                     {
-                        ArenaFieldControl.ArenaMap.PlayerSelected = false;
-                        ArenaFieldControl.Player.IsSelected = false;
-                        ArenaFieldControl.ArenaPainter.Update();
+                        UnselectPlayer();
                     }
                     else
                     {
-                        foreach (var neighborPoint in ArenaFieldControl.Player.GetNeighbors())
-                        {
-                            if (ArenaFieldControl.Monsters.Any(monster => monster.Position == neighborPoint))
-                            {
-                                _attackMonsterButton.Enabled = true;
-                            }
-                        }
-
-                        var path = BFS.FindPaths(
-                            ArenaFieldControl.ArenaMap,
-                            ArenaFieldControl.Player.Position,
-                            ArenaFieldControl.Player.AP).ToArray();
-                        ArenaFieldControl.ArenaMap.SetPlayerPaths(path);
-
-                        ArenaFieldControl.Player.IsSelected = true;
-                        ArenaFieldControl.ArenaPainter.Update();
+                        SelectPlayer();
                     }
                     actionCompleted = true;
                 }
-
+                
                 if (ArenaFieldControl.Player.IsSelected && !actionCompleted)
                 {
-                    if (!actionCompleted && ArenaFieldControl.ArenaMap.Monsters.Any(p => p.Position == point && p.IsAlive))
+                    if (!actionCompleted && ArenaFieldControl.ArenaMap.Monsters.Any(m => m.Position == point && m.IsAlive))
                     {
-                        ArenaFieldControl.ArenaMap.Attacking(ArenaFieldControl.Player, point);
-                        ArenaFieldControl.ArenaMap.AttackButtonPressed = false;
-                        ArenaFieldControl.ArenaMap.PlayerSelected = false;
-                        ArenaFieldControl.Player.IsSelected = false;
-                        _attackMonsterButton.Enabled = false;
+                        AttackMonster(point);
                         actionCompleted = true;
                     }
                     
                     if (!actionCompleted && ArenaFieldControl.ArenaMap.PlayerPaths.Any(p => p.Contains(point)))
                     {
-                        ArenaFieldControl.ArenaMap.MovePlayerAlongThePath(point);
-                        ArenaFieldControl.ArenaMap.PlayerSelected = false;
-                        _attackMonsterButton.Enabled = false;
+                        MovePlayer(point);
                         actionCompleted = true;
                     }
                 }
             }
         }
+
+        private void InspectMonster(Point point)
+        {
+            var monster = ArenaFieldControl.ArenaMap.Monsters
+                .Where(m => m.Position == point)
+                .Select(m => m)
+                .FirstOrDefault();
+            if(monster != null)
+            {
+                var entityDescription = new EntityDescription(monster);
+                entityDescription.Show();
+            }
+
+            _needInspect = false;
+        }
+        
+        private void UnselectPlayer()
+        {
+            ArenaFieldControl.ArenaMap.PlayerSelected = false;
+            ArenaFieldControl.Player.IsSelected = false;
+            ArenaFieldControl.ArenaPainter.Update();        
+        }
+
+        private void SelectPlayer()
+        {
+            if (ArenaFieldControl.Player.GetNeighbors()
+                .Any(neighborsPos => ArenaFieldControl.Monsters.Any(monster => monster.Position == neighborsPos)))
+            {
+                _attackMonsterButton.Enabled = true;
+            }
+
+            var path = BFS.FindPaths(
+                ArenaFieldControl.ArenaMap,
+                ArenaFieldControl.Player.Position,
+                ArenaFieldControl.Player.AP).ToArray();
+            ArenaFieldControl.ArenaMap.SetPlayerPaths(path);
+
+            ArenaFieldControl.Player.IsSelected = true;
+            ArenaFieldControl.ArenaPainter.Update();
+        }
+
+        private void AttackMonster(Point point)
+        {
+            ArenaFieldControl.ArenaMap.Attacking(ArenaFieldControl.Player, point);
+            ArenaFieldControl.ArenaMap.AttackButtonPressed = false;
+            ArenaFieldControl.ArenaMap.PlayerSelected = false;
+            ArenaFieldControl.Player.IsSelected = false;
+            _attackMonsterButton.Enabled = false;
+        }
+
+        private void MovePlayer(Point point)
+        {
+            ArenaFieldControl.ArenaMap.MovePlayerAlongThePath(point);
+            ArenaFieldControl.ArenaMap.PlayerSelected = false;
+            _attackMonsterButton.Enabled = false;
+        }
+
+        #endregion
         
         private static IEnumerable<String> LoadLevels()
         {
@@ -226,9 +273,20 @@ namespace Cave_Adventure
                 Dock = DockStyle.Fill,
                 Size = new Size(350, 50),
                 AutoSize = true,
-                Enabled = false,
+                Enabled = false
             };
             _attackMonsterButton.Click += OnAttackButtonClick;
+
+            _inspectEntityButton = new Button()
+            {
+                Text = $"Осмотреть",
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Fill,
+                Size = new Size(350, 50),
+                AutoSize = true,
+                Enabled = true
+            };
+            _inspectEntityButton.Click += OnInspectEntityButtonClick;
 
             var infoPanel = new FlowLayoutPanel()
             {
@@ -285,8 +343,8 @@ namespace Cave_Adventure
             arenaLayoutPanel.Controls.Add(ArenaFieldControl);
             bottomTable.Controls.Add(backToMenuButton, 0, 2);
             bottomTable.Controls.Add(_nextLevelButton, 0, 1);
-            bottomTable.Controls.Add(new Panel{ Dock = DockStyle.Fill, BackColor = Color.Black }, 2, 0);
-            bottomTable.Controls.Add(_attackMonsterButton, 2, 1);
+            bottomTable.Controls.Add(_attackMonsterButton, 2, 0);
+            bottomTable.Controls.Add(_inspectEntityButton, 2, 1);
             bottomTable.Controls.Add(_nextTurnButton, 2, 2);
             secondColumnTable.Controls.Add(arenaLayoutPanel, 0, 0);
             secondColumnTable.Controls.Add(bottomTable, 0, 1);
@@ -368,6 +426,8 @@ namespace Cave_Adventure
         }
         #endregion
 
+        #region EventHandlers
+        
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             _pressedKeys.Add(e.KeyCode);
@@ -424,6 +484,11 @@ namespace Cave_Adventure
             _nextLevelButton.Enabled = false;
         }
 
+        private void OnInspectEntityButtonClick(object sender, EventArgs e)
+        {
+            _needInspect = !_needInspect;
+        }
+
         private void OnAllMonsterDead()
         {
             _nextLevelButton.Enabled = true;
@@ -454,6 +519,8 @@ namespace Cave_Adventure
             };
             timer.Start();
         }
+        
+        #endregion
 
         private double GetZoomForController()
         {

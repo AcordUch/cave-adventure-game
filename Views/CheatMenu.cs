@@ -9,6 +9,13 @@ namespace Cave_Adventure.Views
         private readonly TextBox _textBox;
         private ArenaFieldControl _arenaFieldControl;
         private bool _configured = false;
+
+        private readonly AutoCompleteStringCollection _autoCompleteSource = new AutoCompleteStringCollection
+        {
+            "kill", "killbyconsole", "completelevel"
+        };
+
+        public ArenaMap ArenaMap => _arenaFieldControl.ArenaMap;
         
         protected override void OnLoad(EventArgs e)
         {
@@ -24,7 +31,10 @@ namespace Cave_Adventure.Views
             InitializeComponent();
             _textBox = new TextBox()
             {
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                AutoCompleteSource = AutoCompleteSource.CustomSource,
+                AutoCompleteCustomSource = _autoCompleteSource,
+                AutoCompleteMode = AutoCompleteMode.Suggest
             };
             _textBox.KeyDown += (sender, args) =>
             {
@@ -61,8 +71,11 @@ namespace Cave_Adventure.Views
                 case "kill":
                     _arenaFieldControl.ArenaMap.Attacking(superMonster, _arenaFieldControl.Player);
                     break;
-                case "killbygod":
+                case "killbyconsole":
                     _arenaFieldControl.Player.Defending(superMonster);
+                    break;
+                case "completelevel":
+                    _arenaFieldControl.ArenaMap.CompleteLevel(this);
                     break;
             }
             _textBox.Clear();
