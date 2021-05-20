@@ -27,7 +27,7 @@ namespace Cave_Adventure
 
         public Monster[] Monsters => ArenaMap.Monsters;
 
-        public event Action BindUIChangeEvent;
+        public event Action BindEvent;
         
         public ArenaFieldControl()
         {
@@ -79,7 +79,7 @@ namespace Cave_Adventure
             _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
             ArenaPainter.Configure(ArenaMap, _pointToRectangle);
             _entityPainter.Configure(ArenaMap.GetListOfEntities());
-            BindUIChangeEvent?.Invoke();
+            BindEvent?.Invoke();
             Invalidate();
         }
 

@@ -35,7 +35,8 @@ namespace Cave_Adventure
             _levels = LoadLevels().ToArray();
 
             ArenaFieldControl = new ArenaFieldControl();
-            ArenaFieldControl.BindUIChangeEvent += OnBindUIChangeEvent;
+            ArenaFieldControl.BindEvent += OnBindArenaMapEvent;
+            ArenaFieldControl.ClickOnPoint += ArenaFieldControl_ClickOnPoint;
 
             _healBar = new HealBar()
             {
@@ -50,7 +51,6 @@ namespace Cave_Adventure
             ConfigureTables(table);
 
             Controls.Add(table);
-            ArenaFieldControl.ClickOnPoint += ArenaFieldControl_ClickOnPoint;
         }
 
         protected override void InitLayout()
@@ -159,22 +159,6 @@ namespace Cave_Adventure
                 }
             }
         }
-
-        private void ClickOnNextTurnButton(object sender, EventArgs e)
-        {
-            ArenaFieldControl.ArenaMap.NextTurn();
-        }
-        
-        private void OnAttackButtonClick(object sender, EventArgs e)
-        {
-            ArenaFieldControl.ArenaMap.AttackButtonPressed = true;
-        }
-
-        private void OnNextLevelButtonClick(object sender, EventArgs e)
-        {
-            CurrentArenaId++;
-            ArenaFieldControl.LoadLevel(_levels[_currentArenaId]);
-        }
         
         private static IEnumerable<String> LoadLevels()
         {
@@ -228,7 +212,8 @@ namespace Cave_Adventure
                 TextAlign = ContentAlignment.MiddleCenter,
                 Dock = DockStyle.Fill,
                 Size = new Size(350, 50),
-                AutoSize = true
+                AutoSize = true,
+                Enabled = false
             };
             _nextLevelButton.Click += OnNextLevelButtonClick;
 
@@ -342,6 +327,7 @@ namespace Cave_Adventure
                     ArenaFieldControl.LoadLevel(_levels[arenaId]);
                     // ArenaFieldControl.ArenaMap.ChangeStateOfUI += OnBlockUnblockUI;
                     UpdateLinksColors(_levels[arenaId], linkLabels);
+                    _nextLevelButton.Enabled = false;
                     if(_UIBlocked)
                         OnBlockUnblockUI();
                 };
@@ -385,14 +371,38 @@ namespace Cave_Adventure
             _UIBlocked = !_UIBlocked;
         }
         
-        private void OnBindUIChangeEvent()
+        private void OnBindArenaMapEvent()
         {
             ArenaFieldControl.ArenaMap.ChangeStateOfUI += OnBlockUnblockUI;
+            ArenaFieldControl.ArenaMap.AllMonsterDead += OnAllMonsterDead;
+            _healBar.Configure(ArenaFieldControl.ArenaMap);
         }
 
         public void OnSetCurrentArenaId(int arenaId)
         {
             CurrentArenaId = arenaId;
+        }
+        
+        private void ClickOnNextTurnButton(object sender, EventArgs e)
+        {
+            ArenaFieldControl.ArenaMap.NextTurn();
+        }
+        
+        private void OnAttackButtonClick(object sender, EventArgs e)
+        {
+            ArenaFieldControl.ArenaMap.AttackButtonPressed = true;
+        }
+
+        private void OnNextLevelButtonClick(object sender, EventArgs e)
+        {
+            CurrentArenaId++;
+            ArenaFieldControl.LoadLevel(_levels[_currentArenaId]);
+            _nextLevelButton.Enabled = false;
+        }
+
+        private void OnAllMonsterDead()
+        {
+            _nextLevelButton.Enabled = true;
         }
 
         private double GetZoomForController()

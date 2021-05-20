@@ -14,6 +14,7 @@ namespace Cave_Adventure
         private Dictionary<Entity, int> _currentFrames;
         private Dictionary<Entity, int> _displacementStage;
         private Dictionary<Entity, bool> _animationShouldStop;
+        private Dictionary<Entity, StatesOfAnimation> _prevState;
         private Entity _currentEntity;
         private int _mirroring = 1;
         private int _currentAnimation;
@@ -42,6 +43,7 @@ namespace Cave_Adventure
             _currentFrames = entities.ToDictionary(k => k, v => 0);
             _displacementStage = entities.ToDictionary(k => k, v => 0);
             _animationShouldStop = entities.ToDictionary(k => k, v => false);
+            _prevState = entities.ToDictionary(k => k, v => StatesOfAnimation.Idle);
         }
         
         public void SetUpAndPaint(Graphics graphics, Entity entity)
@@ -54,6 +56,11 @@ namespace Cave_Adventure
             _mirroring = (int) entity.ViewDirection;
             _currentAnimation = (int) entity.CurrentStates;
             AnimationSetUp.SetUp(entity, out _currentFrameLimit, out var entityImage);
+            if (entity.CurrentStates != _prevState[entity])
+            {
+                _prevState[entity] = entity.CurrentStates;
+                _currentFrames[entity] = 0;
+            }
             PlayAnimation(graphics, playerPositionReal, entityImage);
         }
         
