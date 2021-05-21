@@ -23,7 +23,7 @@ namespace Cave_Adventure
 
         public override string ToString()
         {
-            return "Player";
+            return "Игрок, грозный воин";
         }
     }
 }

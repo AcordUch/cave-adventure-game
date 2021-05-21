@@ -153,13 +153,13 @@ namespace Cave_Adventure
 
         private void InspectMonster(Point point)
         {
-            var monster = ArenaFieldControl.ArenaMap.Monsters
+            var entity = ArenaFieldControl.ArenaMap.GetListOfEntities()
                 .Where(m => m.Position == point)
                 .Select(m => m)
                 .FirstOrDefault();
-            if(monster != null)
+            if(entity != null)
             {
-                var entityDescription = new EntityDescription(monster);
+                var entityDescription = new EntityDescription(entity);
                 entityDescription.Show();
             }
 
