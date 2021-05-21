@@ -7,9 +7,9 @@ namespace Cave_Adventure
     {
         public Player(Point position) : base(position, EntityType.Player)
         {
-            AP = GlobalConst.PlayerAP;
+            AP = MaxAP = GlobalConst.PlayerAP;
             Attack = GlobalConst.PlayerAttack;
-            Health = GlobalConst.PlayerHP;
+            Health = MaxHealth = GlobalConst.PlayerHP;
             Damage = GlobalConst.PlayerDamage;
             Defense = GlobalConst.PlayerDefence;
             Initiative = 10;

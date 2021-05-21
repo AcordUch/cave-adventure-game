@@ -7,9 +7,9 @@ namespace Cave_Adventure
     {
         public Snake(Point position) : base(position, EntityType.Snake)
         {
-            AP = GlobalConst.SnakeAP;
+            AP = MaxAP = GlobalConst.SnakeAP;
             Attack = GlobalConst.SnakeAttack;
-            Health = GlobalConst.SnakeHP;
+            Health = MaxHealth = GlobalConst.SnakeHP;
             Damage = GlobalConst.SnakeDamage;
             Defense = GlobalConst.SnakeDefence;
             Initiative = 7;
@@ -22,7 +22,7 @@ namespace Cave_Adventure
 
         public override string ToString()
         {
-            return "Snake";
+            return "Змея";
         }
     }
 }

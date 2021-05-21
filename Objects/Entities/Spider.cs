@@ -7,9 +7,9 @@ namespace Cave_Adventure
     {
         public Spider(Point position) : base(position, EntityType.Spider)
         {
-            AP = GlobalConst.SpiderAP;
+            AP = MaxAP = GlobalConst.SpiderAP;
             Attack = GlobalConst.SpiderAttack;
-            Health = GlobalConst.SpiderHP;
+            Health = MaxHealth = GlobalConst.SpiderHP;
             Damage = GlobalConst.SpiderDamage;
             Defense = GlobalConst.SpiderDefence;
             Initiative = 6;

@@ -30,6 +30,8 @@ namespace Cave_Adventure.Views
                 Size = this.Size,
                 // Margin = new Padding(10, 0, 0, 0)
             };
+            
+            Controls.Add(_infoLabel);
         }
         
         public void Configure(ArenaFieldControl arenaFieldControl)
@@ -39,7 +41,17 @@ namespace Cave_Adventure.Views
 
         private string WriteEntityDescription()
         {
-            throw new NotImplementedException();
+            return $@"
+Название: {_entity.ToString()}
+Оружие: {_entity.Weapon.ToString()}
+Жизни: {_entity.Health} из {_entity.MaxHealth}
+ОД: {_entity.AP} из {_entity.MaxAP}
+Инициатива {_entity.Initiative}
+Атака: {_entity.Attack}
+Защита: {_entity.Defense}
+Урон: {_entity.Damage} 
+Текущее состояние: {_entity.CurrentStates.ToString()}
+";
         }
     }
 }

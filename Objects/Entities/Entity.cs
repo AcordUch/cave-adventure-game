@@ -12,7 +12,7 @@ namespace Cave_Adventure
         private Point _position;
         private double _health;
         private readonly EntityAttackAnimController _attackAnimController;
-
+        
         public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
         public ViewDirection ViewDirection { get; set; } = ViewDirection.Right;
         public EntityType Tag { get; }
@@ -20,10 +20,12 @@ namespace Cave_Adventure
         public bool IsMoving { get; private set; }
         public Point TargetPoint { get; private set; }
         public int AP { get; protected set; }
+        public int MaxAP { get; protected init; }
+        public double MaxHealth { get; protected init; }
         public double Attack { get; protected init; }
         public double Defense { get; protected init; }
         public double Damage { get; protected init; }
-        public int Initiative { get; protected set; }
+        public int Initiative { get; protected init; }
         public Weapon Weapon { get; protected init; }
         
         public Point Position

@@ -6,9 +6,9 @@ namespace Cave_Adventure
     {
         public SuperMonster(Point position) : base(position, EntityType.SuperMonster)
         {
-            AP = 999;
+            AP = MaxAP = 999;
             Attack = 999;
-            Health = 999;
+            Health = MaxHealth = 999;
             Damage = 999;
             Defense = 999;
             Initiative = 999;

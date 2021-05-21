@@ -11,5 +11,10 @@ namespace Cave_Adventure
             entity.ReduceAP(entity.AP - 1);
             return base.GetDamage(in entity);
         }
+
+        public override string ToString()
+        {
+            return "Лук";
+        }
     }
 }
