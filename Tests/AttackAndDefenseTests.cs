@@ -6,9 +6,9 @@ namespace Cave_Adventure
     public class AttackAndDefenseTests
     {
         private ArenaMap _arena;
-        private Player player;
-        private Monster snake;
-        private Monster spider;
+        private Player _player;
+        private Monster _snake;
+        private Monster _spider;
 
         [SetUp]
         public void Init()
@@ -20,74 +20,74 @@ namespace Cave_Adventure
             };
             _arena = ArenaMap.CreateNewArenaMap(arena);
 
-            player = _arena.Player;
-            snake = _arena.Monsters[0];
-            spider = _arena.Monsters[1];
+            _player = _arena.Player;
+            _snake = _arena.Monsters[0];
+            _spider = _arena.Monsters[1];
         }
 
         [Test]
-        public void OneAttackPerSnake() => OneAttackOnMonster(snake, 2.5);
+        public void OneAttackPerSnake() => OneAttackOnMonster(_snake, 2.5);
 
         [Test]
-        public void OneAttackPerSpider() => OneAttackOnMonster(spider, 0.0);
+        public void OneAttackPerSpider() => OneAttackOnMonster(_spider, 0.0);
 
         [Test]
-        public void SnakeKilledPlayer() => MonsterKilledPlayer(snake, 19);
+        public void SnakeKilledPlayer() => MonsterKilledPlayer(_snake, 19);
 
         [Test]
-        public void SpiderKilledPlayer() => MonsterKilledPlayer(spider, 46);
+        public void SpiderKilledPlayer() => MonsterKilledPlayer(_spider, 46);
 
         [Test]
         public void CheckCharactersAP()
         {
-            snake.Defending(player);
-            spider.Defending(player);
+            _snake.Defending(_player); //Андрей, у игрока после этого должно быть 0 AP
+            _spider.Defending(_player);
 
-            Assert.AreEqual(0, player.AP);
-            Assert.AreEqual(2, snake.AP);
-            Assert.AreEqual(2, spider.AP);
+            Assert.AreEqual(0, _player.AP);
+            Assert.AreEqual(2, _snake.AP);
+            Assert.AreEqual(2, _spider.AP);
         }
 
         [Test]
         public void FightSnakeWithSpider()
         {
-            snake.Defending(spider);
+            _snake.Defending(_spider);
 
-            Assert.IsTrue(snake.CheckIsAliveAndChangeState());
-            Assert.AreEqual(20.5, snake.Health);
+            Assert.IsTrue(_snake.CheckIsAliveAndChangeState());
+            Assert.AreEqual(20.5, _snake.Health);
 
-            spider.Defending(snake);
+            _spider.Defending(_snake);
 
-            Assert.IsTrue(spider.CheckIsAliveAndChangeState());
-            Assert.AreEqual(14.75, spider.Health);
+            Assert.IsTrue(_spider.CheckIsAliveAndChangeState());
+            Assert.AreEqual(14.75, _spider.Health);
 
             for (var i = 0; i < 5; i++)
             {
-                snake.Defending(spider);
-                spider.Defending(snake);
+                _snake.Defending(_spider);
+                _spider.Defending(_snake);
             }
 
-            Assert.IsFalse(snake.CheckIsAliveAndChangeState());
-            Assert.IsFalse(spider.CheckIsAliveAndChangeState());
+            Assert.IsFalse(_snake.CheckIsAliveAndChangeState());
+            Assert.IsFalse(_spider.CheckIsAliveAndChangeState());
         }
 
-        public void OneAttackOnMonster(Monster monster, double expectedHealth)
+        private void OneAttackOnMonster(Monster monster, double expectedHealth)
         {
-            monster.Defending(player);
+            monster.Defending(_player);
 
             Assert.AreEqual(expectedHealth, monster.Health);
         }
 
-        public void MonsterKilledPlayer(Monster monster, int attacksNumber)
+        private void MonsterKilledPlayer(Monster monster, int attacksNumber)
         {
-            player.Defending(monster);
+            _player.Defending(monster);
 
-            Assert.IsTrue(player.CheckIsAliveAndChangeState());
+            Assert.IsTrue(_player.CheckIsAliveAndChangeState());
 
             for (var i = 0; i < attacksNumber; i++)
-                player.Defending(monster);
+                _player.Defending(monster);
 
-            Assert.IsFalse(player.CheckIsAliveAndChangeState());
+            Assert.IsFalse(_player.CheckIsAliveAndChangeState());
         }
     }
 }
