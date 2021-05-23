@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using Cave_Adventure.Interfaces;
+using ContentAlignment = System.Drawing.ContentAlignment;
 
 namespace Cave_Adventure
 {
@@ -11,6 +14,8 @@ namespace Cave_Adventure
     {
         private readonly Game _game;
         private bool _configured = false;
+        private Panel _imagePanel;
+        private PictureBox _imageBox;
         
         public event Action<string> LoadLevel;
         public event Action<int> SetLevelId;
@@ -49,6 +54,11 @@ namespace Cave_Adventure
             _configured = false;
         }
 
+        public new void Update()
+        {
+            _imageBox.Image = new Bitmap(Properties.Resources.mazePicMainMenu, Size);
+        }
+
         private void ConfigureTable(TableLayoutPanel table)
         {
             var buttonMenu = new FlowLayoutPanel
@@ -61,9 +71,23 @@ namespace Cave_Adventure
                 Font = new Font(SystemFonts.DialogFont.FontFamily, 12)
             };
             SetUpButtonMenu(buttonMenu);
+            _imagePanel = new Panel()
+            {
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                BackgroundImage = new Bitmap(Properties.Resources.mazePicMainMenu, Size)
+            };
+
+            _imageBox = new PictureBox()
+            {
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                Image = new Bitmap(Properties.Resources.mazePicMainMenu, Size)
+            };
             
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 85));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15));
+            table.Controls.Add(_imagePanel, 0, 0);
             table.Controls.Add(buttonMenu, 1, 0);
         }
 

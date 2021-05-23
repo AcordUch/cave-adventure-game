@@ -133,7 +133,18 @@ namespace Cave_Adventure
         
         private void TimerTick(object sender, EventArgs e)
         {
-            _arenaPanel.Update();
+            switch (_game.Screen)
+            {
+                case GameScreen.Arenas:
+                    _arenaPanel.Update();
+                    break;
+                case GameScreen.MainMenu:
+                    _mainMenuPanel.Update();
+                    break;
+                case GameScreen.LevelSelectionMenu:
+                default:
+                    break;
+            }
         }
     }
 }

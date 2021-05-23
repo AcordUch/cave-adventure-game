@@ -6,14 +6,13 @@ using Cave_Adventure.Interfaces;
 
 namespace Cave_Adventure.Views
 {
-    public class InventoryPanel : Panel, IPanel
+    public class InventoryPanel : Panel
     {
         private const int _shift = 15;
 
         private readonly ArenaFieldControl _arenaFieldControl;
 
         private Label _infoLabel;
-        private bool _configured = false;
 
         private Player Player => _arenaFieldControl.Player;
 
@@ -30,16 +29,6 @@ namespace Cave_Adventure.Views
             
             Controls.Add(table);
         }
-        
-        public void Configure()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Drop()
-        {
-            throw new System.NotImplementedException();
-        }
 
         public new void Update()
         {
@@ -50,9 +39,11 @@ namespace Cave_Adventure.Views
         {
             _infoLabel = new Label
             {
+                TextAlign = ContentAlignment.MiddleCenter,
                 Text = MakeTextForInfoLabel(),
                 ForeColor = Color.Black,
                 Size = this.Size,
+                AutoSize = true
             };
             var healButton = new Button()
             {
@@ -67,14 +58,14 @@ namespace Cave_Adventure.Views
             {
                 var healKit = Player.Inventory.FirstOrDefault(i => i.Tag == ItemType.HealthPotion);
                 if(healKit == null) return;
-                Player.Health += 40;
+                Player.Health += 35;
                 Player.Inventory.Remove(healKit);
             };
             
             table.RowStyles.Add(new RowStyle(SizeType.Absolute, 10));
-            table.RowStyles.Add(new RowStyle(SizeType.Percent, 15));
-            table.RowStyles.Add(new RowStyle(SizeType.Percent, 15));
-            table.RowStyles.Add(new RowStyle(SizeType.Percent, 60));
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 10));
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 10));
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 80));
             table.RowStyles.Add(new RowStyle(SizeType.Absolute, 10));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 15));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));

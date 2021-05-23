@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Cave_Adventure.Views
@@ -12,7 +13,7 @@ namespace Cave_Adventure.Views
 
         private readonly AutoCompleteStringCollection _autoCompleteSource = new AutoCompleteStringCollection
         {
-            "kill", "killbyconsole", "completelevel"
+            "kill", "killbyconsole", "completelevel", "heal", "zatva"
         };
 
         public ArenaMap ArenaMap => _arenaFieldControl.ArenaMap;
@@ -76,6 +77,15 @@ namespace Cave_Adventure.Views
                     break;
                 case "completelevel":
                     _arenaFieldControl.ArenaMap.CompleteLevel(this);
+                    break;
+                case "heal":
+                    _arenaFieldControl.Player.Health = GlobalConst.PlayerHP;
+                    break;
+                case "zatva":
+                    foreach (var monster in _arenaFieldControl.Monsters)
+                    {
+                        monster.Defending(superMonster);
+                    }
                     break;
             }
             _textBox.Clear();

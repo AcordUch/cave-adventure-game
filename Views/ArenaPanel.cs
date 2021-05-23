@@ -303,7 +303,6 @@ namespace Cave_Adventure
             {
                 Dock = DockStyle.Fill,
                 AutoSize = true,
-                //Padding = new Padding(20, 0, 0, 0),
                 Font = new Font(SystemFonts.DialogFont.FontFamily, 10)
             };
 
