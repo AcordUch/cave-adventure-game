@@ -15,6 +15,7 @@ namespace Cave_Adventure
         private readonly string[] _levels;
         private readonly Game _game;
         private readonly HealBar _healBar;
+        private InventoryPanel _inventoryPanel;
         private Label _infoLabel;
         private Button _nextTurnButton;
         private Button _attackMonsterButton;
@@ -94,7 +95,7 @@ namespace Cave_Adventure
 
             ArenaFieldControl.Update();
             _healBar.Invalidate();
-
+            _inventoryPanel.Update();
             //Вынести в метод OnSizeChange
             var zoom = GetZoomForController();
             ArenaFieldControl.Size =
@@ -298,6 +299,14 @@ namespace Cave_Adventure
             };
             SetUpInfoPanel(infoPanel);
 
+            _inventoryPanel = new InventoryPanel(ArenaFieldControl)
+            {
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                //Padding = new Padding(20, 0, 0, 0),
+                Font = new Font(SystemFonts.DialogFont.FontFamily, 10)
+            };
+
             var arenaLayoutPanel = new FlowLayoutPanel()
             {
                 Dock = DockStyle.Fill,
@@ -350,7 +359,7 @@ namespace Cave_Adventure
             secondColumnTable.Controls.Add(bottomTable, 0, 1);
             thirdColumnTable.Controls.Add(_healBar, 0, 0);
             thirdColumnTable.Controls.Add(infoPanel, 0, 1);
-            thirdColumnTable.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 0, 2);
+            thirdColumnTable.Controls.Add(_inventoryPanel, 0, 2);
             table.Controls.Add(levelMenu, 0, 0);
             table.Controls.Add(secondColumnTable, 1, 0);
             table.Controls.Add(thirdColumnTable, 2, 0);

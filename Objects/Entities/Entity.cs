@@ -37,7 +37,7 @@ namespace Cave_Adventure
         public double Health
         {
             get => _health;
-            protected set => _health = value >= 0 ? value : 0;
+            set => _health = value >= 0 ? value : 0;
         }
 
         public bool IsAlive => CurrentStates != StatesOfAnimation.Death;
@@ -141,7 +141,7 @@ namespace Cave_Adventure
         {
             AP = AP + dAP > 0 ? AP + dAP : 0;
         }
-
+        
         public bool CheckIsAliveAndChangeState()
         {
             if(Health <= 0)

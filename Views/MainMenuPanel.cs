@@ -11,6 +11,9 @@ namespace Cave_Adventure
     {
         private readonly Game _game;
         private bool _configured = false;
+        
+        public event Action<string> LoadLevel;
+        public event Action<int> SetLevelId;
 
         public MainMenuPanel(Game game)
         {
@@ -87,7 +90,12 @@ namespace Cave_Adventure
                 AutoSize = true,
                 Margin = new Padding(0, 20, 0, 5),
             };
-            Arenas.LinkClicked += _game.SwitchOnArenas;
+            Arenas.LinkClicked += (sender, args) =>
+            {
+                _game.SwitchOnArenas(sender, args);
+                // LoadLevel?.Invoke(_levels[arenaId]);
+                // SetLevelId?.Invoke(arenaId);
+            };
             
             var levelSelectionMenu = new LinkLabel
             {

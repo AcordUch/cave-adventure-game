@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
+using Cave_Adventure.Objects.Items;
 
 namespace Cave_Adventure
 {
@@ -23,7 +24,7 @@ namespace Cave_Adventure
         public ArenaMap ArenaMap { get; private set; }
         public ArenaPainter ArenaPainter { get; }
         
-        public Player Player => ArenaMap.Player;
+        public Player Player => ArenaMap?.Player;
 
         public Monster[] Monsters => ArenaMap.Monsters;
 
@@ -76,6 +77,10 @@ namespace Cave_Adventure
             ArenaPainter.Configure(ArenaMap, _pointToRectangle);
             _entityPainter.Configure(ArenaMap.GetListOfEntities());
             BindEvent?.Invoke();
+            for (int i = 0; i < 3; i++)
+            {
+                Player.Inventory.Add(new HealthPotion());
+            }
             Invalidate();
         }
 

@@ -1,10 +1,14 @@
+using System.Collections.Generic;
 using System.Drawing;
 using System.Timers;
+using Cave_Adventure.Objects.Items;
 
 namespace Cave_Adventure
 {
     public class Player : Entity
     {
+        public List<Item> Inventory { get; } = new List<Item>();
+        
         public Player(Point position) : base(position, EntityType.Player)
         {
             AP = MaxAP = GlobalConst.PlayerAP;
