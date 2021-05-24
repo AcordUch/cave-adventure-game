@@ -10,6 +10,7 @@ namespace Cave_Adventure
         {
             Weapon = new FangsAndClaws();
             AI = new AI(this);
+            Description = "Злобное существо из подземелий";
         }
     }
 }

@@ -43,6 +43,7 @@ namespace Cave_Adventure.Views
         {
             return $@"
 Название: {_entity.ToString()}
+Описание: {_entity.Description}
 Оружие: {_entity.Weapon.ToString()}
 Жизни: {_entity.Health} из {_entity.MaxHealth}
 ОД: {_entity.AP} из {_entity.MaxAP}

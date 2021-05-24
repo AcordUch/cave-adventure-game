@@ -18,6 +18,7 @@ namespace Cave_Adventure
             Defense = GlobalConst.PlayerDefence;
             Initiative = 10;
             Weapon = new Sword();
+            Description = "Как он оказался в пещере - загадка века";
         }
 
         public override void ResetAP()
@@ -27,7 +28,7 @@ namespace Cave_Adventure
 
         public override string ToString()
         {
-            return "Игрок, грозный воин";
+            return "Воин";
         }
     }
 }

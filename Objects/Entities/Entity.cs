@@ -13,6 +13,7 @@ namespace Cave_Adventure
         private double _health;
         private readonly EntityAttackAnimController _attackAnimController;
         
+        public string Description { get; protected init; }
         public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
         public ViewDirection ViewDirection { get; set; } = ViewDirection.Right;
         public EntityType Tag { get; }
