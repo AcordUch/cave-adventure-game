@@ -21,6 +21,7 @@ namespace Cave_Adventure
         private Button _attackMonsterButton;
         private Button _nextLevelButton;
         private Button _inspectEntityButton;
+        private bool _winFormIsDisplayed = false;
         private bool _configured = false;
         private bool _UIBlocked = false;
         private bool _needInspect = false;
@@ -468,6 +469,7 @@ namespace Cave_Adventure
             ArenaFieldControl.ArenaMap.AllMonsterDead += OnAllMonsterDead;
             ArenaFieldControl.ArenaMap.PlayerDead += OnPlayerDead;
             _healBar.Configure(ArenaFieldControl.ArenaMap);
+            _winFormIsDisplayed = false;
         }
 
         public void OnSetCurrentArenaId(int arenaId)
@@ -499,7 +501,11 @@ namespace Cave_Adventure
 
         private void OnAllMonsterDead()
         {
+            if(_winFormIsDisplayed)
+                return;
+            
             _nextLevelButton.Enabled = true;
+            _winFormIsDisplayed = true;
             MessageBox.Show(
                 "Ты выиграл!\nСледуй дальше",
                 "Победа!",

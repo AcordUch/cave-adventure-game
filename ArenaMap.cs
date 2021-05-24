@@ -50,7 +50,6 @@ namespace Cave_Adventure
         public async void NextTurn()
         {
             BlockUnblockUI();
-            Player.ResetAP();
             Player.IsSelected = false;
             PlayerPaths = null;
             PlayerSelected = false;
@@ -62,6 +61,7 @@ namespace Cave_Adventure
                 if(monster.IsAlive)
                     monster.ResetAP();
             }
+            Player.ResetAP();
             Step += 1;
             BlockUnblockUI();
         }
@@ -83,9 +83,14 @@ namespace Cave_Adventure
                     PlayerDead?.Invoke();
                     return;
                 }
-                if(Monsters.All(m => m.IsDead))
-                    AllMonsterDead?.Invoke();
+                CheckOnWinning();
             }
+        }
+
+        public void CheckOnWinning()
+        {
+            if(Monsters.All(m => m.IsDead) || Monsters.Length == 0)
+                AllMonsterDead?.Invoke();
         }
 
         private void BlockUnblockUI()
@@ -100,16 +105,17 @@ namespace Cave_Adventure
             {
                 foreach (var entity in entities)
                 {
-                    if(entity.IsDead || entity.AP == 0)
+                    if(entity.IsDead || entity.AP == 0 
+                                     || !GlobalConst.PossibleDirections.Any(p => entity.Position + p == Player.Position))
                         continue;
                     var flag = true;
-                    // entity.IsSelected = true;
                     var timer = new Timer {Interval = 2 * GlobalConst.AnimTimerInterval + 200 };
                     timer.Elapsed += (_, __) =>
                     {
                         flag = false;
                         timer.Stop();
                     };
+                    timer.Start();
                     Player.Defending(entity);
                     while (flag)
                     {
