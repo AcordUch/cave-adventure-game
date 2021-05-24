@@ -31,6 +31,10 @@ namespace Cave_Adventure
             Arena = arena;
             Player = player;
             Monsters = monsters;
+            foreach (var monster in Monsters)
+            {
+                monster.AI.Configure(this);
+            }
         }
 
         public void SetPlayerPaths(SinglyLinkedList<Point>[] paths)
@@ -109,7 +113,7 @@ namespace Cave_Adventure
                 foreach (var entity in entities)
                 {
                     entity.IsSelected = true;
-                    MoveEntityAlongThePath(entity.Position + new Size(0, 1), entity);
+                    MoveEntityAlongThePath(entity.Position + new Size(0, -1), entity);
                     while (true)
                     {
                         if(!entity.IsSelected)
