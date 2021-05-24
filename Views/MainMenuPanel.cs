@@ -56,7 +56,14 @@ namespace Cave_Adventure
 
         public new void Update()
         {
-            _imageBox.Image = new Bitmap(Properties.Resources.mazePicMainMenu, Size);
+            try
+            {
+                _imageBox.Image = new Bitmap(Properties.Resources.mazePicMainMenu, Size);
+            }
+            catch
+            {
+                //ignore
+            }
         }
 
         private void ConfigureTable(TableLayoutPanel table)

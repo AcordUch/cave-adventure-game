@@ -13,6 +13,7 @@ namespace Cave_Adventure
             Damage = GlobalConst.SnakeDamage;
             Defense = GlobalConst.SnakeDefence;
             Initiative = 7;
+            Description = "Она не ядовитая, честно";
         }
 
         public override void ResetAP()

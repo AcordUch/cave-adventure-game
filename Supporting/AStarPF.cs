@@ -33,8 +33,9 @@ namespace Cave_Adventure
                     }
                 }
                 
-                if(toOpen.X == -1)
+                if(toOpen.X == -1 || track[toOpen].prevRangePair.range + 1 >= range)
                 {
+                    lastPoint = toOpen;
                     break;
                 }
                 

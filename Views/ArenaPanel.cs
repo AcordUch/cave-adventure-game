@@ -21,6 +21,8 @@ namespace Cave_Adventure
         private Button _attackMonsterButton;
         private Button _nextLevelButton;
         private Button _inspectEntityButton;
+        private Button _backToMenuButton;
+        private bool _winFormIsDisplayed = false;
         private bool _configured = false;
         private bool _UIBlocked = false;
         private bool _needInspect = false;
@@ -246,7 +248,7 @@ namespace Cave_Adventure
             };
             _nextTurnButton.Click += ClickOnNextTurnButton;
 
-            var backToMenuButton = new Button()
+            _backToMenuButton = new Button()
             {
                 Text = $"Назад в меню",
                 TextAlign = ContentAlignment.MiddleCenter,
@@ -254,8 +256,8 @@ namespace Cave_Adventure
                 Size = new Size(350, 50),
                 AutoSize = true
             };
-            backToMenuButton.Click += _game.SwitchOnMainMenu;
-            
+            _backToMenuButton.Click += _game.SwitchOnMainMenu;
+
             _nextLevelButton = new Button()
             {
                 Text = $"Следующий уровень",
@@ -349,7 +351,7 @@ namespace Cave_Adventure
             bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35));
 
             arenaLayoutPanel.Controls.Add(ArenaFieldControl);
-            bottomTable.Controls.Add(backToMenuButton, 0, 2);
+            bottomTable.Controls.Add(_backToMenuButton, 0, 2);
             bottomTable.Controls.Add(_nextLevelButton, 0, 1);
             bottomTable.Controls.Add(_attackMonsterButton, 2, 0);
             bottomTable.Controls.Add(_inspectEntityButton, 2, 1);
@@ -396,6 +398,7 @@ namespace Cave_Adventure
                 {
                     ArenaFieldControl.LoadLevel(_levels[arenaId]);
                     UpdateLinksColors(_levels[arenaId], linkLabels);
+                    CurrentArenaId = arenaId;
                     _nextLevelButton.Enabled = false;
                     if(_UIBlocked)
                         OnBlockUnblockUI();
@@ -460,6 +463,7 @@ namespace Cave_Adventure
         {
             _inventoryPanel.OnBlockUnblockUI();
             _nextTurnButton.Enabled = !_nextTurnButton.Enabled;
+            _backToMenuButton.Enabled = !_backToMenuButton.Enabled;
             _UIBlocked = !_UIBlocked;
         }
         
@@ -469,6 +473,7 @@ namespace Cave_Adventure
             ArenaFieldControl.ArenaMap.AllMonsterDead += OnAllMonsterDead;
             ArenaFieldControl.ArenaMap.PlayerDead += OnPlayerDead;
             _healBar.Configure(ArenaFieldControl.ArenaMap);
+            _winFormIsDisplayed = false;
         }
 
         public void OnSetCurrentArenaId(int arenaId)
@@ -500,14 +505,17 @@ namespace Cave_Adventure
 
         private void OnAllMonsterDead()
         {
+            if(_winFormIsDisplayed)
+                return;
+            
             _nextLevelButton.Enabled = true;
+            _winFormIsDisplayed = true;
             MessageBox.Show(
                 "Ты выиграл!\nСледуй дальше",
                 "Победа!",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.None,
-                MessageBoxDefaultButton.Button1,
-                MessageBoxOptions.DefaultDesktopOnly);
+                MessageBoxDefaultButton.Button1);
         }
 
         private void OnPlayerDead()
@@ -521,8 +529,7 @@ namespace Cave_Adventure
                     "Не повезло, не повезло",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.None,
-                    MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.DefaultDesktopOnly);
+                    MessageBoxDefaultButton.Button1);
                 ArenaFieldControl.LoadLevel(_levels[CurrentArenaId]);
                 timer.Close();
             };

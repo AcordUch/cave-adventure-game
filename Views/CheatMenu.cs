@@ -13,7 +13,7 @@ namespace Cave_Adventure.Views
 
         private readonly AutoCompleteStringCollection _autoCompleteSource = new AutoCompleteStringCollection
         {
-            "kill", "killbyconsole", "completelevel", "heal", "zatva"
+            "kill", "killbyconsole", "completelevel", "heal", "zatva", "makemehurt", "makemezerohp"
         };
 
         public ArenaMap ArenaMap => _arenaFieldControl.ArenaMap;
@@ -86,6 +86,12 @@ namespace Cave_Adventure.Views
                     {
                         monster.Defending(superMonster);
                     }
+                    break;
+                case "makemehurt":
+                    _arenaFieldControl.Player.Health = 1;
+                    break;
+                case "makemezerohp":
+                    _arenaFieldControl.Player.Health = 0;
                     break;
             }
             _textBox.Clear();

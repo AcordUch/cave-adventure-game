@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Linq;
 
 namespace Cave_Adventure
 {
@@ -20,9 +21,9 @@ namespace Cave_Adventure
             _configured = true;
         }
 
-        public SinglyLinkedList<Point> LookPath()
-        {
-            return AStarPF.FindPathToPlayer(_arenaMap, _monster.Position, _monster.AP);
+        public Point LookTargetMovePoint()
+        {//Короче, когда игрок на расстоянии AP, то он начинает ходить туда сюда. Фиксить или фича?)
+            return AStarPF.FindPathToPlayer(_arenaMap, _monster.Position, _monster.AP).ToList()[^1];
         }
     }
 }

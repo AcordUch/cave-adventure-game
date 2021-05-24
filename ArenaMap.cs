@@ -3,8 +3,10 @@ using System.Collections;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Cave_Adventure.Views;
+using Timer = System.Timers.Timer;
 
 namespace Cave_Adventure
 {
@@ -49,17 +51,22 @@ namespace Cave_Adventure
         public async void NextTurn()
         {
             BlockUnblockUI();
-            Player.ResetAP();
             Player.IsSelected = false;
             PlayerPaths = null;
             PlayerSelected = false;
-            await MonsterTurnController();
+            var monsters = Monsters.ToList().OrderByDescending(m => m.Initiative);
+            await MonsterMoveControl(monsters);
+            await MonsterAttackController(monsters);
+            foreach (var monster in monsters)
+            {
+                if(monster.IsAlive)
+                    monster.ResetAP();
+            }
+            Player.ResetAP();
             Step += 1;
             BlockUnblockUI();
-            // IsPlayerTurnNow = !IsPlayerTurnNow;
-
         }
-        
+
         public void Attacking(Entity attacker, Point targetPoint)
         {
             var target = GetListOfEntities().FirstOrDefault(p => p.Position == targetPoint);
@@ -77,9 +84,14 @@ namespace Cave_Adventure
                     PlayerDead?.Invoke();
                     return;
                 }
-                if(Monsters.All(m => m.IsDead))
-                    AllMonsterDead?.Invoke();
+                CheckOnWinning();
             }
+        }
+
+        public void CheckOnWinning()
+        {
+            if(Monsters.All(m => m.IsDead) || Monsters.Length == 0)
+                AllMonsterDead?.Invoke();
         }
 
         private void BlockUnblockUI()
@@ -88,40 +100,63 @@ namespace Cave_Adventure
             ChangeStateOfUI?.Invoke();
         }
 
-        private Task MonsterTurnController()
-        {
-            var monsters = Monsters.ToList().OrderBy(m => m.Initiative);
-            return MoveEntityControl(monsters);
-        }
-
-        public async void MovePlayerAlongThePath(Point targetPoint)
-        {
-            if (PlayerSelected && Player.AP > 0)
-            {
-                var path = (PlayerPaths
-                        .FirstOrDefault(p => p.Value == targetPoint) 
-                            ?? throw new InvalidOperationException("Среди доступных точек нет необходимой. В методе откуда вызов нет проверки?"))
-                    .Select(p => p).Reverse().ToArray();
-                await StartMoveEntity(path, Player);
-            }
-        }
-        
-        private Task MoveEntityControl(IEnumerable<Entity> entities)
+        private Task MonsterAttackController(IEnumerable<Entity> entities)
         {
             var task = new Task(() =>
             {
                 foreach (var entity in entities)
                 {
-                    if(entity.IsDead)
+                    if(entity.IsDead || entity.AP == 0 
+                                     || !GlobalConst.PossibleDirections.Any(p => entity.Position + p == Player.Position))
                         continue;
-                    entity.IsSelected = true;
-                    MoveEntityAlongThePath(entity.Position + new Size(0, -1), entity);
+                    var flag = true;
+                    var timer = new Timer {Interval = 2 * GlobalConst.AnimTimerInterval + 200 };
+                    timer.Elapsed += (_, __) =>
+                    {
+                        flag = false;
+                        timer.Stop();
+                    };
+                    timer.Start();
+                    Player.Defending(entity);
+                    while (flag)
+                    {
+                        
+                    }
+                }
+            });
+            task.Start();
+            return task;
+        }
+        
+        public async void MovePlayerAlongThePath(Point targetPoint)
+        {
+            if (PlayerSelected && Player.AP > 0)
+            {
+                ChangeStateOfUI?.Invoke();
+                var path = (PlayerPaths
+                        .FirstOrDefault(p => p.Value == targetPoint) 
+                            ?? throw new InvalidOperationException("Среди доступных точек нет необходимой. В методе откуда вызов нет проверки?"))
+                    .Select(p => p).Reverse().ToArray();
+                await StartMoveEntity(path, Player);
+                ChangeStateOfUI?.Invoke();
+            }
+        }
+        
+        private Task MonsterMoveControl(IEnumerable<Monster> monsters)
+        {
+            var task = new Task(() =>
+            {
+                foreach (var monster in monsters)
+                {
+                    if(monster.IsDead)
+                        continue;
+                    monster.IsSelected = true;
+                    MoveEntityAlongThePath(monster.AI.LookTargetMovePoint(), monster);
                     while (true)
                     {
-                        if(!entity.IsSelected)
+                        if(!monster.IsSelected)
                             break;
                     }
-                    entity.ResetAP();
                 }
             });
             task.Start();
@@ -199,7 +234,7 @@ namespace Cave_Adventure
             entities.AddRange(Monsters);
             return entities;
         }
-
+        
         public void CompleteLevel(CheatMenu cheatMenu)
         {
             if(cheatMenu.ArenaMap == this)

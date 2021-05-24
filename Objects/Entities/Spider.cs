@@ -13,6 +13,7 @@ namespace Cave_Adventure
             Damage = GlobalConst.SpiderDamage;
             Defense = GlobalConst.SpiderDefence;
             Initiative = 6;
+            Description = "Хоть и маленький, но смелый";
         }
 
         public override void ResetAP()
@@ -22,7 +23,7 @@ namespace Cave_Adventure
 
         public override string ToString()
         {
-            return "Spider";
+            return "Паук Гордый";
         }
     }
 }

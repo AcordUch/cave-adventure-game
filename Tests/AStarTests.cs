@@ -10,7 +10,7 @@ namespace Cave_Adventure
     public class AStarTests
     {
         [Test]
-        public void BFSNoPath()
+        public void AStarPFNoPath()
         {
             var textArena = 
 @"# .P .
@@ -18,11 +18,11 @@ Sp.# .";
             var arena = ArenaMap.CreateNewArenaMap(textArena);
             var paths = GetPaths(arena, arena.Monsters[0].Position, 3);
             //AssertPaths(paths, arena, new []{1});
-            Assert.AreEqual(new Point(-1, -1), paths.Value);
+            Assert.AreEqual(new Point(-1, -1), paths.ToList()[^1]);
         }
         
         [Test]
-        public void BSFEmptyMapWithPlayer()
+        public void  AStarPFEmptyMapWithPlayer()
         {
             var textArena =
 @"  .  .P .
