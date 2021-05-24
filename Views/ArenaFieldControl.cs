@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
+using Cave_Adventure.Objects.Items;
 
 namespace Cave_Adventure
 {
@@ -19,16 +20,16 @@ namespace Cave_Adventure
         private PointF _logicalCenterPos;
         private bool _configured = false;
         private Dictionary<Point, Rectangle> _pointToRectangle;
-
-        public int ArenaId { get; set; }
+        
         public ArenaMap ArenaMap { get; private set; }
         public ArenaPainter ArenaPainter { get; }
         
-        public Player Player => ArenaMap.Player;
+        public Player Player => ArenaMap?.Player;
 
         public Monster[] Monsters => ArenaMap.Monsters;
-        
 
+        public event Action BindEvent;
+        
         public ArenaFieldControl()
         {
             InitializeComponent();
@@ -46,10 +47,7 @@ namespace Cave_Adventure
             if (_configured)
                 throw new InvalidOperationException();
             
-            ArenaMap = ArenaMap.CreateNewArenaMap(arenaMap);
-            _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
-            ArenaPainter.Configure(ArenaMap, _pointToRectangle);
-            _entityPainter.Configure(ArenaMap.GetListOfEntities());
+            LoadLevel(arenaMap);
             _configured = true;
         }
 
@@ -72,49 +70,61 @@ namespace Cave_Adventure
             DoubleBuffered = true;
         }
         
-        public void ChangeLevel(string newMap)
+        public void LoadLevel(string newMap)
         {
             ArenaMap = ArenaMap.CreateNewArenaMap(newMap);
             _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
-            ArenaPainter.ChangeLevel(ArenaMap, _pointToRectangle);
-            _entityPainter.ReConfigure(ArenaMap.GetListOfEntities());
+            ArenaPainter.Configure(ArenaMap, _pointToRectangle);
+            _entityPainter.Configure(ArenaMap.GetListOfEntities());
+            BindEvent?.Invoke();
+            for (int i = 0; i < 3; i++)
+            {
+                Player.Inventory.Add(new HealthPotion());
+            }
             Invalidate();
         }
 
         #region KeyControl
-        // public void OnKeyUp(object sender, KeyEventArgs e)
-        // {
-        //     _player.Move(0, 0);
-        //     _player.SetAnimationConfiguration(StatesOfAnimation.Idle);
-        // }
 
-        // public void OnKeyDown(object sender, KeyEventArgs e)
-        // {
-        //     switch (e.KeyCode)
-        //     {
-        //         case Keys.W:
-        //             _player.Move(0, -5);
-        //             _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-        //             break;
-        //         case Keys.S:
-        //             _player.Move(0, 5);
-        //             _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-        //             break;
-        //         case Keys.A:
-        //             _player.Move(-5, 0);
-        //             _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-        //             _player.ViewDirection = ViewDirection.Left;
-        //             break;
-        //         case Keys.D:
-        //             _player.Move(5, 0);
-        //             _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-        //             _player.ViewDirection = ViewDirection.Right;
-        //             break;
-        //         case Keys.Space:
-        //             _player.SetAnimationConfiguration(StatesOfAnimation.Attack);
-        //             break;
-        //     }
-        // }
+        protected override void OnKeyPress(KeyPressEventArgs e)
+        {
+        }
+
+        /*
+        public void OnKeyUp(object sender, KeyEventArgs e)
+        {
+            _player.Move(0, 0);
+            _player.SetAnimationConfiguration(StatesOfAnimation.Idle);
+        }
+
+        public void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.W:
+                    _player.Move(0, -5);
+                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
+                    break;
+                case Keys.S:
+                    _player.Move(0, 5);
+                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
+                    break;
+                case Keys.A:
+                    _player.Move(-5, 0);
+                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
+                    _player.ViewDirection = ViewDirection.Left;
+                    break;
+                case Keys.D:
+                    _player.Move(5, 0);
+                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
+                    _player.ViewDirection = ViewDirection.Right;
+                    break;
+                case Keys.Space:
+                    _player.SetAnimationConfiguration(StatesOfAnimation.Attack);
+                    break;
+            }
+        }
+        */
         #endregion
         
         private void HandleClick(object sender, EventArgs e)

@@ -11,5 +11,10 @@ namespace Cave_Adventure
             entity.ReduceAP(2);
             return base.GetDamage(in entity);
         }
+        
+        public override string ToString()
+        {
+            return "Огненный шар";
+        }
     }
 }

@@ -4,6 +4,15 @@
     <Compile Update="Views\ArenaPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="Views\HealBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Views\InventoryPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Views\LevelSelectionMenuPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="Views\MainMenuPanel.cs">
       <SubType>Component</SubType>
     </Compile>

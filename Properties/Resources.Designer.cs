@@ -77,7 +77,7 @@ namespace Cave_Adventure.Properties {
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на # .# .# .# .# .# .# .# .# .# .
-        ///# .  .P .  .  .  .  .  .  .# .
+        ///# .  .P .Sp.  .  .  .  .  .# .
         ///# .# .  .# .  .  .  .  .  .# .
         ///# .  .# .  .  .  .  .  .  .# .
         ///# .  .  .  .  .  .  .  .  .# .
@@ -133,7 +133,7 @@ namespace Cave_Adventure.Properties {
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на # .# .# .# .# .# .# .# .# .# .
-        ///# .P .Sp.Sp.Sp.Sp.Sp.Sp.Sp.# .
+        ///# .P .  .Sp.Sp.Sp.Sp.Sp.Sp.# .
         ///# .Sn.Sn.Sn.Sn.Sn.Sn.Sn.Sn.# .
         ///# .Sp.Sp.Sp.Sp.Sp.Sp.Sp.Sp.# .
         ///# .Sn.Sn.Sn.Sn.Sn.Sn.Sn.Sn.# .
@@ -165,6 +165,27 @@ namespace Cave_Adventure.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на # .# .# .# .# .# .# .# .# .# .
+        ///# .P .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .  .  .  .  .  .  .  .  .# .
+        ///# .Sp.Sn.Sp.Sn.Sp.Sn.Sp.Sn.# .
+        ///# .# .# .# .# .# .# .# .# .# ..
+        /// </summary>
+        internal static string Arena7 {
+            get {
+                return ResourceManager.GetString("Arena7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Cobra {
@@ -190,6 +211,16 @@ namespace Cave_Adventure.Properties {
         internal static System.Drawing.Bitmap Gladiator {
             get {
                 object obj = ResourceManager.GetObject("Gladiator", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mazePicMainMenu {
+            get {
+                object obj = ResourceManager.GetObject("mazePicMainMenu", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

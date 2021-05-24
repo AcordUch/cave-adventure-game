@@ -12,7 +12,8 @@ namespace Cave_Adventure
         private Point _position;
         private double _health;
         private readonly EntityAttackAnimController _attackAnimController;
-
+        
+        public string Description { get; protected init; }
         public StatesOfAnimation CurrentStates { get; private set; } = StatesOfAnimation.Idle;
         public ViewDirection ViewDirection { get; set; } = ViewDirection.Right;
         public EntityType Tag { get; }
@@ -20,9 +21,12 @@ namespace Cave_Adventure
         public bool IsMoving { get; private set; }
         public Point TargetPoint { get; private set; }
         public int AP { get; protected set; }
+        public int MaxAP { get; protected init; }
+        public double MaxHealth { get; protected init; }
         public double Attack { get; protected init; }
         public double Defense { get; protected init; }
         public double Damage { get; protected init; }
+        public int Initiative { get; protected init; }
         public Weapon Weapon { get; protected init; }
         
         public Point Position
@@ -34,10 +38,11 @@ namespace Cave_Adventure
         public double Health
         {
             get => _health;
-            protected set => _health = value >= 0 ? value : 0;
+            set => _health = value >= 0 ? value : 0;
         }
 
-        public bool IsAlive => Health > 0;
+        public bool IsAlive => CurrentStates != StatesOfAnimation.Death;
+        public bool IsDead => !IsAlive;
 
         protected Entity(Point position, EntityType tag)
         {
@@ -45,8 +50,8 @@ namespace Cave_Adventure
             _position = position;
             _attackAnimController = new EntityAttackAnimController(this);
         }
-        
-        public virtual double Attacking()
+
+        protected virtual double Attacking()
         {
             _attackAnimController.PlayAttackAnimation();
             return Weapon.GetDamage(this);
@@ -62,13 +67,18 @@ namespace Cave_Adventure
             {
                 this.Health -= attacker.Attack <= 0.75 * this.Defense ? attacker.Attacking() * 0.5 : attacker.Attacking() * 0.75;
             }
+
+            CheckIsAliveAndChangeState();
             if (isfirstAttack)
                 Counterattack(attacker);
         }
 
         private void Counterattack(Entity attacker)
         {
-            var timer = new Timer() {Interval = 2100};
+            if(IsDead)
+                return;
+            
+            var timer = new Timer() {Interval = GlobalConst.AnimTimerInterval + 100};
             timer.Elapsed += (_, __) =>
             {
                 attacker.Defending(this, false);
@@ -132,7 +142,7 @@ namespace Cave_Adventure
         {
             AP = AP + dAP > 0 ? AP + dAP : 0;
         }
-
+        
         public bool CheckIsAliveAndChangeState()
         {
             if(Health <= 0)

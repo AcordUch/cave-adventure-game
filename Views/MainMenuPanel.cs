@@ -1,17 +1,25 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using Cave_Adventure.Interfaces;
+using ContentAlignment = System.Drawing.ContentAlignment;
 
 namespace Cave_Adventure
 {
     public class MainMenuPanel : Panel, IPanel
     {
-        private bool _configured = false;
         private readonly Game _game;
+        private bool _configured = false;
+        private Panel _imagePanel;
+        private PictureBox _imageBox;
         
+        public event Action<string> LoadLevel;
+        public event Action<int> SetLevelId;
+
         public MainMenuPanel(Game game)
         {
             _game = game;
@@ -46,11 +54,23 @@ namespace Cave_Adventure
             _configured = false;
         }
 
+        public new void Update()
+        {
+            try
+            {
+                _imageBox.Image = new Bitmap(Properties.Resources.mazePicMainMenu, Size);
+            }
+            catch
+            {
+                //ignore
+            }
+        }
+
         private void ConfigureTable(TableLayoutPanel table)
         {
             var buttonMenu = new FlowLayoutPanel
             {
-                FlowDirection = FlowDirection.RightToLeft,
+                FlowDirection = FlowDirection.TopDown,
                 Dock = DockStyle.Fill,
                 AutoSize = true,
                 BackColor = Color.Red,
@@ -58,9 +78,23 @@ namespace Cave_Adventure
                 Font = new Font(SystemFonts.DialogFont.FontFamily, 12)
             };
             SetUpButtonMenu(buttonMenu);
+            _imagePanel = new Panel()
+            {
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                BackgroundImage = new Bitmap(Properties.Resources.mazePicMainMenu, Size)
+            };
+
+            _imageBox = new PictureBox()
+            {
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                Image = new Bitmap(Properties.Resources.mazePicMainMenu, Size)
+            };
             
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 85));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15));
+            table.Controls.Add(_imagePanel, 0, 0);
             table.Controls.Add(buttonMenu, 1, 0);
         }
 
@@ -77,9 +111,9 @@ namespace Cave_Adventure
                 Font = new Font(SystemFonts.DialogFont.FontFamily, 15)
             });
             
-            var link = new LinkLabel
+            var Arenas = new LinkLabel
             {
-                Text = "Arenas",
+                Text = "Start Play Arena Mode",
                 TextAlign = ContentAlignment.MiddleCenter,
                 LinkColor = Color.Black,
                 ActiveLinkColor = Color.White,
@@ -87,8 +121,27 @@ namespace Cave_Adventure
                 AutoSize = true,
                 Margin = new Padding(0, 20, 0, 5),
             };
-            link.LinkClicked += _game.SwitchOnArenas;
-            buttonMenu.Controls.Add(link);
+            Arenas.LinkClicked += (sender, args) =>
+            {
+                _game.SwitchOnArenas(sender, args);
+                // LoadLevel?.Invoke(_levels[arenaId]);
+                // SetLevelId?.Invoke(arenaId);
+            };
+            
+            var levelSelectionMenu = new LinkLabel
+            {
+                Text = "Levels",
+                TextAlign = ContentAlignment.MiddleCenter,
+                LinkColor = Color.Black,
+                ActiveLinkColor = Color.White,
+                Size = new Size(100, 35),
+                AutoSize = true,
+                Margin = new Padding(0, 20, 0, 5),
+            };
+            levelSelectionMenu.LinkClicked += _game.SwitchOnLevelSelectionMenu;
+            
+            buttonMenu.Controls.Add(Arenas);
+            buttonMenu.Controls.Add(levelSelectionMenu);
         }
     }
 }

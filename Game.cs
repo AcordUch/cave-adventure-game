@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace Cave_Adventure
 {
@@ -15,6 +17,11 @@ namespace Cave_Adventure
         public void SwitchOnMainMenu(object sender, EventArgs e)
         {
             ChangeStage(GameScreen.MainMenu);
+        }
+
+        public void SwitchOnLevelSelectionMenu(object sender, EventArgs e)
+        {
+            ChangeStage(GameScreen.LevelSelectionMenu);
         }
         
         private void ChangeStage(GameScreen stage)

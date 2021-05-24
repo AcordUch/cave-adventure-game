@@ -7,11 +7,13 @@ namespace Cave_Adventure
     {
         public Spider(Point position) : base(position, EntityType.Spider)
         {
-            AP = GlobalConst.SpiderAP;
+            AP = MaxAP = GlobalConst.SpiderAP;
             Attack = GlobalConst.SpiderAttack;
-            Health = GlobalConst.SpiderHP;
+            Health = MaxHealth = GlobalConst.SpiderHP;
             Damage = GlobalConst.SpiderDamage;
             Defense = GlobalConst.SpiderDefence;
+            Initiative = 6;
+            Description = "Хоть и маленький, но смелый";
         }
 
         public override void ResetAP()
@@ -21,7 +23,7 @@ namespace Cave_Adventure
 
         public override string ToString()
         {
-            return "Spider";
+            return "Паук Гордый";
         }
     }
 }

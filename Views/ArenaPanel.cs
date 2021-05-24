@@ -2,20 +2,37 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Timers;
 using System.Windows.Forms;
 using Cave_Adventure.Interfaces;
+using Cave_Adventure.Views;
 
 namespace Cave_Adventure
 {
     public class ArenaPanel : Panel, IPanel
     {
-        private readonly ArenaFieldControl ArenaFieldControl;
-        private Label _infoLabel;
-        private Button _attackMonsterButton;
+        public readonly ArenaFieldControl ArenaFieldControl;
+        private readonly List<Keys> _pressedKeys = new List<Keys>();
         private readonly string[] _levels;
-        private bool _configured = false;
         private readonly Game _game;
+        private readonly HealBar _healBar;
+        private InventoryPanel _inventoryPanel;
+        private Label _infoLabel;
+        private Button _nextTurnButton;
+        private Button _attackMonsterButton;
+        private Button _nextLevelButton;
+        private Button _inspectEntityButton;
+        private Button _backToMenuButton;
+        private bool _winFormIsDisplayed = false;
+        private bool _configured = false;
+        private bool _UIBlocked = false;
+        private bool _needInspect = false;
+        private int _currentArenaId;
+
+        public int CurrentArenaId
+        {
+            get => _currentArenaId;
+            private set => _currentArenaId = value >= _levels.Length ? 0 : value;
+        }
 
         public ArenaPanel(Game game)
         {
@@ -23,7 +40,14 @@ namespace Cave_Adventure
             _levels = LoadLevels().ToArray();
 
             ArenaFieldControl = new ArenaFieldControl();
-
+            ArenaFieldControl.BindEvent += OnBindArenaMapEvent;
+            ArenaFieldControl.ClickOnPoint += ArenaFieldControl_ClickOnPoint;
+            
+            _healBar = new HealBar()
+            {
+                Dock = DockStyle.Fill,
+                AutoSize = true
+            };
             var table = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
@@ -31,8 +55,10 @@ namespace Cave_Adventure
             };
             ConfigureTables(table);
 
+            ArenaFieldControl.KeyDown += OnKeyDown;
+            ArenaFieldControl.KeyUp += OnKeyUp;
+            
             Controls.Add(table);
-            ArenaFieldControl.ClickOnPoint += ArenaFieldControl_ClickOnPoint;
         }
 
         protected override void InitLayout()
@@ -42,12 +68,19 @@ namespace Cave_Adventure
             DoubleBuffered = true;
         }
 
-        public void Configure()
+        void IPanel.Configure() => Configure();
+
+        public void Configure(string arenaMap = null)
         {
             if (_configured)
                 throw new InvalidOperationException();
 
-            ArenaFieldControl.Configure(_levels[0]);
+            arenaMap ??= _levels[0];
+            ArenaFieldControl.Configure(arenaMap);
+            _healBar.Configure(ArenaFieldControl.ArenaMap);
+            CurrentArenaId = Array.IndexOf(_levels, arenaMap);
+            if(_UIBlocked)
+                OnBlockUnblockUI();
             _configured = true;
         }
 
@@ -63,7 +96,8 @@ namespace Cave_Adventure
                 return;
 
             ArenaFieldControl.Update();
-
+            _healBar.Invalidate();
+            _inventoryPanel.Update();
             //Вынести в метод OnSizeChange
             var zoom = GetZoomForController();
             ArenaFieldControl.Size =
@@ -73,73 +107,110 @@ namespace Cave_Adventure
             _infoLabel.Text = ArenaFieldControl.PlayerInfoToString();
         }
 
+        #region ClickOnPointHandler
+        
         private void ArenaFieldControl_ClickOnPoint(Point point, MouseEventArgs args)
         {
             if (args.Button == MouseButtons.Left)
             {
+                if (!ArenaFieldControl.ArenaMap.IsPlayerTurnNow)
+                    return;
+                
                 var actionCompleted = false;
+
+                if (_needInspect)
+                {
+                   InspectMonster(point);
+                    actionCompleted = true;
+                }
+
                 if (point == ArenaFieldControl.Player.Position && !actionCompleted)
                 {
                     if (ArenaFieldControl.Player.IsSelected)
                     {
-                        ArenaFieldControl.ArenaMap.PlayerSelected = false;
-                        ArenaFieldControl.Player.IsSelected = false;
-                        ArenaFieldControl.ArenaPainter.Update();
+                        UnselectPlayer();
                     }
                     else
                     {
-                        foreach (var neighborPoint in ArenaFieldControl.Player.GetNeighbors())
-                        {
-                            if (ArenaFieldControl.Monsters.Any(monster => monster.Position == neighborPoint))
-                            {
-                                _attackMonsterButton.Enabled = true;
-                            }
-                        }
-
-                        var path = BFS.FindPaths(
-                            ArenaFieldControl.ArenaMap,
-                            ArenaFieldControl.Player.Position,
-                            ArenaFieldControl.Player.AP).ToArray();
-                        ArenaFieldControl.ArenaMap.SetPlayerPaths(path);
-
-                        ArenaFieldControl.Player.IsSelected = true;
-                        ArenaFieldControl.ArenaPainter.Update();
+                        SelectPlayer();
                     }
                     actionCompleted = true;
                 }
-
+                
                 if (ArenaFieldControl.Player.IsSelected && !actionCompleted)
                 {
-                    if (!actionCompleted && ArenaFieldControl.ArenaMap.Monsters.Any(p => p.Position == point))
+                    if (!actionCompleted && ArenaFieldControl.ArenaMap.Monsters.Any(m => m.Position == point && m.IsAlive))
                     {
-                        ArenaFieldControl.ArenaMap.Attacking(ArenaFieldControl.Player, point);
-                        ArenaFieldControl.ArenaMap.AttackButtonPressed = false;
-                        ArenaFieldControl.ArenaMap.PlayerSelected = false;
-                        ArenaFieldControl.Player.IsSelected = false;
-                        _attackMonsterButton.Enabled = false;
+                        AttackMonster(point);
                         actionCompleted = true;
                     }
                     
                     if (!actionCompleted && ArenaFieldControl.ArenaMap.PlayerPaths.Any(p => p.Contains(point)))
                     {
-                        ArenaFieldControl.ArenaMap.MoveAlongThePath(point);
-                        ArenaFieldControl.ArenaMap.PlayerSelected = false;
-                        _attackMonsterButton.Enabled = false;
+                        MovePlayer(point);
                         actionCompleted = true;
                     }
                 }
             }
         }
 
-        private void ClickOnNextTurnButton(object sender, EventArgs e)
+        private void InspectMonster(Point point)
         {
-            ArenaFieldControl.ArenaMap.NextTurn();
+            var entity = ArenaFieldControl.ArenaMap.GetListOfEntities()
+                .Where(m => m.Position == point)
+                .Select(m => m)
+                .FirstOrDefault();
+            if(entity != null)
+            {
+                var entityDescription = new EntityDescription(entity);
+                entityDescription.Show();
+            }
+
+            _needInspect = false;
+        }
+        
+        private void UnselectPlayer()
+        {
+            ArenaFieldControl.ArenaMap.PlayerSelected = false;
+            ArenaFieldControl.Player.IsSelected = false;
+            ArenaFieldControl.ArenaPainter.Update();        
         }
 
-        private void Attack(object sender, EventArgs e)
+        private void SelectPlayer()
         {
-            ArenaFieldControl.ArenaMap.AttackButtonPressed = true;
+            if (ArenaFieldControl.Player.GetNeighbors()
+                .Any(neighborsPos => ArenaFieldControl.Monsters.Any(monster => monster.Position == neighborsPos)))
+            {
+                _attackMonsterButton.Enabled = true;
+            }
+
+            var path = BFS.FindPaths(
+                ArenaFieldControl.ArenaMap,
+                ArenaFieldControl.Player.Position,
+                ArenaFieldControl.Player.AP).ToArray();
+            ArenaFieldControl.ArenaMap.SetPlayerPaths(path);
+
+            ArenaFieldControl.Player.IsSelected = true;
+            ArenaFieldControl.ArenaPainter.Update();
         }
+
+        private void AttackMonster(Point point)
+        {
+            ArenaFieldControl.ArenaMap.Attacking(ArenaFieldControl.Player, point);
+            ArenaFieldControl.ArenaMap.AttackButtonPressed = false;
+            ArenaFieldControl.ArenaMap.PlayerSelected = false;
+            ArenaFieldControl.Player.IsSelected = false;
+            _attackMonsterButton.Enabled = false;
+        }
+
+        private void MovePlayer(Point point)
+        {
+            ArenaFieldControl.ArenaMap.MovePlayerAlongThePath(point);
+            ArenaFieldControl.ArenaMap.PlayerSelected = false;
+            _attackMonsterButton.Enabled = false;
+        }
+
+        #endregion
         
         private static IEnumerable<String> LoadLevels()
         {
@@ -149,6 +220,7 @@ namespace Cave_Adventure
             yield return Properties.Resources.Arena4;
             yield return Properties.Resources.Arena5;
             yield return Properties.Resources.Arena6;
+            yield return Properties.Resources.Arena7;
         }
 
         #region Настройка Панелей
@@ -166,7 +238,7 @@ namespace Cave_Adventure
             };
             SetUpLevelSwitch(levelMenu);
 
-            var nextTurnButton = new Button()
+            _nextTurnButton = new Button()
             {
                 Text = $"Следующий ход",
                 TextAlign = ContentAlignment.MiddleCenter,
@@ -174,9 +246,9 @@ namespace Cave_Adventure
                 Size = new Size(350, 50),
                 AutoSize = true
             };
-            nextTurnButton.Click += ClickOnNextTurnButton;
+            _nextTurnButton.Click += ClickOnNextTurnButton;
 
-            var backToMenuButton = new Button()
+            _backToMenuButton = new Button()
             {
                 Text = $"Назад в меню",
                 TextAlign = ContentAlignment.MiddleCenter,
@@ -184,7 +256,18 @@ namespace Cave_Adventure
                 Size = new Size(350, 50),
                 AutoSize = true
             };
-            backToMenuButton.Click += _game.SwitchOnMainMenu;
+            _backToMenuButton.Click += _game.SwitchOnMainMenu;
+
+            _nextLevelButton = new Button()
+            {
+                Text = $"Следующий уровень",
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Fill,
+                Size = new Size(350, 50),
+                AutoSize = true,
+                Enabled = false
+            };
+            _nextLevelButton.Click += OnNextLevelButtonClick;
 
             _attackMonsterButton = new Button()
             {
@@ -193,9 +276,20 @@ namespace Cave_Adventure
                 Dock = DockStyle.Fill,
                 Size = new Size(350, 50),
                 AutoSize = true,
-                Enabled = false,
+                Enabled = false
             };
-            _attackMonsterButton.Click += Attack;
+            _attackMonsterButton.Click += OnAttackButtonClick;
+
+            _inspectEntityButton = new Button()
+            {
+                Text = $"Осмотреть",
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Fill,
+                Size = new Size(350, 50),
+                AutoSize = true,
+                Enabled = true
+            };
+            _inspectEntityButton.Click += OnInspectEntityButtonClick;
 
             var infoPanel = new FlowLayoutPanel()
             {
@@ -206,6 +300,13 @@ namespace Cave_Adventure
                 Font = new Font(SystemFonts.DialogFont.FontFamily, 10)
             };
             SetUpInfoPanel(infoPanel);
+
+            _inventoryPanel = new InventoryPanel(ArenaFieldControl)
+            {
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                Font = new Font(SystemFonts.DialogFont.FontFamily, 10)
+            };
 
             var arenaLayoutPanel = new FlowLayoutPanel()
             {
@@ -235,29 +336,31 @@ namespace Cave_Adventure
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            secondColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 90));
-            secondColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 10));
+            secondColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 86));
+            secondColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 14));
             secondColumnTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
             thirdColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
             thirdColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
             thirdColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
             thirdColumnTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-            bottomTable.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
-            bottomTable.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
-            bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35));
+            bottomTable.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
+            bottomTable.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
+            bottomTable.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
             bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35));
             bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30));
+            bottomTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35));
 
             arenaLayoutPanel.Controls.Add(ArenaFieldControl);
-            bottomTable.Controls.Add(backToMenuButton, 0, 1);
-            bottomTable.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 1, 1);
-            bottomTable.Controls.Add(nextTurnButton, 2, 1);
+            bottomTable.Controls.Add(_backToMenuButton, 0, 2);
+            bottomTable.Controls.Add(_nextLevelButton, 0, 1);
             bottomTable.Controls.Add(_attackMonsterButton, 2, 0);
+            bottomTable.Controls.Add(_inspectEntityButton, 2, 1);
+            bottomTable.Controls.Add(_nextTurnButton, 2, 2);
             secondColumnTable.Controls.Add(arenaLayoutPanel, 0, 0);
             secondColumnTable.Controls.Add(bottomTable, 0, 1);
-            thirdColumnTable.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 0, 0);
+            thirdColumnTable.Controls.Add(_healBar, 0, 0);
             thirdColumnTable.Controls.Add(infoPanel, 0, 1);
-            thirdColumnTable.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 0, 2);
+            thirdColumnTable.Controls.Add(_inventoryPanel, 0, 2);
             table.Controls.Add(levelMenu, 0, 0);
             table.Controls.Add(secondColumnTable, 1, 0);
             table.Controls.Add(thirdColumnTable, 2, 0);
@@ -293,8 +396,12 @@ namespace Cave_Adventure
                 };
                 link.LinkClicked += (sender, args) =>
                 {
-                    ArenaFieldControl.ChangeLevel(_levels[arenaId]);
+                    ArenaFieldControl.LoadLevel(_levels[arenaId]);
                     UpdateLinksColors(_levels[arenaId], linkLabels);
+                    CurrentArenaId = arenaId;
+                    _nextLevelButton.Enabled = false;
+                    if(_UIBlocked)
+                        OnBlockUnblockUI();
                 };
                 menuPanel.Controls.Add(link);
                 linkLabels.Add(link);
@@ -328,7 +435,107 @@ namespace Cave_Adventure
             };
             infoPanel.Controls.Add(_infoLabel);
         }
+        #endregion
 
+        #region EventHandlers
+        
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            _pressedKeys.Add(e.KeyCode);
+            if (_pressedKeys.Contains(Keys.ControlKey) && _pressedKeys.Contains(Keys.Oemtilde) && _pressedKeys.Count == 2)
+            {
+                if(!Application.OpenForms.OfType<CheatMenu>().Any())
+                {
+                    var cheatMenu = new CheatMenu();
+                    cheatMenu.Configure(ArenaFieldControl);
+                    cheatMenu.Show();
+                }
+                _pressedKeys.Clear();
+            }
+        }
+
+        private void OnKeyUp(object sender, KeyEventArgs e)
+        {
+            _pressedKeys.Remove(e.KeyCode);
+        }
+        
+        private void OnBlockUnblockUI()
+        {
+            _inventoryPanel.OnBlockUnblockUI();
+            _nextTurnButton.Enabled = !_nextTurnButton.Enabled;
+            _backToMenuButton.Enabled = !_backToMenuButton.Enabled;
+            _UIBlocked = !_UIBlocked;
+        }
+        
+        private void OnBindArenaMapEvent()
+        {
+            ArenaFieldControl.ArenaMap.ChangeStateOfUI += OnBlockUnblockUI;
+            ArenaFieldControl.ArenaMap.AllMonsterDead += OnAllMonsterDead;
+            ArenaFieldControl.ArenaMap.PlayerDead += OnPlayerDead;
+            _healBar.Configure(ArenaFieldControl.ArenaMap);
+            _winFormIsDisplayed = false;
+        }
+
+        public void OnSetCurrentArenaId(int arenaId)
+        {
+            CurrentArenaId = arenaId;
+        }
+        
+        private void ClickOnNextTurnButton(object sender, EventArgs e)
+        {
+            ArenaFieldControl.ArenaMap.NextTurn();
+        }
+        
+        private void OnAttackButtonClick(object sender, EventArgs e)
+        {
+            ArenaFieldControl.ArenaMap.AttackButtonPressed = true;
+        }
+
+        private void OnNextLevelButtonClick(object sender, EventArgs e)
+        {
+            CurrentArenaId++;
+            ArenaFieldControl.LoadLevel(_levels[_currentArenaId]);
+            _nextLevelButton.Enabled = false;
+        }
+
+        private void OnInspectEntityButtonClick(object sender, EventArgs e)
+        {
+            _needInspect = !_needInspect;
+        }
+
+        private void OnAllMonsterDead()
+        {
+            if(_winFormIsDisplayed)
+                return;
+            
+            _nextLevelButton.Enabled = true;
+            _winFormIsDisplayed = true;
+            MessageBox.Show(
+                "Ты выиграл!\nСледуй дальше",
+                "Победа!",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.None,
+                MessageBoxDefaultButton.Button1);
+        }
+
+        private void OnPlayerDead()
+        {
+            var timer = new System.Timers.Timer{Interval = GlobalConst.AnimTimerInterval / 2};
+            timer.Elapsed += (_, __) =>
+            {
+                timer.Stop();
+                MessageBox.Show(
+                    "Ты умер :с!\nДавай по новой",
+                    "Не повезло, не повезло",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.None,
+                    MessageBoxDefaultButton.Button1);
+                ArenaFieldControl.LoadLevel(_levels[CurrentArenaId]);
+                timer.Close();
+            };
+            timer.Start();
+        }
+        
         #endregion
 
         private double GetZoomForController()

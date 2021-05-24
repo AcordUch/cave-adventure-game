@@ -4,6 +4,7 @@ namespace Cave_Adventure
     {
         Player,
         Spider,
-        Snake
+        Snake,
+        SuperMonster
     }
 }
