@@ -458,6 +458,7 @@ namespace Cave_Adventure
         
         private void OnBlockUnblockUI()
         {
+            _inventoryPanel.OnBlockUnblockUI();
             _nextTurnButton.Enabled = !_nextTurnButton.Enabled;
             _UIBlocked = !_UIBlocked;
         }

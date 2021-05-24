@@ -112,6 +112,8 @@ namespace Cave_Adventure
             {
                 foreach (var entity in entities)
                 {
+                    if(entity.IsDead)
+                        continue;
                     entity.IsSelected = true;
                     MoveEntityAlongThePath(entity.Position + new Size(0, -1), entity);
                     while (true)
