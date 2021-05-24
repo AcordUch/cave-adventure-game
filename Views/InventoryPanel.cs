@@ -13,6 +13,7 @@ namespace Cave_Adventure.Views
         private readonly ArenaFieldControl _arenaFieldControl;
 
         private Label _infoLabel;
+        private Button _healButton;
 
         private Player Player => _arenaFieldControl.Player;
 
@@ -45,7 +46,7 @@ namespace Cave_Adventure.Views
                 Size = this.Size,
                 AutoSize = true
             };
-            var healButton = new Button()
+            _healButton = new Button()
             {
                 Text = $"Полечись",
                 TextAlign = ContentAlignment.MiddleCenter,
@@ -54,7 +55,7 @@ namespace Cave_Adventure.Views
                 AutoSize = true,
                 Enabled = true
             };
-            healButton.Click += (sender, args) =>
+            _healButton.Click += (sender, args) =>
             {
                 var healKit = Player.Inventory.FirstOrDefault(i => i.Tag == ItemType.HealthPotion);
                 if(healKit == null) return;
@@ -78,7 +79,7 @@ namespace Cave_Adventure.Views
             table.Controls.Add(_infoLabel, 1, 1);
             table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 2, 1);
             table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 0, 2);
-            table.Controls.Add(healButton, 1, 2);
+            table.Controls.Add(_healButton, 1, 2);
             table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 2, 2);
             table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 0, 3);
             table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.White }, 1, 3);
@@ -86,6 +87,11 @@ namespace Cave_Adventure.Views
             table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 0, 4);
             table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Red }, 1, 4);
             table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 2, 4);
+        }
+
+        public void OnBlockUnblockUI()
+        {
+            _healButton.Enabled = !_healButton.Enabled;
         }
 
         private string MakeTextForInfoLabel()
