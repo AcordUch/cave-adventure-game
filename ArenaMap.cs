@@ -3,9 +3,10 @@ using System.Collections;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 using Cave_Adventure.Views;
+using Timer = System.Timers.Timer;
 
 namespace Cave_Adventure
 {
@@ -53,7 +54,7 @@ namespace Cave_Adventure
             Player.IsSelected = false;
             PlayerPaths = null;
             PlayerSelected = false;
-            var monsters = Monsters.ToList().OrderBy(m => m.Initiative);
+            var monsters = Monsters.ToList().OrderByDescending(m => m.Initiative);
             await MoveEntitiesControl(monsters);
             await MonsterAttackController(monsters);
             foreach (var monster in monsters)
@@ -65,7 +66,7 @@ namespace Cave_Adventure
             Step += 1;
             BlockUnblockUI();
         }
-        
+
         public void Attacking(Entity attacker, Point targetPoint)
         {
             var target = GetListOfEntities().FirstOrDefault(p => p.Position == targetPoint);
@@ -131,11 +132,13 @@ namespace Cave_Adventure
         {
             if (PlayerSelected && Player.AP > 0)
             {
+                ChangeStateOfUI?.Invoke();
                 var path = (PlayerPaths
                         .FirstOrDefault(p => p.Value == targetPoint) 
                             ?? throw new InvalidOperationException("Среди доступных точек нет необходимой. В методе откуда вызов нет проверки?"))
                     .Select(p => p).Reverse().ToArray();
                 await StartMoveEntity(path, Player);
+                ChangeStateOfUI?.Invoke();
             }
         }
         
@@ -231,7 +234,7 @@ namespace Cave_Adventure
             entities.AddRange(Monsters);
             return entities;
         }
-
+        
         public void CompleteLevel(CheatMenu cheatMenu)
         {
             if(cheatMenu.ArenaMap == this)
