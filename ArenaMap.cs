@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using Cave_Adventure.Views;
 
 namespace Cave_Adventure
@@ -53,11 +54,16 @@ namespace Cave_Adventure
             Player.IsSelected = false;
             PlayerPaths = null;
             PlayerSelected = false;
-            await MonsterTurnController();
+            var monsters = Monsters.ToList().OrderBy(m => m.Initiative);
+            await MoveEntitiesControl(monsters);
+            await MonsterAttackController(monsters);
+            foreach (var monster in monsters)
+            {
+                if(monster.IsAlive)
+                    monster.ResetAP();
+            }
             Step += 1;
             BlockUnblockUI();
-            // IsPlayerTurnNow = !IsPlayerTurnNow;
-
         }
         
         public void Attacking(Entity attacker, Point targetPoint)
@@ -88,12 +94,33 @@ namespace Cave_Adventure
             ChangeStateOfUI?.Invoke();
         }
 
-        private Task MonsterTurnController()
+        private Task MonsterAttackController(IEnumerable<Entity> entities)
         {
-            var monsters = Monsters.ToList().OrderBy(m => m.Initiative);
-            return MoveEntityControl(monsters);
+            var task = new Task(() =>
+            {
+                foreach (var entity in entities)
+                {
+                    if(entity.IsDead || entity.AP == 0)
+                        continue;
+                    var flag = true;
+                    // entity.IsSelected = true;
+                    var timer = new Timer {Interval = 2 * GlobalConst.AnimTimerInterval + 200 };
+                    timer.Elapsed += (_, __) =>
+                    {
+                        flag = false;
+                        timer.Stop();
+                    };
+                    Player.Defending(entity);
+                    while (flag)
+                    {
+                        
+                    }
+                }
+            });
+            task.Start();
+            return task;
         }
-
+        
         public async void MovePlayerAlongThePath(Point targetPoint)
         {
             if (PlayerSelected && Player.AP > 0)
@@ -106,12 +133,14 @@ namespace Cave_Adventure
             }
         }
         
-        private Task MoveEntityControl(IEnumerable<Entity> entities)
+        private Task MoveEntitiesControl(IEnumerable<Entity> entities)
         {
             var task = new Task(() =>
             {
                 foreach (var entity in entities)
                 {
+                    if(entity.IsDead)
+                        continue;
                     entity.IsSelected = true;
                     MoveEntityAlongThePath(entity.Position + new Size(0, -1), entity);
                     while (true)
@@ -119,7 +148,6 @@ namespace Cave_Adventure
                         if(!entity.IsSelected)
                             break;
                     }
-                    entity.ResetAP();
                 }
             });
             task.Start();
