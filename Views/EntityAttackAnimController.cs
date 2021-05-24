@@ -9,7 +9,7 @@ namespace Cave_Adventure.Views
 
         public EntityAttackAnimController(Entity entity)
         {
-            _timer = new Timer() {Interval = 2000};
+            _timer = new Timer() {Interval = GlobalConst.AnimTimerInterval};
             _entity = entity;
         }
         

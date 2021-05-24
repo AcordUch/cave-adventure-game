@@ -13,6 +13,7 @@ namespace Cave_Adventure.Views
         private readonly Game _game;
         private bool _configured = false;
         public event Action<string> LoadLevel;
+        public event Action<int> SetLevelId;
 
         public LevelSelectionMenuPanel(Game game)
         {
@@ -41,6 +42,7 @@ namespace Cave_Adventure.Views
             if (_configured)
                 throw new InvalidOperationException();
             
+            Invalidate();
             _configured = true;
         }
 
@@ -53,10 +55,10 @@ namespace Cave_Adventure.Views
         {
             var buttonMenu = new FlowLayoutPanel
             {
-                FlowDirection = FlowDirection.RightToLeft,
+                FlowDirection = FlowDirection.TopDown,
                 Dock = DockStyle.Fill,
                 AutoSize = true,
-                BackColor = Color.Red,
+                BackColor = Color.Chartreuse,
                 Padding = new Padding(25, 10, 0, 0),
                 Font = new Font(SystemFonts.DialogFont.FontFamily, 12)
             };
@@ -78,7 +80,7 @@ namespace Cave_Adventure.Views
             yield return Properties.Resources.Arena7;
         }
         
-        private void SetUpLevelSwitch(Control menuPanel)
+        private void SetUpLevelSwitch(FlowLayoutPanel menuPanel)
         {
             menuPanel.Controls.Add(new Label
             {
@@ -91,14 +93,13 @@ namespace Cave_Adventure.Views
                 Font = new Font(SystemFonts.DialogFont.FontFamily, 15)
             });
             
-            var linkLabels = new List<LinkLabel>();
             for (var i = 0; i < _levels.Length; i++)
             {
                 var arenaId = i;
                 var link = new LinkLabel
                 {
                     Text = $"Арена {i + 1}",
-                    ActiveLinkColor = Color.LimeGreen,
+                    ActiveLinkColor = Color.Red,
                     TextAlign = ContentAlignment.MiddleCenter,
                     Size = new Size(100, 35),
                     AutoSize = true,
@@ -107,13 +108,12 @@ namespace Cave_Adventure.Views
                 };
                 link.LinkClicked += (sender, args) =>
                 {
-                    // ArenaFieldControl.ChangeLevel(_levels[arenaId]);
                     _game.SwitchOnArenas(sender, args);
                     LoadLevel?.Invoke(_levels[arenaId]);
+                    SetLevelId?.Invoke(arenaId);
                 };
                 
                 menuPanel.Controls.Add(link);
-                linkLabels.Add(link);
             }
         }
     }

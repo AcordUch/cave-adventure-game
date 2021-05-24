@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cave_Adventure.Views;
 
 namespace Cave_Adventure
 {
@@ -21,13 +22,19 @@ namespace Cave_Adventure
 
         public int Width => Arena.GetLength(0);
         public int Height => Arena.GetLength(1);
-        public event Action ChangeStateOfUI; 
+        public event Action ChangeStateOfUI;
+        public event Action AllMonsterDead;
+        public event Action PlayerDead;
         
         public ArenaMap(CellType[,] arena, Player player, Monster[] monsters)
         {
             Arena = arena;
             Player = player;
             Monsters = monsters;
+            foreach (var monster in Monsters)
+            {
+                monster.AI.Configure(this);
+            }
         }
 
         public void SetPlayerPaths(SinglyLinkedList<Point>[] paths)
@@ -65,7 +72,13 @@ namespace Cave_Adventure
             if(attacker.AP > 0)
             {
                 target.Defending(attacker);
-                target.CheckIsAliveAndChangeState();
+                if(Player.IsDead)
+                {
+                    PlayerDead?.Invoke();
+                    return;
+                }
+                if(Monsters.All(m => m.IsDead))
+                    AllMonsterDead?.Invoke();
             }
         }
 
@@ -100,7 +113,7 @@ namespace Cave_Adventure
                 foreach (var entity in entities)
                 {
                     entity.IsSelected = true;
-                    MoveEntityAlongThePath(entity.Position + new Size(0, -2), entity);
+                    MoveEntityAlongThePath(entity.Position + new Size(0, -1), entity);
                     while (true)
                     {
                         if(!entity.IsSelected)
@@ -117,11 +130,20 @@ namespace Cave_Adventure
         {
             if(entity.IsSelected)
             {
-                var path = (BFS.FindPaths(this, entity.Position, entity.AP)
+                var path = new Point[0];
+                try
+                {
+                    path = (BFS.FindPaths(this, entity.Position, entity.AP)
                                 .FirstOrDefault(p => p.Value == targetPoint)
                             ?? throw new InvalidOperationException(
                                 "Среди доступных точек нет необходимой. В методе откуда вызов нет проверки?"))
-                    .Select(p => p).Reverse().ToArray();
+                        .Select(p => p).Reverse().ToArray();
+                }
+                catch
+                {
+                    // ignored
+                }
+
                 await StartMoveEntity(path, entity);
             }
         }
@@ -174,6 +196,14 @@ namespace Cave_Adventure
             var entities = new List<Entity> { Player };
             entities.AddRange(Monsters);
             return entities;
+        }
+
+        public void CompleteLevel(CheatMenu cheatMenu)
+        {
+            if(cheatMenu.ArenaMap == this)
+            {
+                AllMonsterDead?.Invoke();
+            }
         }
     }
 }

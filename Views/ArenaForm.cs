@@ -21,7 +21,7 @@ namespace Cave_Adventure
             base.OnLoad(e);
             DoubleBuffered = true;
             Size = new Size(800, 600);
-            //WindowState = FormWindowState.Maximized;
+            WindowState = FormWindowState.Maximized;
             Text = "Заходит в бар улитка, говорит...";
             KeyPreview = true;
         }
@@ -55,10 +55,15 @@ namespace Cave_Adventure
                 Name = "arenaPanel"
             };
 
-            _levelSelectionMenuPanel.LoadLevel += _arenaPanel.ArenaFieldControl.ChangeLevel;
+            // _mainMenuPanel.LoadLevel += _arenaPanel.ArenaFieldControl.LoadLevel;
+            // _mainMenuPanel.SetLevelId += _arenaPanel.OnSetCurrentArenaId;
             
+            _levelSelectionMenuPanel.LoadLevel += _arenaPanel.ArenaFieldControl.LoadLevel;
+            _levelSelectionMenuPanel.SetLevelId += _arenaPanel.OnSetCurrentArenaId;
+
             Controls.Add(_arenaPanel);
             Controls.Add(_mainMenuPanel);
+            Controls.Add(_levelSelectionMenuPanel);
             
             ResumeLayout();
 
@@ -67,13 +72,14 @@ namespace Cave_Adventure
             
             ShowMainMenu();
             
-            _timer = new Timer { Interval = 60 };
+            _timer = new Timer { Interval = GlobalConst.MainTimerInterval };
             _timer.Tick += TimerTick;
             _timer.Start();
         }
         
         private void OnScreenChange(GameScreen screen)
         {
+            SuspendLayout();
             switch (screen)
             {
                 case GameScreen.Arenas:
@@ -86,6 +92,7 @@ namespace Cave_Adventure
                     ShowLevelSelectionMenu();
                     break;
             }
+            ResumeLayout();
         }
 
         private void ShowArenas()
@@ -114,17 +121,30 @@ namespace Cave_Adventure
             DropScreens();
             _arenaPanel.Hide();
             _mainMenuPanel.Hide();
+            _levelSelectionMenuPanel.Hide();
         }
 
         private void DropScreens()
         {
             _arenaPanel.Drop();
             _mainMenuPanel.Drop();
+            _levelSelectionMenuPanel.Drop();
         }
         
         private void TimerTick(object sender, EventArgs e)
         {
-            _arenaPanel.Update();
+            switch (_game.Screen)
+            {
+                case GameScreen.Arenas:
+                    _arenaPanel.Update();
+                    break;
+                case GameScreen.MainMenu:
+                    _mainMenuPanel.Update();
+                    break;
+                case GameScreen.LevelSelectionMenu:
+                default:
+                    break;
+            }
         }
     }
 }
