@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Linq;
 
 namespace Cave_Adventure
 {
@@ -20,9 +21,9 @@ namespace Cave_Adventure
             _configured = true;
         }
 
-        public SinglyLinkedList<Point> LookPath()
+        public Point LookTargetMovePoint()
         {
-            return AStarPF.FindPathToPlayer(_arenaMap, _monster.Position, _monster.AP);
+            return AStarPF.FindPathToPlayer(_arenaMap, _monster.Position, _monster.AP).ToList()[^1];
         }
     }
 }

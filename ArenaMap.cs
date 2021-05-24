@@ -55,7 +55,7 @@ namespace Cave_Adventure
             PlayerPaths = null;
             PlayerSelected = false;
             var monsters = Monsters.ToList().OrderByDescending(m => m.Initiative);
-            await MoveEntitiesControl(monsters);
+            await MonsterMoveControl(monsters);
             await MonsterAttackController(monsters);
             foreach (var monster in monsters)
             {
@@ -142,19 +142,19 @@ namespace Cave_Adventure
             }
         }
         
-        private Task MoveEntitiesControl(IEnumerable<Entity> entities)
+        private Task MonsterMoveControl(IEnumerable<Monster> monsters)
         {
             var task = new Task(() =>
             {
-                foreach (var entity in entities)
+                foreach (var monster in monsters)
                 {
-                    if(entity.IsDead)
+                    if(monster.IsDead)
                         continue;
-                    entity.IsSelected = true;
-                    MoveEntityAlongThePath(entity.Position + new Size(0, -1), entity);
+                    monster.IsSelected = true;
+                    MoveEntityAlongThePath(monster.AI.LookTargetMovePoint(), monster);
                     while (true)
                     {
-                        if(!entity.IsSelected)
+                        if(!monster.IsSelected)
                             break;
                     }
                 }
