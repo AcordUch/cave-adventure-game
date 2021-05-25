@@ -41,9 +41,12 @@ namespace Cave_Adventure
         {
             var paths = FindPaths(map, entity.Position, entity.AP).ToArray();
             var maxDist = paths.Max(p => enemyPos.RangeToPoint(p.Value));
-            return paths
+            var pretenderPoint =  paths
                 .First(p => Math.Abs(enemyPos.RangeToPoint(p.Value) - maxDist) < 1e-9)
                 .Value;
+            return enemyPos.RangeToPoint(pretenderPoint) > enemyPos.RangeToPoint(entity.Position)
+                ? pretenderPoint
+                : entity.Position;
         }
     }
 }

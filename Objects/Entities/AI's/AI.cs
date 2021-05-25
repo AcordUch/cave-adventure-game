@@ -22,13 +22,16 @@ namespace Cave_Adventure
             _configured = true;
         }
 
-        public Point LookTargetMovePoint()
+        public virtual Point LookTargetMovePoint(int range = 25)
         {
-            //var distantToPlayer = (int)Math.Ceiling(_monster.Position.RangeToPoint(Player.Position));
             if (_monster.Health < 10)
             {
-                return BFS.FindFarPoint(_arenaMap, Player.Position, _monster);
+                var pretenderPoint =  BFS.FindFarPoint(_arenaMap, Player.Position, _monster);
+                return Player.Position.RangeToPoint(pretenderPoint) > 8 ? _monster.Position : pretenderPoint;
             }
+            var distantToPlayer = (int)Math.Ceiling(_monster.Position.RangeToPoint(Player.Position));
+            if (distantToPlayer > range)
+                return _monster.Position;
             var rnd = new Random();
             if (rnd.NextDouble() > 0.3 && GlobalConst.PossibleDirections.Any(p => Player.Position + p == _monster.Position))
                 return _monster.Position;

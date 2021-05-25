@@ -14,6 +14,7 @@ namespace Cave_Adventure
             Defense = GlobalConst.SpiderDefence;
             Initiative = 6;
             Description = "Хоть и маленький, но смелый";
+            AI = new SpiderAI(this);
         }
 
         public override void ResetAP()
