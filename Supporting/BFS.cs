@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Net;
 
 namespace Cave_Adventure
 {
@@ -34,6 +35,18 @@ namespace Cave_Adventure
                     usedPoint.Add(nextPoint);
                 }
             }
+        }
+
+        public static Point FindFarPoint(ArenaMap map, Point enemyPos, Entity entity)
+        {
+            var paths = FindPaths(map, entity.Position, entity.AP).ToArray();
+            var maxDist = paths.Max(p => enemyPos.RangeToPoint(p.Value));
+            var pretenderPoint =  paths
+                .First(p => Math.Abs(enemyPos.RangeToPoint(p.Value) - maxDist) < 1e-9)
+                .Value;
+            return enemyPos.RangeToPoint(pretenderPoint) > enemyPos.RangeToPoint(entity.Position)
+                ? pretenderPoint
+                : entity.Position;
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Cave_Adventure
             Defense = GlobalConst.SnakeDefence;
             Initiative = 7;
             Description = "Она не ядовитая, честно";
+            AI = new SnakeAI(this);
         }
 
         public override void ResetAP()

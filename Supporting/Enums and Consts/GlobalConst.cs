@@ -22,8 +22,8 @@ namespace Cave_Adventure
         public const int FangsAndClawsRadius = 1;
         
         // ===Entity===
-        public const int PlayerAP = 4;
-        public const int SpiderAP = 2;
+        public const int PlayerAP = 3;
+        public const int SpiderAP = 3;
         public const int SnakeAP = 2;
         
         public const int PlayerAttack = 9;
@@ -41,6 +41,10 @@ namespace Cave_Adventure
         public const int PlayerDefence = 9;
         public const int SpiderDefence = 7;
         public const int SnakeDefence = 2;
+        
+        // ===AI===
+        public const int SpiderDetectionRadius = 4;
+        public const int SnakeDetectionRadius = 5;
 
         // ===Supporting===
         public static readonly List<Size> PossibleDirections = 
