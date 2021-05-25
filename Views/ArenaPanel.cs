@@ -483,6 +483,7 @@ namespace Cave_Adventure
         
         private void ClickOnNextTurnButton(object sender, EventArgs e)
         {
+            ArenaFieldControl.ArenaMap.CheckOnWinning();
             ArenaFieldControl.ArenaMap.NextTurn();
         }
         
