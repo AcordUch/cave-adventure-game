@@ -9,6 +9,7 @@ namespace Cave_Adventure
         private readonly Monster _monster;
         private ArenaMap _arenaMap;
         private bool _configured = false;
+        private Player Player => _arenaMap.Player;
 
         public AI(Monster monster)
         {
@@ -22,7 +23,15 @@ namespace Cave_Adventure
         }
 
         public Point LookTargetMovePoint()
-        {//Короче, когда игрок на расстоянии AP, то он начинает ходить туда сюда. Фиксить или фича?)
+        {
+            //var distantToPlayer = (int)Math.Ceiling(_monster.Position.RangeToPoint(Player.Position));
+            if (_monster.Health < 10)
+            {
+                return BFS.FindFarPoint(_arenaMap, Player.Position, _monster);
+            }
+            var rnd = new Random();
+            if (rnd.NextDouble() > 0.3 && GlobalConst.PossibleDirections.Any(p => Player.Position + p == _monster.Position))
+                return _monster.Position;
             return AStarPF.FindPathToPlayer(_arenaMap, _monster.Position, _monster.AP).ToList()[^1];
         }
     }
