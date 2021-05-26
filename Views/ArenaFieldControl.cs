@@ -79,7 +79,7 @@ namespace Cave_Adventure
             BindEvent?.Invoke();
             for (int i = 0; i < 3; i++)
             {
-                Player.Inventory.Add(new HealthPotion());
+                Player.Inventory.AddHeals(new HealthPotionSmall());
             }
             Invalidate();
         }

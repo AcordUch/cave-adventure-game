@@ -38,11 +38,14 @@ namespace Cave_Adventure
         public double Health
         {
             get => _health;
-            set => _health = value >= 0 ? value : 0;
+            set => _health = value < 0 ? 0 : 
+                value > MaxHealth ? MaxHealth : value;
         }
 
         public bool IsAlive => CurrentStates != StatesOfAnimation.Death;
         public bool IsDead => !IsAlive;
+
+        public event Action EntityDied;
         
         protected Entity(Point position, EntityType tag)
         {
@@ -68,7 +71,8 @@ namespace Cave_Adventure
                 this.Health -= attacker.Attack <= 0.75 * this.Defense ? attacker.Attacking() * 0.5 : attacker.Attacking() * 0.75;
             }
 
-            CheckIsAliveAndChangeState();
+            if (!CheckIsAliveAndChangeState())
+                EntityDied?.Invoke();
             if (isFirstAttack)
                 Counterattack(attacker);
         }

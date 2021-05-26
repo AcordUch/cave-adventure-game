@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Cave_Adventure.Objects.Items;
 using Cave_Adventure.Views;
 using Timer = System.Timers.Timer;
 
@@ -79,6 +80,10 @@ namespace Cave_Adventure
 
         public void Attacking(Entity attacker, Entity target)
         {
+            _currentAttacker = attacker;
+            _currentDefender = target;
+            _currentAttacker.EntityDied += AddHeal;
+            _currentDefender.EntityDied += AddHeal;
             if(attacker.AP > 0)
             {
                 target.Defending(attacker);
@@ -88,6 +93,25 @@ namespace Cave_Adventure
                     return;
                 }
                 CheckOnWinning();
+            }
+        }
+
+        public void AddHeal()
+        {
+            var baseRandom = new Random();
+            var rnd = new Random(baseRandom.Next() + 54356237);
+            var rndNext = rnd.NextDouble();
+            switch (rndNext)
+            {
+                case > 0.9:
+                    Player.Inventory.AddHeals(new HealthPotionBig());
+                    break;
+                case > 0.75:
+                    Player.Inventory.AddHeals(new HealthPotionMedium());
+                    break;
+                case > 0.55:
+                    Player.Inventory.AddHeals(new HealthPotionSmall());
+                    break;
             }
         }
 

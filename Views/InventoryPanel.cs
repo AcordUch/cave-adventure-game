@@ -57,12 +57,9 @@ namespace Cave_Adventure.Views
             };
             _healButton.Click += (sender, args) =>
             {
-                var healKit = Player.Inventory.FirstOrDefault(i => i.Tag == ItemType.HealthPotion);
-                if(healKit == null) return;
-                Player.Health += 35;
-                Player.Inventory.Remove(healKit);
+                Player.UseHealthPotionFromInventory();
             };
-            
+
             table.RowStyles.Add(new RowStyle(SizeType.Absolute, 10));
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 10));
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 10));
@@ -98,7 +95,7 @@ namespace Cave_Adventure.Views
         {
             if (_arenaFieldControl.Player == null)
                 return "";
-            return $"В ваших карманах лежит {Player.Inventory.Count(i => i.Tag == ItemType.HealthPotion).ToString()} хилки";
+            return $"В ваших карманах лежит {Player.Inventory.HealthPotionsBag.Count().ToString()} хилки";
         }
     }
 }
