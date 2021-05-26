@@ -86,6 +86,7 @@ namespace Cave_Adventure
             timer.Elapsed += (_, __) =>
             {
                 attacker.Defending(this, false);
+                this.AP = this.MaxAP;
                 timer.Stop();
                 timer.Close();
             };

@@ -206,8 +206,13 @@ namespace Cave_Adventure
             return ArenaMap == null ? "null" : 
 $@"Health: {Player.Health} | Step: {ArenaMap.Step}
 Attack: {Player.Attack} | Defense: {Player.Defense}
-Damage: {Player.Damage} | AP: {Player.AP}
-||DEBUG||
+Damage: {Player.Damage} | AP: {Player.AP}";
+        }
+
+        public string DebugInfo()
+        {
+            return ArenaMap == null ? "null" : 
+$@"   ||DEBUG||
 Zoom: {_zoomScale} | ArenaLogPos: {_logicalCenterPos}
 Position: {Player.Position} | Target: {Player.TargetPoint}
 IsSelected: {Player.IsSelected} | IsMoving: {Player.IsMoving}
