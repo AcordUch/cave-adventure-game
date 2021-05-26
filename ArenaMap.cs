@@ -12,6 +12,9 @@ namespace Cave_Adventure
 {
     public class ArenaMap
     {
+        private Entity _currentAttacker;
+        private Entity _currentDefender;
+        
         public CellType[,] Arena { get; private set; }
         public Player Player { get; private set; }
         public Monster[] Monsters { get; private set; }
@@ -97,6 +100,8 @@ namespace Cave_Adventure
         private void BlockUnblockUI()
         {
             IsPlayerTurnNow = !IsPlayerTurnNow;
+            if(IsPlayerTurnNow)
+                CheckOnWinning();
             ChangeStateOfUI?.Invoke();
         }
 
@@ -110,14 +115,15 @@ namespace Cave_Adventure
                                      || !GlobalConst.PossibleDirections.Any(p => entity.Position + p == Player.Position))
                         continue;
                     var flag = true;
-                    var timer = new Timer {Interval = 2 * GlobalConst.AnimTimerInterval + 200 };
+                    var timer = new Timer {Interval = 2 * GlobalConst.AnimTimerInterval + 200, AutoReset = false};
                     timer.Elapsed += (_, __) =>
                     {
                         flag = false;
                         timer.Stop();
                     };
                     timer.Start();
-                    Player.Defending(entity);
+                    // Player.Defending(entity);
+                    Attacking(entity, Player);
                     while (flag)
                     {
                         

@@ -28,7 +28,7 @@ namespace Cave_Adventure
         public double Damage { get; protected init; }
         public int Initiative { get; protected init; }
         public Weapon Weapon { get; protected init; }
-        
+
         public Point Position
         {
             get => _position;
@@ -43,7 +43,7 @@ namespace Cave_Adventure
 
         public bool IsAlive => CurrentStates != StatesOfAnimation.Death;
         public bool IsDead => !IsAlive;
-
+        
         protected Entity(Point position, EntityType tag)
         {
             Tag = tag;
@@ -57,7 +57,7 @@ namespace Cave_Adventure
             return Weapon.GetDamage(this);
         }
 
-        public virtual void Defending(in Entity attacker, bool isfirstAttack = true)
+        public virtual void Defending(in Entity attacker, bool isFirstAttack = true)
         {
             if (attacker.Attack > this.Defense)
             {
@@ -69,7 +69,7 @@ namespace Cave_Adventure
             }
 
             CheckIsAliveAndChangeState();
-            if (isfirstAttack)
+            if (isFirstAttack)
                 Counterattack(attacker);
         }
 
@@ -78,11 +78,12 @@ namespace Cave_Adventure
             if(IsDead)
                 return;
             
-            var timer = new Timer() {Interval = GlobalConst.AnimTimerInterval + 100};
+            var timer = new Timer() { Interval = GlobalConst.AnimTimerInterval + 100, AutoReset = false };
             timer.Elapsed += (_, __) =>
             {
                 attacker.Defending(this, false);
                 timer.Stop();
+                timer.Close();
             };
             timer.Start();
         }

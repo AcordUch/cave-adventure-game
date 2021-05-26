@@ -41,6 +41,9 @@ namespace Cave_Adventure
         public const int PlayerDefence = 9;
         public const int SpiderDefence = 7;
         public const int SnakeDefence = 2;
+
+        public const double SnakeHealDropChange = 0.3;
+        public const double SpiderHealDropChange = 0.2;
         
         // ===AI===
         public const int SpiderDetectionRadius = 4;

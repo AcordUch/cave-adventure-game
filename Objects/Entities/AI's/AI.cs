@@ -33,7 +33,7 @@ namespace Cave_Adventure
             if (distantToPlayer > range)
                 return _monster.Position;
             var rnd = new Random();
-            if (rnd.NextDouble() > 0.3 && GlobalConst.PossibleDirections.Any(p => Player.Position + p == _monster.Position))
+            if (rnd.NextDouble() > 0.15 && GlobalConst.PossibleDirections.Any(p => Player.Position + p == _monster.Position))
                 return _monster.Position;
             return AStarPF.FindPathToPlayer(_arenaMap, _monster.Position, _monster.AP).ToList()[^1];
         }

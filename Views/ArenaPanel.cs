@@ -16,6 +16,7 @@ namespace Cave_Adventure
         private readonly Game _game;
         private readonly HealBar _healBar;
         private InventoryPanel _inventoryPanel;
+        private FlowLayoutPanel _arenaInfoPanel;
         private Label _infoLabel;
         private Button _nextTurnButton;
         private Button _attackMonsterButton;
@@ -105,6 +106,7 @@ namespace Cave_Adventure
 
             _infoLabel.Size = new Size((int)(Width * 0.25), (int)(Height * 0.4));
             _infoLabel.Text = ArenaFieldControl.PlayerInfoToString();
+            _arenaInfoPanel.Controls[1].Text = $"Текущая арена:\n  {_currentArenaId + 1} из {_levels.Length}";
         }
 
         #region ClickOnPointHandler
@@ -237,6 +239,17 @@ namespace Cave_Adventure
                 Font = new Font(SystemFonts.DialogFont.FontFamily, 12)
             };
             SetUpLevelSwitch(levelMenu);
+            
+            _arenaInfoPanel = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.LeftToRight,
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                BackColor = Color.White,
+                Padding = new Padding(15, 10, 0, 0),
+                Font = new Font(SystemFonts.DialogFont.FontFamily, 12)
+            };
+            SetUpArenaInfoPanel(_arenaInfoPanel);
 
             _nextTurnButton = new Button()
             {
@@ -319,6 +332,11 @@ namespace Cave_Adventure
                 Dock = DockStyle.Fill,
                 AutoSize = true
             };
+            var firstColumnTable = new TableLayoutPanel()
+            {
+                Dock = DockStyle.Fill,
+                AutoSize = true
+            };
             var secondColumnTable = new TableLayoutPanel()
             {
                 Dock = DockStyle.Fill,
@@ -336,6 +354,9 @@ namespace Cave_Adventure
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            firstColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 60));
+            firstColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
+            firstColumnTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
             secondColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 86));
             secondColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 14));
             secondColumnTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
@@ -353,15 +374,17 @@ namespace Cave_Adventure
             arenaLayoutPanel.Controls.Add(ArenaFieldControl);
             bottomTable.Controls.Add(_backToMenuButton, 0, 2);
             bottomTable.Controls.Add(_nextLevelButton, 0, 1);
-            bottomTable.Controls.Add(_attackMonsterButton, 2, 0);
+            //bottomTable.Controls.Add(_attackMonsterButton, 2, 0);
             bottomTable.Controls.Add(_inspectEntityButton, 2, 1);
             bottomTable.Controls.Add(_nextTurnButton, 2, 2);
+            firstColumnTable.Controls.Add(_arenaInfoPanel, 0, 0);
+            firstColumnTable.Controls.Add(levelMenu, 0, 1);
             secondColumnTable.Controls.Add(arenaLayoutPanel, 0, 0);
             secondColumnTable.Controls.Add(bottomTable, 0, 1);
             thirdColumnTable.Controls.Add(_healBar, 0, 0);
             thirdColumnTable.Controls.Add(infoPanel, 0, 1);
             thirdColumnTable.Controls.Add(_inventoryPanel, 0, 2);
-            table.Controls.Add(levelMenu, 0, 0);
+            table.Controls.Add(firstColumnTable, 0, 0);
             table.Controls.Add(secondColumnTable, 1, 0);
             table.Controls.Add(thirdColumnTable, 2, 0);
 
@@ -415,6 +438,26 @@ namespace Cave_Adventure
             {
                 linkLabel.LinkColor = (string)linkLabel.Tag == level ? Color.LimeGreen : Color.Black;
             }
+        }
+
+        private void SetUpArenaInfoPanel(FlowLayoutPanel infoPanel)
+        {
+            infoPanel.Controls.Add(new Label
+            {
+                Text = "Информация о текущей арене:",
+                ForeColor = Color.Black,
+                AutoSize = true,
+                Size = new Size(350, 30),
+                Margin = new Padding(0, 20, 0, 0)
+            });
+            infoPanel.Controls.Add(new Label
+            {
+                Text = $"Текущая арена:\n  {_currentArenaId + 1} из {_levels.Length}",
+                ForeColor = Color.Black,
+                AutoSize = true,
+                Size = new Size(350, 30),
+                Margin = new Padding(0, 20, 0, 0)
+            });
         }
 
         private void SetUpInfoPanel(Control infoPanel)
