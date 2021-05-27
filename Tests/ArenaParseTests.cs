@@ -12,7 +12,7 @@ namespace Cave_Adventure
         public void SpliteEmptyArena()
         {
             var TextArena = new string[0];
-            Assert.AreEqual(new string [0,0], ArenaParser.PublicGetterForTestsDaYaDurakChtoTakDelau(TextArena));
+            Assert.AreEqual(new string [0,0], ArenaParser.PublicGetterForTests(TextArena));
         }
         
         [Test]
@@ -30,7 +30,7 @@ namespace Cave_Adventure
                 {"  ", "  ", "  "},
                 {"  ", "  ", "Sn"},
             };
-            AssertsArena(ArenaParser.PublicGetterForTestsDaYaDurakChtoTakDelau(TextArena), expected);
+            AssertsArena(ArenaParser.PublicGetterForTests(TextArena), expected);
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace Cave_Adventure
                 {"# ", "  ", "  "},
                 {"# ", "  ", "  "}
             };
-            AssertsArena(ArenaParser.PublicGetterForTestsDaYaDurakChtoTakDelau(TextArena), expected);
+            AssertsArena(ArenaParser.PublicGetterForTests(TextArena), expected);
         }
         
         private static void AssertsArena(string[,] arena, string[,] expectedArena)
@@ -261,7 +261,7 @@ namespace Cave_Adventure
             AssertMonstersType(actualMonstersType, expectedMonstersType);
         }
 
-        private static void AssertsArena((CellType[,] arenaMap, Player player, Monster[] monsters) arena,
+        private static void AssertsArena(((CellType cellType, CellSubtype cellSubtype)[,] arenaMap, Player player, Monster[] monsters) arena,
             CellType[,] expectedArena, Point[] expextedMonsters, Point player)
         {
             Assert.AreEqual(expectedArena.Length, arena.arenaMap.Length, "Размеры не совпадают с ожидаемыми");
@@ -270,7 +270,7 @@ namespace Cave_Adventure
             for (int y = 0; y < expectedArena.GetLength(0); y++)
             for (int x = 0; x < expectedArena.GetLength(1); x++)
             {
-                Assert.AreEqual(expectedArena[y, x], arena.arenaMap[x, y], $"Ошибка на клетке X: {x}, Y: {y}");
+                Assert.AreEqual(expectedArena[y, x], arena.arenaMap[x, y].cellType, $"Ошибка на клетке X: {x}, Y: {y}");
             }
             //Примечание: На выходе мы как бы получаем транспонированную матрицу
             //То есть: Раньше по первому измерению хранились строки(y), после хранятся стобцы(x)

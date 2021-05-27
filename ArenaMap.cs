@@ -16,7 +16,7 @@ namespace Cave_Adventure
         private Entity _currentAttacker;
         private Entity _currentDefender;
         
-        public CellType[,] Arena { get; private set; }
+        public (CellType cellType, CellSubtype cellSubtype)[,] Arena { get; private set; }
         public Player Player { get; private set; }
         public Monster[] Monsters { get; private set; }
         public bool PlayerSelected { get; set; }
@@ -32,7 +32,7 @@ namespace Cave_Adventure
         public event Action AllMonsterDead;
         public event Action PlayerDead;
         
-        public ArenaMap(CellType[,] arena, Player player, Monster[] monsters)
+        public ArenaMap((CellType, CellSubtype)[,] arena, Player player, Monster[] monsters)
         {
             Arena = arena;
             Player = player;
@@ -146,7 +146,6 @@ namespace Cave_Adventure
                         timer.Stop();
                     };
                     timer.Start();
-                    // Player.Defending(entity);
                     Attacking(entity, Player);
                     while (flag)
                     {
@@ -246,7 +245,7 @@ namespace Cave_Adventure
         }
 
         private static ArenaMap CreateNewArenaMap(
-            (CellType[,] arenaMap, Player player, Monster[] monsters) arenaInfo)
+            ((CellType, CellSubtype)[,] arenaMap, Player player, Monster[] monsters) arenaInfo)
         {
             return new ArenaMap(arenaInfo.arenaMap, arenaInfo.player, arenaInfo.monsters);
         }

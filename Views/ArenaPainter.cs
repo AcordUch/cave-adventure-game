@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq.Expressions;
+using Cave_Adventure.Properties;
 
 namespace Cave_Adventure
 {
@@ -21,12 +23,6 @@ namespace Cave_Adventure
         
         public void Configure(ArenaMap arena, Dictionary<Point, Rectangle> pointToRectangle)
         {
-            // if (_configured)
-            //     throw new InvalidOperationException();
-
-            // _currentArena = arena;
-            // _pointToRectangle = pointToRectangle;
-            // CreateArena();
             ChangeLevel(arena, pointToRectangle);
             _configured = true;
         }
@@ -89,9 +85,6 @@ namespace Cave_Adventure
         
         public void ChangeLevel(ArenaMap newArena, Dictionary<Point, Rectangle> pointToRectangle)
         {
-            // if (!_configured)
-            //     throw new InvalidOperationException();
-            //
             _currentArena = newArena;
             _pointToRectangle = pointToRectangle;
             CreateArena();
@@ -111,15 +104,34 @@ namespace Cave_Adventure
                 for (int y = 0; y < ArenaSize.Height; y++)
                 {
                     var rec = _pointToRectangle[new Point(x, y)];
-                    graphics.FillRectangle(ChooseBrushForCell(_currentArena.Arena[x, y]), rec);
-                    graphics.DrawRectangle(Pens.Black, rec);
+                    // graphics.FillRectangle(ChooseBrushForCell(_currentArena.Arena[x, y]), rec);
+                    // graphics.DrawRectangle(Pens.Black, rec);
+                    graphics.DrawImage(ChooseImage(_currentArena.Arena[x, y]), rec);
                 }
             }
         }
 
-        private static Brush ChooseBrushForCell(CellType cell)
+        private static Brush ChooseBrushForCell((CellType cellType, CellSubtype cellSubtype) cell)
         {
-            return cell == CellType.Floor ? Brushes.DimGray : Brushes.Firebrick;
+            return cell.cellType == CellType.Floor ? Brushes.DimGray : Brushes.Firebrick;
+        }
+
+        private static Image ChooseImage((CellType cellType, CellSubtype cellSubtype) cell)
+        {
+            Bitmap image;
+            switch (cell.cellSubtype)
+            {
+                case CellSubtype.wall0: image = Resources.wall0; break;
+                case CellSubtype.wall1: image = Resources.wall1; break;
+                case CellSubtype.wall2: image = Resources.wall2; break;
+                case CellSubtype.wall3: image = Resources.wall3; break;
+                case CellSubtype.wall4: image = Resources.wall4; break;
+                case CellSubtype.floorStone1: image = Resources.floorStone1; break;
+                case CellSubtype.floorStone2: image = Resources.floorStone2; break;
+                case CellSubtype.floorStoneBroken: image = Resources.floorStoneBroken; break;
+                default: image = Resources.noTexture; break;
+            }
+            return image;
         }
     }
 }
