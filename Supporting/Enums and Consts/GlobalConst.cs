@@ -59,6 +59,24 @@ namespace Cave_Adventure
             yield return Properties.Resources.Arena5;
             yield return Properties.Resources.Arena6;
             yield return Properties.Resources.Arena7;
+            yield return Properties.Resources.Arena8;
+            yield return Properties.Resources.Arena9;
+            yield return Properties.Resources.Arena10;
+        }
+        
+        public static IEnumerable<String> LoadDebugLevels()
+        {
+            foreach (var level in LoadLevels())
+            {
+                yield return level;
+            }
+            yield return Properties.Resources.Arena1Debug;
+            yield return Properties.Resources.Arena2Debug;
+            yield return Properties.Resources.Arena3Debug;
+            yield return Properties.Resources.Arena4Debug;
+            yield return Properties.Resources.Arena5Debug;
+            yield return Properties.Resources.Arena6Debug;
+            yield return Properties.Resources.Arena7Debug;
         }
         
         public static readonly List<Size> PossibleDirections = 
