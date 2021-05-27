@@ -54,7 +54,8 @@ namespace Cave_Adventure
                         monsters.Add(StringCodeToEntity[cell].Invoke(new Point(x, y)));
                         break;
                     default:
-                        throw new ArgumentException("Неизвестный тип клетки");
+                        arena[x, y] = (CellType.Floor, CellSubtype.noTexture);
+                        break;
                 }
             }
 

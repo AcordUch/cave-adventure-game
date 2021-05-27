@@ -71,13 +71,9 @@ namespace Cave_Adventure.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на # .# .# .# .# .# .# .
-        ///# .  .P .  .  .  .# .
-        ///# .# .  .  .# .  .# .
-        ///# .  .  .  .  .  .# .
-        ///# .  .  .  .  .  .# .
-        ///# .Sp.  .Sn.  .  .# .
-        ///# .# .# .# .# .# .# ..
+        ///   Ищет локализованную строку, похожую на #1.#1.#1.#1.#1.#1.#1.#1.#1.#1.
+        ///  .P .  .  .  .  .  .  .Sl.#1.
+        ///#1.#1.#1.#1.#1.#1.#1.#1.#1.#1..
         /// </summary>
         internal static string Arena1 {
             get {
@@ -86,11 +82,52 @@ namespace Cave_Adventure.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на #4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.
+        ///#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.  .  .  .  .  .#4.#4.#4.#4.#4.
+        ///#4.#4.#4.#4.#4.#4.#4.#4.#4.  .  .  .  .  .  .  .#4.#4.#4.#4.
+        ///#4.#4.  .  .Wi.  .  .#4.  .  .  .  .  .  .  .  .  .#4.#4.#4.
+        ///#4.#4.  .#4.#4.#4.  .#4.  .  .  .  .  .  .  .  .  .#4.#4.#4.
+        ///#4.#4.  .#4.#4.#4.  .  .  .  .  .  .  .  .  .Mi.  .  .  .  .
+        ///#4.#4.  .  .Wi.  .  .#4.  .  .  .  .  .  .  .  .  .#4.#4.#4.
+        ///#4.#4.  .#4.#4.#4.#4.#4.  .  .  .  .  .  .  .  .  .#4.#4.#4.
+        ///#4.#4.  .#4.#4.# [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string Arena10 {
             get {
                 return ResourceManager.GetString("Arena10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на #T.#T.#T.#T.#T.#T.#T.#T.#T.#T.
+        ///#T.#T.#T.#T.#T.#T.#T.#T.#T.#T.
+        ///#T.#T.#T.#T.#T.#T.#T.#T.#T.#T.
+        ///#T.#T.#T.# .# .# .# .# .# .# .
+        ///#T.#T.#T.# .  .P .  .  .  .# .
+        ///#T.#T.#T.# .# .  .  .# .  .# .
+        ///#T.#T.#T.# .  .  .  .  .  .# .
+        ///#T.#T.#T.# .  .  .  .  .  .# .
+        ///#T.#T.#T.# .Sp.  .Sn.  .  .# .
+        ///#T.#T.#T.# .# .# .# .# .# .# ..
+        /// </summary>
+        internal static string Arena1Debug {
+            get {
+                return ResourceManager.GetString("Arena1Debug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на #1.#1.#1.#1.#1.#1.#1.#1.#1.#1.
+        ///#1.P .  .  .  .#1.  .  .  .#1.
+        ///#1.#1.#1.#1.  .#1.  .#1.  .#1.
+        ///#1.  .Sl.#1.  .#1.Sp.#1.  .#1.
+        ///#1.  .#1.#1.  .#1.#1.#1.  .#1.
+        ///#1.  .  .  .  .  .  .  .  .#1.
+        ///#1.#1.#1.#1.#1.#1.#1.#1.#1.#1..
+        /// </summary>
+        internal static string Arena2 {
+            get {
+                return ResourceManager.GetString("Arena2", resourceCulture);
             }
         }
         
@@ -106,9 +143,29 @@ namespace Cave_Adventure.Properties {
         ///#3.#3.  .#4.#4.  .  .  .  .# .
         ///#3.#3.  .#4.#4.  .  .  .  .# ..
         /// </summary>
-        internal static string Arena2 {
+        internal static string Arena2Debug {
             get {
-                return ResourceManager.GetString("Arena2", resourceCulture);
+                return ResourceManager.GetString("Arena2Debug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на #1.#1.#1.#1.#1.#1.#1.#2.#1.#2.#1.
+        ///#1.  .  .  .  .  .#2.  .Sp.  .#2.
+        ///#1.  .  .#1.  .  .#1.  .  .  .#1.
+        ///#1.  .  .#1.  .  .  .  .  .  .#2.
+        ///#1.  .  .#1.  .  .#1.  .  .  .#1.
+        ///#1.  .  .#1.  .  .#2.  .  .  .#2.
+        ///#1.  .  .#1.  .  .#1.  .Sp.  .#1.
+        ///#1.  .Sp.#1.  .  .#2.  .  .  .#2.
+        ///#1.  .  .#1.Sl.  .#1.#2.#1.#2.#1.
+        ///#1.#1.#1.#1.  .  .#1.#1.#1.#1.#1.
+        ///#1.P .  .Sl.  .  .  .  .Sl.  .#1.
+        ///#1.#1.#1.#1.#1.#1.#1.#1.#1.#1.#1..
+        /// </summary>
+        internal static string Arena3 {
+            get {
+                return ResourceManager.GetString("Arena3", resourceCulture);
             }
         }
         
@@ -126,9 +183,28 @@ namespace Cave_Adventure.Properties {
         ///# .  .Sp.  .# .  .  .  .  .  .  .# .
         ///# .# .# .# .# .# .# .# .# .# .# .# ..
         /// </summary>
-        internal static string Arena3 {
+        internal static string Arena3Debug {
             get {
-                return ResourceManager.GetString("Arena3", resourceCulture);
+                return ResourceManager.GetString("Arena3Debug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на #1.#2.#1.#2.#1.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.
+        ///#2.P .  .  .  .  .  .  .  .Sp.#2.#2.#2.#2.#2.
+        ///#1.#2.#1.#2.#1.  .#2.#2.#2.#2.#2.#2.#2.#2.#2.
+        ///#2.#2.#2.#2.#2.  .#2.#2.#2.#2.#2.#2.#2.#2.#2.
+        ///#2.#2.#2.#2.#2.  .#2.#2.#2.#2.#2.#2.#2.#2.#2.
+        ///#2.#2.#2.#2.#2.  .#2.#2.#2.  .  .  .  .  .#2.
+        ///#2.#2.#2.#2.#2.Sn.#2.#2.#2.  .#2.#2.#2.  .#2.
+        ///#2.#2.#2.#2.#2.  .#2.#2.#2.  .#2.#2.#2.  .#2.
+        ///#2.  .  .Sp.#2.  .#2.  .  .Sp.#2.#2.#2.  .#2.
+        ///#2.Sl.  .  .  .  .#2.Sl.  .  .#2.#2.#2.  .#2.
+        ///#2.  .  .Sl.  .  .  .  .  .Sl.#2.#2.#2.Sn. [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string Arena4 {
+            get {
+                return ResourceManager.GetString("Arena4", resourceCulture);
             }
         }
         
@@ -144,9 +220,29 @@ namespace Cave_Adventure.Properties {
         ///# .  .  .  .  .  .  .  .  .# .
         ///# .# .# .# .# .# .# .# .# .# ..
         /// </summary>
-        internal static string Arena4 {
+        internal static string Arena4Debug {
             get {
-                return ResourceManager.GetString("Arena4", resourceCulture);
+                return ResourceManager.GetString("Arena4Debug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на #2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.
+        ///#2.  .  .  .Sn.  .  .  .  .  .  .  .#2.#2.
+        ///#2.  .#2.#2.#2.#2.  .  .#2.#2.#2.  .#2.#2.
+        ///#2.  .#2.#2.#2.#2.#2.  .Go.#2.#2.  .#2.#2.
+        ///#2.  .#2.  .Sp.#2.#2.#2.#2.#2.#2.Go.#2.#2.
+        ///#2.  .  .  .  .#2.#2.#2.#2.#2.  .  .Sp.#2.
+        ///#2.Sp.#2.  .Sn.#2.#2.#2.#2.#2.  .#2.#2.#2.
+        ///#2.  .#2.#2.#2.#2.#2.#2.#2.#2.  .  .#2.#2.
+        ///#2.  .#2.#2.#2.#2.#2.#2.#2.#2.  .  .  .#2.
+        ///#2.  .#2.#2.#2.#2.#2.#2.#2.#2.Sp.  .  .#2.
+        ///#2.P .#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.Sn.#2.
+        ///#2.#2.#2.#2.#2.#2.#2.#2.#2.# [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string Arena5 {
+            get {
+                return ResourceManager.GetString("Arena5", resourceCulture);
             }
         }
         
@@ -162,9 +258,28 @@ namespace Cave_Adventure.Properties {
         ///# .Sn.Sn.Sn.Sn.Sn.Sn.Sn.Sn.# .
         ///# .# .# .# .# .# .# .# .# .# ..
         /// </summary>
-        internal static string Arena5 {
+        internal static string Arena5Debug {
             get {
-                return ResourceManager.GetString("Arena5", resourceCulture);
+                return ResourceManager.GetString("Arena5Debug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на #2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.
+        ///#2.Sp.  .  .  .  .#2.#2.#2.#2.#2.#2.#2.#2.#2.
+        ///#2.#2.#2.Go.#2.  .#2.#2.#2.#2.#2.#2.#2.#2.#2.
+        ///#2.#2.#2.#2.#2.  .  .  .  .  .  .#2.#2.#2.#2.
+        ///#2.#2.#2.#2.#2.  .#2.#2.#2.#2.Sn.  .  .  .#2.
+        ///#2.P .  .  .  .  .#2.#2.#2.#2.Sp.#2.#2.  .#2.
+        ///#2.#2.#2.#2.#2.  .#2.#2.#2.#2.  .#2.#2.  .#2.
+        ///#2.#2.#2.#2.#2.  .  .  .  .  .  .#2.#2.Go.#2.
+        ///#2.Go.#2.#2.#2.  .#2.#2.#2.#2.#2.#2.#2.#2.#2.
+        ///#2.  .  .  .  .Sp.#2.#2.#2.#2.#2.#2.#2.#2.#2.
+        ///#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2. [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string Arena6 {
+            get {
+                return ResourceManager.GetString("Arena6", resourceCulture);
             }
         }
         
@@ -179,9 +294,28 @@ namespace Cave_Adventure.Properties {
         ///# .  .  .  .  .  .  .  .  .  .  .  .# .# .# .# .# .# .# .# .
         ///# .  .  .  .  .  [остаток строки не уместился]&quot;;.
         /// </summary>
-        internal static string Arena6 {
+        internal static string Arena6Debug {
             get {
-                return ResourceManager.GetString("Arena6", resourceCulture);
+                return ResourceManager.GetString("Arena6Debug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на #2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.
+        ///#2.P .  .#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.#2.
+        ///#2.#2.  .  .#2.#2.#2.  .  .  .Gh.  .#2.#2.#2.
+        ///#2.#2.#2.  .  .#2.#2.  .#2.#2.#2.  .#2.#2.#2.
+        ///#2.#2.#2.#2.  .  .#2.  .#3.#2.  .  .  .Sn.#2.
+        ///#2.#2.#2.#2.#2.  .Sn.  .#2.#3.  .  .  .  .#2.
+        ///#2.#2.#2.#2.#2.#2.  .  .  .#2.#3.Sn.  .#2.#2.
+        ///#2.Sn.  .#2.#2.#2.  .#3.  .  .#2.#3.#2.#3.#2.
+        ///#2.  .  .  .#2.#2.  .#2.#3.  .  .  .  .Sn.#3.
+        ///#2.  .  .  .Gh.  .  .#3.#2.#2.  .  .  .#3.#2.
+        ///#2.#2.Go.#2.#2.#2.#2.#2.#3.#2.#3.Go.  .Gh. [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string Arena7 {
+            get {
+                return ResourceManager.GetString("Arena7", resourceCulture);
             }
         }
         
@@ -200,14 +334,23 @@ namespace Cave_Adventure.Properties {
         ///# .Sp.Sn.Sp.Sn.Sp.Sn.Sp.Sn.# .
         ///# .# .# .# .# .# .# .# .# .# ..
         /// </summary>
-        internal static string Arena7 {
+        internal static string Arena7Debug {
             get {
-                return ResourceManager.GetString("Arena7", resourceCulture);
+                return ResourceManager.GetString("Arena7Debug", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на #3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.
+        ///#3.  .Go.#3.#3.  .  .  .  .  .  .  .  .  .Gh.  .#3.
+        ///#3.  .  .#3.#3.  .#3.#3.#3.#3.#3.#3.#3.#3.#3.  .#3.
+        ///#3.  .#3.#3.#3.  .#3.#3.#3.#3.#3.Go.#3.Go.#3.  .#3.
+        ///#3.Go.  .  .#3.  .#3.#3.#3.#3.#3.  .  .  .  .  .#3.
+        ///#3.#3.#2.  .#3.  .#3.#3.#3.#3.#3.#3.  .Go.  .  .#3.
+        ///#3.#3.#3.  .  .  .#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.
+        ///#3.#3.#2.  .Gh.  .  .  .#3.#3.#3.#3.#3.#3.#3.#3.#3.
+        ///#3.#2.#3.  .  .#2.#3.  .#3.#3.#3.#3.  .  .#3.#3.#3.
+        ///#2.#3.  .  .  .#3.#3.  .  .  .Gh.#3 [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string Arena8 {
             get {
@@ -216,7 +359,15 @@ namespace Cave_Adventure.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на #3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.#3.
+        ///#3.P .  .  .  .  .  .  .  .  .  .  .  .  .  .  .#3.#3.Gh.#3.
+        ///#3.  .#3.  .#3.#3.#3.#3.#3.#3.#3.Gh.#3.#3.#3.  .#3.#3.  .#3.
+        ///#3.  .#3.  .#3.#3.#3.#3.#3.#3.  .  .  .#3.#3.  .  .  .  .#3.
+        ///#3.  .#3.#3.#3.#3.#3.#3.#3.#3.Wi.#3.Go.#3.#3.#3.  .  .#3.#3.
+        ///#3.  .#3.  .Go.  .  .#3.#3.#3.#3.#3.#3.#3.#3.#3.  .  .#3.#3.
+        ///#3.  .#3.  .#3.#3.  .#3.#3.Go.  .  .Gh.#3.#3.#3.Wi.#3.#3.#3.
+        ///#3.  .  .  .#3.#3.  .#3.#3.#3.  .  .#3.#3.#3.#3.  .  .#4.#3.
+        ///#3.  .#3.#3.#3.  [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string Arena9 {
             get {
@@ -297,6 +448,16 @@ namespace Cave_Adventure.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Ghoul {
+            get {
+                object obj = ResourceManager.GetObject("Ghoul", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Gladiator {
             get {
                 object obj = ResourceManager.GetObject("Gladiator", resourceCulture);
@@ -357,6 +518,26 @@ namespace Cave_Adventure.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Mini_Golem {
+            get {
+                object obj = ResourceManager.GetObject("Mini_Golem", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Minotaur {
+            get {
+                object obj = ResourceManager.GetObject("Minotaur", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap netherBackground {
             get {
                 object obj = ResourceManager.GetObject("netherBackground", resourceCulture);
@@ -380,6 +561,16 @@ namespace Cave_Adventure.Properties {
         internal static System.Drawing.Bitmap obsidianBackground {
             get {
                 object obj = ResourceManager.GetObject("obsidianBackground", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Slime {
+            get {
+                object obj = ResourceManager.GetObject("Slime", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -460,6 +651,16 @@ namespace Cave_Adventure.Properties {
         internal static System.Drawing.Bitmap wall4 {
             get {
                 object obj = ResourceManager.GetObject("wall4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Witch {
+            get {
+                object obj = ResourceManager.GetObject("Witch", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

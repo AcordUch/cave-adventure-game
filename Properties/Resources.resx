@@ -127,23 +127,44 @@
   <data name="Arena10" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArenaLevels\Arena10.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
+  <data name="Arena1Debug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArenaLevels\Arena1Debug.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
   <data name="Arena2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArenaLevels\Arena2.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="Arena2Debug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArenaLevels\Arena2Debug.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
   <data name="Arena3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArenaLevels\Arena3.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
+  <data name="Arena3Debug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArenaLevels\Arena3Debug.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
   <data name="Arena4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArenaLevels\Arena4.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="Arena4Debug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArenaLevels\Arena4Debug.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
   <data name="Arena5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArenaLevels\Arena5.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
+  <data name="Arena5Debug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArenaLevels\Arena5Debug.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
   <data name="Arena6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArenaLevels\Arena6.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
+  <data name="Arena6Debug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArenaLevels\Arena6Debug.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
   <data name="Arena7" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArenaLevels\Arena7.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="Arena7Debug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArenaLevels\Arena7Debug.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
   <data name="Arena8" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArenaLevels\Arena8.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
@@ -172,6 +193,9 @@
   <data name="floorStoneBroken" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Texture\block\floorStoneBroken.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Ghoul" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\Assets\Ghoul.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Gladiator" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Texture\Assets\Gladiator.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -190,6 +214,12 @@
   <data name="mazePicMainMenu" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Texture\UI\mazePicMainMenu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Mini_Golem" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\Assets\Mini Golem.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Minotaur" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\Assets\Minotaur.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="netherBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Texture\UI\netherBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -198,6 +228,9 @@
   </data>
   <data name="obsidianBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Texture\UI\obsidianBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Slime" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\Assets\Slime.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Spider" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Texture\Assets\Spider.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -222,5 +255,8 @@
   </data>
   <data name="wall4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Texture\block\wall4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Witch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\Assets\Witch.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
