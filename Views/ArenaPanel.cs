@@ -19,7 +19,7 @@ namespace Cave_Adventure
         private HealBarPanel _healBarPanel;
         private InventoryPanel _inventoryPanel;
         private PlayerInfoPanel _playerInfoPanel;
-        private FlowLayoutPanel _levelMenu;
+        private ComboBox _levelMenu;
         private FlowLayoutPanel _arenaInfoPanel;
         private Button _nextTurnButton;
         private Button _attackMonsterButton;
@@ -41,7 +41,8 @@ namespace Cave_Adventure
         public ArenaPanel(Game game)
         {
             _game = game;
-            _levels = GlobalConst.LoadLevels().ToArray();
+            // _levels = GlobalConst.LoadLevels().ToArray();
+            _levels = GlobalConst.LoadDebugLevels().ToArray();
 
             ArenaFieldControl = new ArenaFieldControl()
             {
@@ -217,9 +218,8 @@ namespace Cave_Adventure
 
         private void ConfigureTables(TableLayoutPanel table)
         {
-            _levelMenu = new FlowLayoutPanel
+            _levelMenu = new ComboBox()
             {
-                FlowDirection = FlowDirection.LeftToRight,
                 Dock = DockStyle.Fill,
                 AutoSize = true,
                 BackColor = Color.Red,
@@ -228,7 +228,7 @@ namespace Cave_Adventure
                 Enabled = false,
                 Visible = false
             };
-            SetUpLevelSwitch(_levelMenu);
+            SetUpComboBox(_levelMenu);
             
             _arenaInfoPanel = new FlowLayoutPanel
             {
@@ -387,55 +387,20 @@ namespace Cave_Adventure
             #endregion
         }
 
-        private void SetUpLevelSwitch(Control menuPanel)
+        private void SetUpComboBox(ComboBox comboBox)
         {
-            menuPanel.Controls.Add(new Label
+            comboBox.DataSource = _levels;
+            comboBox.SelectionChangeCommitted += (sender, args) =>
             {
-                Text = "Выберите Арену:",
-                ForeColor = Color.Black,
-                TextAlign = ContentAlignment.MiddleLeft,
-                Size = new Size(350, 50),
-                AutoSize = true,
-                Margin = new Padding(0, 25, 0, 0)
-            });
-
-            var linkLabels = new List<LinkLabel>();
-            for (var i = 0; i < _levels.Length; i++)
-            {
-                var arenaId = i;
-                var link = new LinkLabel
-                {
-                    Text = $"Арена {i + 1}",
-                    ActiveLinkColor = Color.LimeGreen,
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    Size = new Size(100, 35),
-                    AutoSize = true,
-                    Margin = new Padding(0, 20, 0, 5),
-                    Tag = _levels[arenaId]
-                };
-                link.LinkClicked += (sender, args) =>
-                {
-                    ArenaFieldControl.LoadLevel(_levels[arenaId]);
-                    UpdateLinksColors(_levels[arenaId], linkLabels);
-                    CurrentArenaId = arenaId;
-                    _nextLevelButton.Enabled = false;
-                    if(_UIBlocked)
-                        OnBlockUnblockUI();
-                };
-                menuPanel.Controls.Add(link);
-                linkLabels.Add(link);
-            }
-            UpdateLinksColors(_levels[0], linkLabels);
+                var arenaId = comboBox.SelectedIndex;
+                ArenaFieldControl.LoadLevel(_levels[arenaId]);
+                CurrentArenaId = arenaId;
+                _nextLevelButton.Enabled = false;
+                if(_UIBlocked)
+                    OnBlockUnblockUI();
+            };
         }
-
-        private static void UpdateLinksColors(string level, List<LinkLabel> linkLabels)
-        {
-            foreach (var linkLabel in linkLabels)
-            {
-                linkLabel.LinkColor = (string)linkLabel.Tag == level ? Color.LimeGreen : Color.Black;
-            }
-        }
-
+        
         private void SetUpArenaInfoPanel(FlowLayoutPanel infoPanel)
         {
             infoPanel.Controls.Add(new Label
