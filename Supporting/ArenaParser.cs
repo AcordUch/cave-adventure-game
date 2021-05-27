@@ -36,6 +36,7 @@ namespace Cave_Adventure
                 var cell = map[y, x];
                 switch (cell)
                 {
+                    case "#T": arena[x, y] = (CellType.Wall, CellSubtype.transparent); break;
                     case "# ":
                     case "#0": arena[x, y] = (CellType.Wall, CellSubtype.wall0); break;
                     case "#1": arena[x, y] = (CellType.Wall, CellSubtype.wall1); break;
