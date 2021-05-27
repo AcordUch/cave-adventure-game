@@ -15,12 +15,12 @@ namespace Cave_Adventure
         private readonly List<Keys> _pressedKeys = new List<Keys>();
         private readonly string[] _levels;
         private readonly Game _game;
-        private readonly HealBar _healBar;
+        
+        private HealBarPanel _healBarPanel;
         private InventoryPanel _inventoryPanel;
+        private PlayerInfoPanel _playerInfoPanel;
         private FlowLayoutPanel _levelMenu;
         private FlowLayoutPanel _arenaInfoPanel;
-        private Label _infoLabel;
-        private Label _debugInfo;
         private Button _nextTurnButton;
         private Button _attackMonsterButton;
         private Button _nextLevelButton;
@@ -50,11 +50,6 @@ namespace Cave_Adventure
             ArenaFieldControl.BindEvent += OnBindArenaMapEvent;
             ArenaFieldControl.ClickOnPoint += ArenaFieldControl_ClickOnPoint;
             
-            _healBar = new HealBar()
-            {
-                Dock = DockStyle.Fill,
-                AutoSize = true
-            };
             var table = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
@@ -84,7 +79,6 @@ namespace Cave_Adventure
 
             arenaMap ??= _levels[0];
             ArenaFieldControl.Configure(arenaMap);
-            _healBar.Configure(ArenaFieldControl.ArenaMap);
             CurrentArenaId = Array.IndexOf(_levels, arenaMap);
             if(_UIBlocked)
                 OnBlockUnblockUI();
@@ -103,16 +97,14 @@ namespace Cave_Adventure
                 return;
 
             ArenaFieldControl.Update();
-            _healBar.Invalidate();
+            _healBarPanel.Invalidate();
             _inventoryPanel.Update();
+            _playerInfoPanel.Update();
             //Вынести в метод OnSizeChange
             var zoom = GetZoomForController();
             ArenaFieldControl.Size =
                 new Size((int)(ArenaFieldControl.Width * zoom), (int)(ArenaFieldControl.Height * zoom));
-
-            _infoLabel.Size = new Size((int)(Width * 0.25), (int)(Height * 0.4));
-            _infoLabel.Text = ArenaFieldControl.PlayerInfoToString();
-            _debugInfo.Text = ArenaFieldControl.DebugInfo();
+            
             _arenaInfoPanel.Controls[1].Text = $"Текущая арена:\n  {_currentArenaId + 1} из {_levels.Length}";
         }
 
@@ -312,16 +304,20 @@ namespace Cave_Adventure
                 Enabled = true
             };
             _inspectEntityButton.Click += OnInspectEntityButtonClick;
-
-            var infoPanel = new FlowLayoutPanel()
+            
+            _playerInfoPanel = new PlayerInfoPanel()
             {
-                FlowDirection = FlowDirection.LeftToRight,
                 Dock = DockStyle.Fill,
-                AutoSize = true,
-                Padding = new Padding(20, 0, 0, 0),
-                Font = new Font(SystemFonts.DialogFont.FontFamily, 10)
+                AutoSize = true
             };
-            SetUpInfoPanel(infoPanel);
+            _playerInfoPanel.Configure(ArenaFieldControl);
+
+            _healBarPanel = new HealBarPanel()
+            {
+                Dock = DockStyle.Fill,
+                AutoSize = true
+            };
+            _healBarPanel.Configure(ArenaFieldControl.ArenaMap);
 
             _inventoryPanel = new InventoryPanel(ArenaFieldControl)
             {
@@ -362,9 +358,9 @@ namespace Cave_Adventure
             #region AddingControls
 
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
-            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65));
-            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 68));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20));
             firstColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 60));
             firstColumnTable.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
             firstColumnTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
@@ -392,8 +388,8 @@ namespace Cave_Adventure
             firstColumnTable.Controls.Add(_levelMenu, 0, 1);
             secondColumnTable.Controls.Add(arenaLayoutPanel, 0, 0);
             secondColumnTable.Controls.Add(bottomTable, 0, 1);
-            thirdColumnTable.Controls.Add(_healBar, 0, 0);
-            thirdColumnTable.Controls.Add(infoPanel, 0, 1);
+            thirdColumnTable.Controls.Add(_healBarPanel, 0, 0);
+            thirdColumnTable.Controls.Add(_playerInfoPanel, 0, 1);
             thirdColumnTable.Controls.Add(_inventoryPanel, 0, 2);
             table.Controls.Add(firstColumnTable, 0, 0);
             table.Controls.Add(secondColumnTable, 1, 0);
@@ -456,7 +452,7 @@ namespace Cave_Adventure
             infoPanel.Controls.Add(new Label
             {
                 // Text = "Информация о текущей арене:",
-                Text = "\n\n",
+                Text = "\n",
                 ForeColor = Color.Black,
                 AutoSize = true,
                 Size = new Size(350, 30),
@@ -470,36 +466,6 @@ namespace Cave_Adventure
                 Size = new Size(350, 30),
                 Margin = new Padding(0, 20, 0, 0)
             });
-        }
-
-        private void SetUpInfoPanel(Control infoPanel)
-        {
-            infoPanel.Controls.Add(new Label
-            {
-                Text = "Информация о персонаже:",
-                ForeColor = Color.Black,
-                Size = new Size(350, 30),
-                Margin = new Padding(0, 20, 0, 0)
-            });
-            _infoLabel = new Label
-            {
-                Text = $"AP: {ArenaFieldControl.PlayerInfoToString()}",
-                ForeColor = Color.Black,
-                Size = new Size(450, (int)(Height * 0.1)),
-                AutoSize = true,
-                Margin = new Padding(10, 0, 0, 0)
-            };
-            _debugInfo = new Label
-            {
-                Text = $"AP: {ArenaFieldControl.DebugInfo()}",
-                ForeColor = Color.Black,
-                Size = new Size(450, (int)(Height * 0.1)),
-                AutoSize = true,
-                Margin = new Padding(10, 0, 0, 0),
-                Visible = false
-            };
-            infoPanel.Controls.Add(_infoLabel);
-            infoPanel.Controls.Add(_debugInfo);
         }
         #endregion
 
@@ -525,7 +491,7 @@ namespace Cave_Adventure
         {
             _levelMenu.Enabled = !_levelMenu.Enabled;
             _levelMenu.Visible = !_levelMenu.Visible;
-            _debugInfo.Visible = !_debugInfo.Visible;
+            _playerInfoPanel.OnChangeDebug();
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
@@ -546,7 +512,7 @@ namespace Cave_Adventure
             ArenaFieldControl.ArenaMap.ChangeStateOfUI += OnBlockUnblockUI;
             ArenaFieldControl.ArenaMap.AllMonsterDead += OnAllMonsterDead;
             ArenaFieldControl.ArenaMap.PlayerDead += OnPlayerDead;
-            _healBar.Configure(ArenaFieldControl.ArenaMap);
+            _healBarPanel.Configure(ArenaFieldControl.ArenaMap);
             _winFormIsDisplayed = false;
         }
 
