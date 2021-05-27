@@ -86,6 +86,15 @@ namespace Cave_Adventure.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на .
+        /// </summary>
+        internal static string Arena10 {
+            get {
+                return ResourceManager.GetString("Arena10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на # .# .# .# .# .# .# .# .# .# .
         ///# .  .P .Sp.  .  .  .  .  .# .
         ///# .# .  .# .  .  .  .  .  .# .
@@ -202,6 +211,24 @@ namespace Cave_Adventure.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на .
+        /// </summary>
+        internal static string Arena8 {
+            get {
+                return ResourceManager.GetString("Arena8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на .
+        /// </summary>
+        internal static string Arena9 {
+            get {
+                return ResourceManager.GetString("Arena9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Cobra {
@@ -244,9 +271,59 @@ namespace Cave_Adventure.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap floorStone1 {
+            get {
+                object obj = ResourceManager.GetObject("floorStone1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap floorStone2 {
+            get {
+                object obj = ResourceManager.GetObject("floorStone2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap floorStoneBroken {
+            get {
+                object obj = ResourceManager.GetObject("floorStoneBroken", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Gladiator {
             get {
                 object obj = ResourceManager.GetObject("Gladiator", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap grass1 {
+            get {
+                object obj = ResourceManager.GetObject("grass1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap grass2 {
+            get {
+                object obj = ResourceManager.GetObject("grass2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -317,6 +394,56 @@ namespace Cave_Adventure.Properties {
         internal static System.Drawing.Bitmap stoneBackground {
             get {
                 object obj = ResourceManager.GetObject("stoneBackground", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap wall0 {
+            get {
+                object obj = ResourceManager.GetObject("wall0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap wall1 {
+            get {
+                object obj = ResourceManager.GetObject("wall1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap wall2 {
+            get {
+                object obj = ResourceManager.GetObject("wall2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap wall3 {
+            get {
+                object obj = ResourceManager.GetObject("wall3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap wall4 {
+            get {
+                object obj = ResourceManager.GetObject("wall4", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

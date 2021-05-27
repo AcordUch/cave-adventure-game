@@ -68,8 +68,6 @@ namespace Cave_Adventure
             _player.Inventory.AddHeals(new HealthPotionMedium());
             _player.Inventory.AddHeals(new HealthPotionBig());
 
-            IHealthPotion healKit;
-            
             _player.Health = 1;
             _player.Inventory.TryGetSmallHealthPotion(out var healKitSmall);
             _player.Health += healKitSmall.HealPower;

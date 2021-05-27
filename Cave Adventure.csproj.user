@@ -7,6 +7,9 @@
     <Compile Update="Views\HealBar.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="Views\HealBarPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="Views\InventoryPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -14,6 +17,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="Views\MainMenuPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Views\PlayerInfoPanel.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
