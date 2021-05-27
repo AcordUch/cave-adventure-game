@@ -103,7 +103,7 @@ namespace Cave_Adventure
             //Вынести в метод OnSizeChange
             var zoom = GetZoomForController();
             ArenaFieldControl.Size =
-                new Size((int)(ArenaFieldControl.Width * zoom), (int)(ArenaFieldControl.Height * zoom));
+                new Size((int)(ArenaFieldControl.Width * zoom.Width), (int)(ArenaFieldControl.Height * zoom.Height));
             
             _arenaInfoPanel.Controls[1].Text = $"Текущая арена:\n  {_currentArenaId + 1} из {_levels.Length}";
         }
@@ -319,7 +319,7 @@ namespace Cave_Adventure
             {
                 Dock = DockStyle.Fill,
                 AutoSize = true,
-                Padding = new Padding(75, 30, 0, 25),
+                Padding = new Padding(5, 0, 5, 0),
                 BackgroundImage = Resources.dioriteBackground
             };
             var bottomTable = new TableLayoutPanel()
@@ -568,11 +568,15 @@ namespace Cave_Adventure
         
         #endregion
 
-        private double GetZoomForController()
+        private (double Width, double Height) GetZoomForController()
         {
-            return ArenaFieldControl.Height != 0 && ClientSize.Height != 0
-                ? (double)ClientSize.Height / ArenaFieldControl.Height
+            var width = ArenaFieldControl.Width != 0 && ClientSize.Width - 25 > 0
+                ? (double) (ClientSize.Width - 25) / ArenaFieldControl.Width
                 : 1;
+            var height = ArenaFieldControl.Height != 0 && ClientSize.Height - 7 > 0
+                ? (double) (ClientSize.Height - 7) / ArenaFieldControl.Height
+                : 1;
+            return (width, height);
         }
 
         protected override void OnPaint(PaintEventArgs e)
