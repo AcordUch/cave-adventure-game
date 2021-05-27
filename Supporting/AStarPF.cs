@@ -46,7 +46,7 @@ namespace Cave_Adventure
                         if ((dy == 0 && dx == 0) || (Math.Abs(dy) == 1 && Math.Abs(dx) == 1)) continue;
                         var nextPoint = new Point(toOpen.X + dx, toOpen.Y + dy);
                         if (visitedPoints.Contains(nextPoint) || !map.InBounds(nextPoint) ||
-                            map.Arena[nextPoint.X, nextPoint.Y] != CellType.Floor ||
+                            map.Arena[nextPoint.X, nextPoint.Y].cellType != CellType.Floor ||
                             map.GetListOfEntities().Any(p => p.Position == nextPoint && p.IsAlive)) continue;
                         var currentPrice = track[toOpen].priorCostPair.cost + GrafCost;
                         if (!track.ContainsKey(nextPoint) || track[nextPoint].priorCostPair.cost > currentPrice)

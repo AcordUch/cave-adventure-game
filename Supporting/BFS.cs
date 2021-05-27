@@ -26,7 +26,7 @@ namespace Cave_Adventure
                     if (currentPoint.distance >= range || (dy == 0 && dx == 0) || (Math.Abs(dy) == 1 && Math.Abs(dx) == 1)) continue;
                     var nextPoint = new Point(currentPoint.point.Value.X + dx, currentPoint.point.Value.Y + dy);
                     if (usedPoint.Contains(nextPoint) || !map.InBounds(nextPoint) ||
-                        map.Arena[nextPoint.X, nextPoint.Y] != CellType.Floor ||
+                        map.Arena[nextPoint.X, nextPoint.Y].cellType != CellType.Floor ||
                         map.GetListOfEntities().Any(p => p.Position == nextPoint && p.IsAlive)) continue;
                     // if(Math.Abs(dy) == 1 && Math.Abs(dx) == 1
                     //     && map.Arena[nextPoint.X, currentPoint.point.Value.Y] == CellType.Wall

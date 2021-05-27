@@ -371,6 +371,16 @@ namespace Cave_Adventure.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap noTexture {
+            get {
+                object obj = ResourceManager.GetObject("noTexture", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap obsidianBackground {
             get {
                 object obj = ResourceManager.GetObject("obsidianBackground", resourceCulture);

@@ -14,20 +14,20 @@ namespace Cave_Adventure
                 ["Sn"] = point => new Snake(point)
             };
         
-        public static (CellType[,] arenaMap, Player player, Monster[] monsters) ParsingMap(string arena)
+        public static ((CellType, CellSubtype)[,] arenaMap, Player player, Monster[] monsters) ParsingMap(string arena)
         {
             var lines = arena.Split(new[] { "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
             return ParsingMap(lines);
         }
 
-        public static (CellType[,] arenaMap, Player player, Monster[] monsters) ParsingMap(string[] arena)
+        public static ((CellType, CellSubtype)[,] arenaMap, Player player, Monster[] monsters) ParsingMap(string[] arena)
         {
             return ParsingMap(SplitOnCell(arena));
         }
 
-        public static (CellType[,] arenaMap, Player player, Monster[] monsters) ParsingMap(string[,] map)
+        public static ((CellType, CellSubtype)[,] arenaMap, Player player, Monster[] monsters) ParsingMap(string[,] map)
         {
-            var arena = new CellType[map.GetLength(1), map.GetLength(0)];
+            var arena = new (CellType, CellSubtype)[map.GetLength(1), map.GetLength(0)];
             var player = new Player(new Point().NegativePoint());
             var monsters = new List<Monster>();
             for (int y = 0; y < map.GetLength(0); y++)
@@ -36,15 +36,20 @@ namespace Cave_Adventure
                 var cell = map[y, x];
                 switch (cell)
                 {
-                    case "# ": arena[x, y] = CellType.Wall; break;
-                    case "  ": arena[x, y] = CellType.Floor; break;
+                    case "# ":
+                    case "#0": arena[x, y] = (CellType.Wall, CellSubtype.wall0); break;
+                    case "#1": arena[x, y] = (CellType.Wall, CellSubtype.wall1); break;
+                    case "#2": arena[x, y] = (CellType.Wall, CellSubtype.wall2); break;
+                    case "#3": arena[x, y] = (CellType.Wall, CellSubtype.wall3); break;
+                    case "#4": arena[x, y] = (CellType.Wall, CellSubtype.wall4); break;
+                    case "  ": arena[x, y] = (CellType.Floor, CellSubtype.floorStone2); break;
                     case "P ":
-                        arena[x, y] = CellType.Floor;
+                        arena[x, y] = (CellType.Floor, CellSubtype.floorStone2);
                         player = new Player(new Point(x, y));
                         break;
                     case "Sp":
                     case "Sn":
-                        arena[x, y] = CellType.Floor;
+                        arena[x, y] = (CellType.Floor, CellSubtype.floorStone2);
                         monsters.Add(StringCodeToEntity[cell].Invoke(new Point(x, y)));
                         break;
                     default:
@@ -76,7 +81,7 @@ namespace Cave_Adventure
             return result;
         }
 
-        public static string[,] PublicGetterForTestsDaYaDurakChtoTakDelau(string[] map)
+        public static string[,] PublicGetterForTests(string[] map)
         {
             return SplitOnCell(map);
         }
