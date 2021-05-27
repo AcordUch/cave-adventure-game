@@ -50,8 +50,7 @@ namespace Cave_Adventure.Views
 Инициатива {_entity.Initiative}
 Атака: {_entity.Attack}
 Защита: {_entity.Defense}
-Урон: {_entity.Damage} 
-Текущее состояние: {_entity.CurrentStates.ToString()}
+Урон: {_entity.Damage}
 ";
         }
     }

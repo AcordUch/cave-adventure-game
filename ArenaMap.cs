@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Cave_Adventure.Objects.Items;
 using Cave_Adventure.Views;
 using Timer = System.Timers.Timer;
 
@@ -12,6 +13,9 @@ namespace Cave_Adventure
 {
     public class ArenaMap
     {
+        private Entity _currentAttacker;
+        private Entity _currentDefender;
+        
         public CellType[,] Arena { get; private set; }
         public Player Player { get; private set; }
         public Monster[] Monsters { get; private set; }
@@ -76,6 +80,10 @@ namespace Cave_Adventure
 
         public void Attacking(Entity attacker, Entity target)
         {
+            _currentAttacker = attacker;
+            _currentDefender = target;
+            _currentAttacker.EntityDied += AddHeal;
+            _currentDefender.EntityDied += AddHeal;
             if(attacker.AP > 0)
             {
                 target.Defending(attacker);
@@ -88,6 +96,25 @@ namespace Cave_Adventure
             }
         }
 
+        public void AddHeal()
+        {
+            var baseRandom = new Random();
+            var rnd = new Random(baseRandom.Next() + 54356237);
+            var rndNext = rnd.NextDouble();
+            switch (rndNext)
+            {
+                case > 0.9:
+                    Player.Inventory.AddHeals(new HealthPotionBig());
+                    break;
+                case > 0.75:
+                    Player.Inventory.AddHeals(new HealthPotionMedium());
+                    break;
+                case > 0.55:
+                    Player.Inventory.AddHeals(new HealthPotionSmall());
+                    break;
+            }
+        }
+
         public void CheckOnWinning()
         {
             if(Monsters.All(m => m.IsDead) || Monsters.Length == 0)
@@ -97,6 +124,8 @@ namespace Cave_Adventure
         private void BlockUnblockUI()
         {
             IsPlayerTurnNow = !IsPlayerTurnNow;
+            if(IsPlayerTurnNow)
+                CheckOnWinning();
             ChangeStateOfUI?.Invoke();
         }
 
@@ -110,14 +139,15 @@ namespace Cave_Adventure
                                      || !GlobalConst.PossibleDirections.Any(p => entity.Position + p == Player.Position))
                         continue;
                     var flag = true;
-                    var timer = new Timer {Interval = 2 * GlobalConst.AnimTimerInterval + 200 };
+                    var timer = new Timer {Interval = 2 * GlobalConst.AnimTimerInterval + 200, AutoReset = false};
                     timer.Elapsed += (_, __) =>
                     {
                         flag = false;
                         timer.Stop();
                     };
                     timer.Start();
-                    Player.Defending(entity);
+                    // Player.Defending(entity);
+                    Attacking(entity, Player);
                     while (flag)
                     {
                         
