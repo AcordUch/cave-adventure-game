@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Cave_Adventure.Interfaces;
+using Cave_Adventure.Properties;
 using Cave_Adventure.Views;
 
 namespace Cave_Adventure
@@ -42,7 +43,10 @@ namespace Cave_Adventure
             _game = game;
             _levels = LoadLevels().ToArray();
 
-            ArenaFieldControl = new ArenaFieldControl();
+            ArenaFieldControl = new ArenaFieldControl()
+            {
+                BackgroundImage = Resources.andesiteBackground
+            };
             ArenaFieldControl.BindEvent += OnBindArenaMapEvent;
             ArenaFieldControl.ClickOnPoint += ArenaFieldControl_ClickOnPoint;
             
@@ -330,7 +334,8 @@ namespace Cave_Adventure
             {
                 Dock = DockStyle.Fill,
                 AutoSize = true,
-                Padding = new Padding(100, 30, 0, 50),
+                Padding = new Padding(75, 30, 0, 25),
+                BackgroundImage = Resources.dioriteBackground
             };
             var bottomTable = new TableLayoutPanel()
             {
@@ -345,7 +350,8 @@ namespace Cave_Adventure
             var secondColumnTable = new TableLayoutPanel()
             {
                 Dock = DockStyle.Fill,
-                AutoSize = true
+                AutoSize = true,
+                BackgroundImage = Resources.netherBackground
             };
             var thirdColumnTable = new TableLayoutPanel()
             {
@@ -449,7 +455,8 @@ namespace Cave_Adventure
         {
             infoPanel.Controls.Add(new Label
             {
-                Text = "Информация о текущей арене:",
+                // Text = "Информация о текущей арене:",
+                Text = "\n\n",
                 ForeColor = Color.Black,
                 AutoSize = true,
                 Size = new Size(350, 30),

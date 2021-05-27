@@ -11,6 +11,9 @@ namespace Cave_Adventure.Objects
 
         public IReadOnlyList<IHealthPotion> HealthPotionsBag => _healthPotionsBag;
         public int AmountOfPotion => _healthPotionsBag.Count;
+        public int AmountSmallPotion => _healthPotionsBag.Count(p => p is HealthPotionSmall);
+        public int AmountMediumPotion => _healthPotionsBag.Count(p => p is HealthPotionMedium);
+        public int AmountBigPotion => _healthPotionsBag.Count(p => p is HealthPotionBig);
 
         public void AddHeals(IHealthPotion healthPotion)
         {
