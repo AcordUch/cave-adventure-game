@@ -19,17 +19,16 @@ namespace Cave_Adventure
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            
-        }
-        
-        public ArenaForm()
-        {
             DoubleBuffered = true;
             Size = new Size(1500, 900);
             MinimumSize = new Size(1500, 900);
             WindowState = FormWindowState.Maximized;
             Text = "Заходит в бар улитка, говорит...";
             KeyPreview = true;
+        }
+        
+        public ArenaForm()
+        {
             _game = new Game();
             _game.ScreenChanged += OnScreenChange;
             

@@ -18,7 +18,7 @@ namespace Cave_Adventure.Views
         public LevelSelectionMenuPanel(Game game)
         {
             _game = game;
-            _levels = LoadLevels().ToArray();
+            _levels = GlobalConst.LoadLevels().ToArray();
             
             var table = new TableLayoutPanel
             {
@@ -67,17 +67,6 @@ namespace Cave_Adventure.Views
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 85));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15));
             table.Controls.Add(buttonMenu, 1, 0);
-        }
-        
-        private static IEnumerable<String> LoadLevels()
-        {
-            yield return Properties.Resources.Arena1;
-            yield return Properties.Resources.Arena2;
-            yield return Properties.Resources.Arena3;
-            yield return Properties.Resources.Arena4;
-            yield return Properties.Resources.Arena5;
-            yield return Properties.Resources.Arena6;
-            yield return Properties.Resources.Arena7;
         }
         
         private void SetUpLevelSwitch(FlowLayoutPanel menuPanel)

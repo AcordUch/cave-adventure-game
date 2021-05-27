@@ -41,7 +41,7 @@ namespace Cave_Adventure
         public ArenaPanel(Game game)
         {
             _game = game;
-            _levels = LoadLevels().ToArray();
+            _levels = GlobalConst.LoadLevels().ToArray();
 
             ArenaFieldControl = new ArenaFieldControl()
             {
@@ -213,17 +213,6 @@ namespace Cave_Adventure
 
         #endregion
         
-        private static IEnumerable<String> LoadLevels()
-        {
-            yield return Properties.Resources.Arena1;
-            yield return Properties.Resources.Arena2;
-            yield return Properties.Resources.Arena3;
-            yield return Properties.Resources.Arena4;
-            yield return Properties.Resources.Arena5;
-            yield return Properties.Resources.Arena6;
-            yield return Properties.Resources.Arena7;
-        }
-
         #region Настройка Панелей
 
         private void ConfigureTables(TableLayoutPanel table)
