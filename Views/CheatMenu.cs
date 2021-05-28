@@ -14,7 +14,8 @@ namespace Cave_Adventure.Views
 
         private readonly AutoCompleteStringCollection _autoCompleteSource = new AutoCompleteStringCollection
         {
-            "kill", "killbyconsole", "completelevel", "heal", "zatva", "makemehurt", "makemezerohp", "tdebug", "help"
+            "kill", "killbyconsole", "completelevel", "heal", "zatva", "makemehurt", "makemezerohp", "tdebug", "help",
+            "simpledrawmode"
         };
 
         public ArenaMap ArenaMap => _arenaFieldControl.ArenaMap;
@@ -108,6 +109,9 @@ namespace Cave_Adventure.Views
                         strBld.Append(com.ToString()).Append(' ');
                     }
                     _textBox.Text = strBld.ToString();
+                    break;
+                case "simpledrawmode":
+                    _arenaFieldControl.ArenaPainter.OnSimpleMode();
                     break;
             }
             if(needClear)

@@ -143,6 +143,8 @@ namespace Cave_Adventure
                     _mainMenuPanel.Update();
                     break;
                 case GameScreen.LevelSelectionMenu:
+                    _levelSelectionMenuPanel.Update();
+                    break;
                 default:
                     break;
             }

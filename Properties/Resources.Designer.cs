@@ -508,6 +508,26 @@ namespace Cave_Adventure.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap mazePicBackgroun1 {
+            get {
+                object obj = ResourceManager.GetObject("mazePicBackgroun1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mazePicBackgroun2 {
+            get {
+                object obj = ResourceManager.GetObject("mazePicBackgroun2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap mazePicMainMenu {
             get {
                 object obj = ResourceManager.GetObject("mazePicMainMenu", resourceCulture);

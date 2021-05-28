@@ -446,6 +446,7 @@ namespace Cave_Adventure
             _levelMenu.Enabled = !_levelMenu.Enabled;
             _levelMenu.Visible = !_levelMenu.Visible;
             _playerInfoPanel.OnChangeDebug();
+            ArenaFieldControl.ArenaPainter.OnDebugChange();
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
