@@ -10,6 +10,7 @@ namespace Cave_Adventure
     {
         public static IEnumerable<SinglyLinkedList<Point>> FindPaths(ArenaMap map, Point start, int range)
         {
+            //В "голове" SinglyLinkedList лежит конечная точка
             var queue = new Queue<(SinglyLinkedList<Point> point, int distance)>();
             var usedPoint = new HashSet<Point>();
             queue.Enqueue((new SinglyLinkedList<Point>(start), 0));

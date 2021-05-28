@@ -15,6 +15,7 @@ namespace Cave_Adventure
             Initiative = 9;
             Description = "Это существо прекрасно владеет руками и не только...";
             AI = new GhoulAI(this);
+            DetectionRange = GlobalConst.GhoulDetectionRadius;
         }
 
         public override void ResetAP()

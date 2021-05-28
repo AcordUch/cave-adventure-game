@@ -39,7 +39,6 @@ namespace Cave_Adventure.Views
 
         private void ConfigureTable(TableLayoutPanel table)
         {
-            // table.RowStyles.Add(new RowStyle(SizeType.Absolute, 10));
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
             table.RowStyles.Add(new RowStyle(SizeType.Absolute, 10));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 15));

@@ -15,6 +15,7 @@ namespace Cave_Adventure
             Initiative = 7;
             Description = "Она не ядовитая, честно";
             AI = new SnakeAI(this);
+            DetectionRange = GlobalConst.SnakeDetectionRadius;
         }
 
         public override void ResetAP()

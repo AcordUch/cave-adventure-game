@@ -15,6 +15,7 @@ namespace Cave_Adventure
             Initiative = 8;
             Description = "Его кулаки - это грозное оружие";
             AI = new GolemAI(this);
+            DetectionRange = GlobalConst.GolemDetectionRadius;
         }
 
         public override void ResetAP()

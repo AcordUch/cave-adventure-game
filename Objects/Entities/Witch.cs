@@ -15,6 +15,7 @@ namespace Cave_Adventure
             Initiative = 10;
             Description = "От её заклинаний ещё никто не оставался в живых...";
             AI = new WitchAI(this);
+            DetectionRange = GlobalConst.WitchDetectionRadius;
         }
 
         public override void ResetAP()
