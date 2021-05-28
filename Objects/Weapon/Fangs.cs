@@ -1,8 +1,8 @@
 namespace Cave_Adventure
 {
-    public class FangsAndClaws : Weapon
+    public class Fangs : Weapon
     {
-        public FangsAndClaws() : base(GlobalConst.FangsAndClawsFactor, GlobalConst.FangsAndClawsRadius)
+        public Fangs() : base(GlobalConst.FangsFactor, GlobalConst.FangsRadius)
         {
         }
 
@@ -14,7 +14,7 @@ namespace Cave_Adventure
         
         public override string ToString()
         {
-            return "Когти, зубы, лапы";
+            return "Клыки";
         }
     }
 }

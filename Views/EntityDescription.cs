@@ -14,7 +14,7 @@ namespace Cave_Adventure.Views
         {
             base.OnLoad(e);
             DoubleBuffered = true;
-            Size = new Size(500, 650);
+            Size = new Size(550, 450);
             Text = "А ты, любопытный с:";
             KeyPreview = true;
         }
