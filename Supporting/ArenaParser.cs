@@ -2,6 +2,8 @@ using System;
 using System.Drawing;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Text;
 
 namespace Cave_Adventure
 {
@@ -18,6 +20,59 @@ namespace Cave_Adventure
                 ["Wi"] = point => new Witch(point),
                 ["Mi"] = point => new Minotaur(point)
             };
+
+        public static string PrepareMap(string arena,
+            int maxArenaRow = GlobalConst.MaxArenaRow, int maxArenaColumn = GlobalConst.MaxArenaColumn)
+        {
+            var lines = arena.Split(new[] { "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            return PrepareMap(lines, maxArenaRow, maxArenaColumn);
+        }
+        
+        public static string PrepareMap(string[] arena,
+            int maxArenaRow = GlobalConst.MaxArenaRow, int maxArenaColumn = GlobalConst.MaxArenaColumn)
+        {
+            var result = new StringBuilder();
+            var amountAddRow = (int) Math.Ceiling((maxArenaRow - arena.Length) / 2d);
+            var amountAddColumn = (int) Math.Ceiling((maxArenaColumn - arena[0].Length / 3) / 2d);
+            var additionalRow = CreatAdditionalRow(maxArenaColumn);
+            
+            for (int _ = 0; _ < amountAddRow; _++)
+            {
+                result.Append(additionalRow);
+            }
+            foreach (var row_ in arena)
+            {
+                var row = new StringBuilder();
+                for (int _ = 0; _ < amountAddColumn; _++)
+                {
+                    row.Append("#T.");
+                }
+                row.Append(row_);
+                for (int _ = 0; _ < amountAddColumn; _++)
+                {
+                    row.Append("#T.");
+                }
+                row.Append("\r\n");
+                result.Append(row);
+            }
+            for (int _ = 0; _ < amountAddRow; _++)
+            {
+                result.Append(additionalRow);
+            }
+
+            return result.ToString();
+        }
+
+        private static string CreatAdditionalRow(int maxArenaColumn)
+        {
+            var additionalRow = new StringBuilder();
+            for (int i = 0; i < maxArenaColumn; i++)
+            {
+                additionalRow.Append("#T.");
+            }
+            additionalRow.Append("\r\n");
+            return additionalRow.ToString();
+        }
         
         public static ((CellType, CellSubtype)[,] arenaMap, Player player, Monster[] monsters) ParsingMap(string arena)
         {
@@ -68,8 +123,7 @@ namespace Cave_Adventure
                         break;
                     }
             }
-
-            // if (player.Position.X < 0) throw new WarningException("На карте нет игрока");
+            
             return (arenaMap: arena, player: player, monsters: monsters.ToArray());
         }
 
@@ -83,8 +137,7 @@ namespace Cave_Adventure
                 var index = 0;
                 for (int mChar = 0; mChar < map[0].Length; mChar++)
                 {
-                    string cell;
-                    cell = char.ToString(map[row][mChar]) + char.ToString(map[row][++mChar]);
+                    var cell = char.ToString(map[row][mChar]) + char.ToString(map[row][++mChar]);
                     mChar++;
                     result[row, index++] = cell;
                 }

@@ -16,7 +16,6 @@ namespace Cave_Adventure
         private const int CellHeight = GlobalConst.AssetsSize;
         
         private readonly EntityPainter _entityPainter;
-        private int _zoomScale;
         private PointF _logicalCenterPos;
         private bool _configured = false;
         private Dictionary<Point, Rectangle> _pointToRectangle;
@@ -72,7 +71,7 @@ namespace Cave_Adventure
         
         public void LoadLevel(string newMap)
         {
-            ArenaMap = ArenaMap.CreateNewArenaMap(newMap);
+            ArenaMap = ArenaMap.CreateNewArenaMap(ArenaParser.PrepareMap(newMap));
             _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
             ArenaPainter.Configure(ArenaMap, _pointToRectangle);
             _entityPainter.Configure(ArenaMap.GetListOfEntities());
@@ -83,49 +82,6 @@ namespace Cave_Adventure
             }
             Invalidate();
         }
-
-        #region KeyControl
-
-        protected override void OnKeyPress(KeyPressEventArgs e)
-        {
-        }
-
-        /*
-        public void OnKeyUp(object sender, KeyEventArgs e)
-        {
-            _player.Move(0, 0);
-            _player.SetAnimationConfiguration(StatesOfAnimation.Idle);
-        }
-
-        public void OnKeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.W:
-                    _player.Move(0, -5);
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    break;
-                case Keys.S:
-                    _player.Move(0, 5);
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    break;
-                case Keys.A:
-                    _player.Move(-5, 0);
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    _player.ViewDirection = ViewDirection.Left;
-                    break;
-                case Keys.D:
-                    _player.Move(5, 0);
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Run);
-                    _player.ViewDirection = ViewDirection.Right;
-                    break;
-                case Keys.Space:
-                    _player.SetAnimationConfiguration(StatesOfAnimation.Attack);
-                    break;
-            }
-        }
-        */
-        #endregion
         
         private void HandleClick(object sender, EventArgs e)
         {
@@ -162,7 +118,6 @@ namespace Cave_Adventure
             
             var sceneSize = ArenaPainter.ArenaSize;
             
-            UpdateZoomScale();
             _logicalCenterPos = new PointF(sceneSize.Width / 2f, sceneSize.Height / 2f);
             
             ArenaPainter.Paint(e.Graphics);
@@ -173,7 +128,10 @@ namespace Cave_Adventure
             foreach (var monster in ArenaMap.Monsters)
                 _entityPainter.SetUpAndPaint(e.Graphics, monster);
         }
-        
+
+        #region Не используемое
+        /*
+        private int _zoomScale;
         private PointF GetShift()
         {
             return new PointF(ClientSize.Width / 2f - _logicalCenterPos.X * _zoomScale,
@@ -200,24 +158,25 @@ namespace Cave_Adventure
                 (int)(point.X * arenaFieldControl._zoomScale + shift.X),
                 (int)(point.Y * arenaFieldControl._zoomScale + shift.Y));
         }
+        */
+        #endregion
         
         public string PlayerInfoToString()
         {
             return ArenaMap == null ? "null" : 
-$@"Health: {Player.Health} | Step: {ArenaMap.Step}
-Attack: {Player.Attack} | Defense: {Player.Defense}
-Damage: {Player.Damage} | AP: {Player.AP}";
+$@"Текущий ход: {ArenaMap.Step}
+Имеющиеся очки действия: {Player.AP}
+Здоровье игрока: {Player.Health}";
         }
 
         public string DebugInfo()
         {
             return ArenaMap == null ? "null" : 
 $@"   ||DEBUG||
-Zoom: {_zoomScale} | ArenaLogPos: {_logicalCenterPos}
-Position: {Player.Position} | Target: {Player.TargetPoint}
+ArenaLogPos: {_logicalCenterPos}
+PlayerPos: {Player.Position} | PlayerTarget: {Player.TargetPoint}
 IsSelected: {Player.IsSelected} | IsMoving: {Player.IsMoving}
-State: {Player.CurrentStates} | AttackButtonPres: {ArenaMap.AttackButtonPressed} 
-Monster: {GetMonsterInfo()}
+State: {Player.CurrentStates} | Monster: {GetMonsterInfo()}
 ";
         }
 

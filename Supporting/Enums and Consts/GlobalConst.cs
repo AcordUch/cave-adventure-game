@@ -9,6 +9,8 @@ namespace Cave_Adventure
         public const int AssetsSize = 64;
         public const int MainTimerInterval = 60;
         public const int AnimTimerInterval = 2000;
+        public const int MaxArenaRow = 13;
+        public const int MaxArenaColumn = 20;
         
         // ===Weapon===
         public const double SwordFactor = 1;

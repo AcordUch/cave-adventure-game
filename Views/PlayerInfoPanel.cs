@@ -47,14 +47,12 @@ namespace Cave_Adventure.Views
 
         public new void Update()
         {
-            // _infoLabel.Size = new Size((int)(Width * 0.25), (int)(Height * 0.4));
             _infoLabel.Text = _arenaFieldControl.PlayerInfoToString();
             _debugInfo.Text = _arenaFieldControl.DebugInfo();
         }
 
         private void ConfigureTable(TableLayoutPanel table)
         {
-            // table.RowStyles.Add(new RowStyle(SizeType.Absolute, 10));
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 15));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));

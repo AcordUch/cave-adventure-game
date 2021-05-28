@@ -37,9 +37,8 @@ Sp.  .  .";
         [Test]
         public void TestTest()
         {
-            var textArena = Properties.Resources.Arena1;
+            var textArena = Properties.Resources.Arena1Debug;
             var arena = ArenaMap.CreateNewArenaMap(textArena);
-            var ap = arena.Monsters[0].AP;
             var paths = GetPaths(arena, arena.Monsters[0].Position, 10).ToList();
             Assert.IsTrue(GlobalConst.PossibleDirections
                 .Select(p => arena.Player.Position + p).Any(p => paths[^1] == p));
