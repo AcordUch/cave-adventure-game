@@ -23,7 +23,7 @@ namespace Cave_Adventure
             Size = new Size(1500, 900);
             MinimumSize = new Size(1500, 900);
             WindowState = FormWindowState.Maximized;
-            Text = "Заходит в бар улитка, говорит...";
+            Text = GlobalConst.GetSplash();
             KeyPreview = true;
         }
         
