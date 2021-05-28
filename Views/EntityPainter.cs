@@ -19,7 +19,7 @@ namespace Cave_Adventure
         private int _mirroring = 1;
         private int _currentAnimation;
         private int _currentFrameLimit = 0;
-        
+
         //public int DisplacementStage { get; set; } = 0;
 
         public void Configure(List<Entity> entities)
@@ -45,16 +45,16 @@ namespace Cave_Adventure
             _animationShouldStop = entities.ToDictionary(k => k, v => false);
             _prevState = entities.ToDictionary(k => k, v => StatesOfAnimation.Idle);
         }
-        
+
         public void SetUpAndPaint(Graphics graphics, Entity entity)
         {
-            if(!_configured)
+            if (!_configured)
                 return;
-            
+
             var playerPositionReal = GetGraphicPosition(entity);
             _currentEntity = entity;
-            _mirroring = (int) entity.ViewDirection;
-            _currentAnimation = (int) entity.CurrentStates;
+            _mirroring = (int)entity.ViewDirection;
+            _currentAnimation = (int)entity.CurrentStates;
             AnimationSetUp.SetUp(entity, out _currentFrameLimit, out var entityImage);
             if (entity.CurrentStates != _prevState[entity])
             {
@@ -63,11 +63,11 @@ namespace Cave_Adventure
             }
             PlayAnimation(graphics, playerPositionReal, entityImage);
         }
-        
+
         private void PlayAnimation(Graphics graphics, Point playerPosition, Image entityImage)
         {
             ChangeCurrentFrame();
-            
+
             graphics.DrawImage(
                 entityImage,
                 new Rectangle(
@@ -75,9 +75,9 @@ namespace Cave_Adventure
                     playerPosition.Y,
                     _mirroring * ImageSize * 2,
                     ImageSize * 2
-                    ), 
-                32*_currentFrames[_currentEntity],
-                32*_currentAnimation,
+                    ),
+                32 * _currentFrames[_currentEntity],
+                32 * _currentAnimation,
                 ImageSize,
                 ImageSize,
                 GraphicsUnit.Pixel
@@ -86,9 +86,9 @@ namespace Cave_Adventure
 
         private void ChangeCurrentFrame()
         {
-            if(_animationShouldStop[_currentEntity])
+            if (_animationShouldStop[_currentEntity])
                 return;
-            
+
             if (_currentFrames[_currentEntity] < _currentFrameLimit - 1)
                 _currentFrames[_currentEntity]++;
             else
@@ -105,7 +105,7 @@ namespace Cave_Adventure
         private Point GetGraphicPosition(Entity entity)
         {
             var dPoint = Point.Empty;
-            lock(new object())
+            lock (new object())
             {
                 if (entity.IsMoving)
                 {
@@ -118,7 +118,7 @@ namespace Cave_Adventure
                     }
                 }
             }
-            
+
             return new Point(entity.Position.X * GlobalConst.AssetsSize + _displacementStage[entity] * dPoint.X * GlobalConst.AssetsSize / 16,
                 entity.Position.Y * GlobalConst.AssetsSize + _displacementStage[entity] * dPoint.Y * GlobalConst.AssetsSize / 16);
         }

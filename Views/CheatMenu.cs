@@ -70,7 +70,7 @@ namespace Cave_Adventure.Views
             _textBox.ReadOnly = true;
 
             var needClear = true;
-            var superMonster = new SuperMonster(new Point(-1, -1));
+            var superMonster = new Minotaur(new Point(-1, -1));
             switch (_textBox.Text.ToLower())
             {
                 case "kill":

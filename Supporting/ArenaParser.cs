@@ -10,8 +10,13 @@ namespace Cave_Adventure
         private static readonly Dictionary<string, Func<Point, Monster>> StringCodeToEntity =
             new()
             {
+                ["Sl"] = point => new Slime(point),
                 ["Sp"] = point => new Spider(point),
-                ["Sn"] = point => new Snake(point)
+                ["Sn"] = point => new Snake(point),
+                ["Go"] = point => new Golem(point),
+                ["Gh"] = point => new Ghoul(point),
+                ["Wi"] = point => new Witch(point),
+                ["Mi"] = point => new Minotaur(point)
             };
         
         public static ((CellType, CellSubtype)[,] arenaMap, Player player, Monster[] monsters) ParsingMap(string arena)
@@ -48,15 +53,20 @@ namespace Cave_Adventure
                         arena[x, y] = (CellType.Floor, CellSubtype.floorStone2);
                         player = new Player(new Point(x, y));
                         break;
+                    case "Sl":
                     case "Sp":
                     case "Sn":
+                    case "Go":
+                    case "Gh":
+                    case "Wi":
+                    case "Mi":
                         arena[x, y] = (CellType.Floor, CellSubtype.floorStone2);
                         monsters.Add(StringCodeToEntity[cell].Invoke(new Point(x, y)));
                         break;
                     default:
                         arena[x, y] = (CellType.Floor, CellSubtype.noTexture);
                         break;
-                }
+                    }
             }
 
             // if (player.Position.X < 0) throw new WarningException("На карте нет игрока");

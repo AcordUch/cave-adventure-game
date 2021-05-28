@@ -3,8 +3,12 @@ namespace Cave_Adventure
     public enum EntityType
     {
         Player,
+        Slime,
         Spider,
         Snake,
-        SuperMonster
+        Golem,
+        Ghoul,
+        Witch,
+        Minotaur
     }
 }
