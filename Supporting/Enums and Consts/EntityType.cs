@@ -9,6 +9,7 @@ namespace Cave_Adventure
         Golem,
         Ghoul,
         Witch,
-        Minotaur
+        Minotaur,
+        SuperMonster
     }
 }
