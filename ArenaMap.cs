@@ -58,7 +58,7 @@ namespace Cave_Adventure
             Player.IsSelected = false;
             PlayerPaths = null;
             PlayerSelected = false;
-            var monsters = Monsters.ToList().OrderByDescending(m => m.Initiative);
+            var monsters = Monsters.OrderByDescending(m => m.Initiative);
             await MonsterMoveControl(monsters);
             await MonsterAttackController(monsters);
             foreach (var monster in monsters)
