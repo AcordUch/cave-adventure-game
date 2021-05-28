@@ -53,11 +53,26 @@ namespace Cave_Adventure
                     var label = "";
                     switch (monster.Tag)
                     {
+                        case EntityType.Slime:
+                            label = "Sl";
+                            break;
                         case EntityType.Snake:
                             label = "Sn";
                             break;
                         case EntityType.Spider:
                             label = "Sp";
+                            break;
+                        case EntityType.Golem:
+                            label = "Go";
+                            break;
+                        case EntityType.Ghoul:
+                            label = "Gh";
+                            break;
+                        case EntityType.Witch:
+                            label = "Wi";
+                            break;
+                        case EntityType.Minotaur:
+                            label = "Mi";
                             break;
                     }
                     graphics.DrawString(label, new Font(SystemFonts.DefaultFont.FontFamily, 22),
