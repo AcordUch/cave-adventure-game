@@ -83,14 +83,14 @@ namespace Cave_Adventure.Properties {
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на #4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.
-        ///#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.  .  .  .  .  .#4.#4.#4.#4.#4.
-        ///#4.#4.#4.#4.#4.#4.#4.#4.#4.  .  .  .  .  .  .  .#4.#4.#4.#4.
-        ///#4.#4.  .  .Wi.  .  .#4.  .  .  .  .  .  .  .  .  .#4.#4.#4.
-        ///#4.#4.  .#4.#4.#4.  .#4.  .  .  .  .  .  .  .  .  .#4.#4.#4.
-        ///#4.#4.  .#4.#4.#4.  .  .  .  .  .  .  .  .  .Mi.  .  .  .  .
-        ///#4.#4.  .  .Wi.  .  .#4.  .  .  .  .  .  .  .  .  .#4.#4.#4.
-        ///#4.#4.  .#4.#4.#4.#4.#4.  .  .  .  .  .  .  .  .  .#4.#4.#4.
-        ///#4.#4.  .#4.#4.# [остаток строки не уместился]&quot;;.
+        ///#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.Sl.  .  .#4.#4.#4.#4.#4.#4.
+        ///#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.Sl.  .  .  .  .#4.#4.#4.#4.#4.
+        ///#4.#4.#4.  .  .  .  .#4.#4.Sl.  .  .  .Sl.Sl.  .#4.#4.#4.#4.
+        ///#4.Wi.  .  .#4.#4.  .#4.Sl.  .  .Sl.Sl.  .  .  .  .#4.#4.#4.
+        ///#4.  .#4.  .#4.#4.  .#4.  .  .Sl.  .  .  .  .  .  .#4.#4.#4.
+        ///#4.  .  .  .#4.#4.  .  .  .Sl.  .  .  .  .  .  .Mi.  .  .  .
+        ///#4.  .#4.  .#4.#4.  .#4.  .  .Sl.  .  .  .  .  .  .#4.#4.#4.
+        ///#4.Wi.  .  .#4.# [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string Arena10 {
             get {
@@ -621,6 +621,16 @@ namespace Cave_Adventure.Properties {
         internal static System.Drawing.Bitmap transparent {
             get {
                 object obj = ResourceManager.GetObject("transparent", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap transparentDebug {
+            get {
+                object obj = ResourceManager.GetObject("transparentDebug", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

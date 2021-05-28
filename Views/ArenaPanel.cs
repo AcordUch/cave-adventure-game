@@ -115,17 +115,17 @@ namespace Cave_Adventure
         {
             if (args.Button == MouseButtons.Left)
             {
+                var actionCompleted = false;
+                
+                if (_needInspect)
+                {
+                    InspectMonster(point);
+                    actionCompleted = true;
+                }
+                
                 if (!ArenaFieldControl.ArenaMap.IsPlayerTurnNow)
                     return;
                 
-                var actionCompleted = false;
-
-                if (_needInspect)
-                {
-                   InspectMonster(point);
-                    actionCompleted = true;
-                }
-
                 if (point == ArenaFieldControl.Player.Position && !actionCompleted)
                 {
                     if (ArenaFieldControl.Player.IsSelected)
@@ -183,7 +183,7 @@ namespace Cave_Adventure
             if (ArenaFieldControl.Player.GetNeighbors()
                 .Any(neighborsPos => ArenaFieldControl.Monsters.Any(monster => monster.Position == neighborsPos)))
             {
-                _attackMonsterButton.Enabled = true;
+                _attackMonsterButton.Enabled = true; //можно убрать?
             }
 
             var path = BFS.FindPaths(

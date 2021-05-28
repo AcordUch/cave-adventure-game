@@ -56,9 +56,21 @@ namespace Cave_Adventure
             if(_debugMode)
                 TypeEntity();
             if(_currentArena.PlayerSelected)
+            {
                 PaintPath();
+                AdditionalUI();
+            }
+
             graphics.DrawImage(_arenaImage, new Rectangle(0, 0, ArenaSize.Width * GlobalConst.AssetsSize,
                                                                         ArenaSize.Height * GlobalConst.AssetsSize));
+        }
+
+        private void AdditionalUI()
+        {
+            using (var graphics = Graphics.FromImage(_arenaImage))
+            {
+                graphics.DrawRectangle(Pens.Goldenrod, _pointToRectangle[_currentArena.Player.Position]);
+            }
         }
         
         private void TypeEntity()
@@ -140,7 +152,7 @@ namespace Cave_Adventure
             return cell.cellType == CellType.Floor ? Brushes.DimGray : Brushes.Firebrick;
         }
 
-        private static Image ChooseImage((CellType cellType, CellSubtype cellSubtype) cell)
+        private Image ChooseImage((CellType cellType, CellSubtype cellSubtype) cell)
         {
             Bitmap image;
             switch (cell.cellSubtype)
@@ -153,7 +165,9 @@ namespace Cave_Adventure
                 case CellSubtype.floorStone1: image = Resources.floorStone1; break;
                 case CellSubtype.floorStone2: image = Resources.floorStone2; break;
                 case CellSubtype.floorStoneBroken: image = Resources.floorStoneBroken; break;
-                case CellSubtype.transparent: image = Resources.transparent; break;
+                case CellSubtype.transparent:
+                    image = _debugMode ? Resources.transparentDebug : Resources.transparent;
+                    break;
                 default: image = Resources.noTexture; break;
             }
             return image;
