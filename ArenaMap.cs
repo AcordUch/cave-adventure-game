@@ -201,7 +201,7 @@ namespace Cave_Adventure
                 var path = new Point[0];
                 try
                 {
-                    path = (BFS.FindPaths(this, entity.Position, entity.AP)
+                    path = (BFS.FindPaths(this, entity.Position, entity.AP, false)
                                 .FirstOrDefault(p => p.Value == targetPoint)
                             ?? throw new InvalidOperationException(
                                 "Среди доступных точек нет необходимой. В методе откуда вызов нет проверки?"))

@@ -22,20 +22,30 @@ namespace Cave_Adventure
             _configured = true;
         }
 
-        public virtual Point LookTargetMovePoint(int range = 25)
+        public virtual Point LookTargetMovePoint(int range = 25, bool entityBlockingPath = false)
         {
             if (_monster.Health < 10)
             {
                 var pretenderPoint =  BFS.FindFarPoint(_arenaMap, Player.Position, _monster);
                 return Player.Position.RangeToPoint(pretenderPoint) > 8 ? _monster.Position : pretenderPoint;
             }
-            var distantToPlayer = (int)Math.Ceiling(_monster.Position.RangeToPoint(Player.Position));
-            if (distantToPlayer > range)
+            if (NotHavePlayerInDetectionRange(range, entityBlockingPath))
                 return _monster.Position;
             var rnd = new Random();
             if (rnd.NextDouble() > 0.15 && GlobalConst.PossibleDirections.Any(p => Player.Position + p == _monster.Position))
                 return _monster.Position;
-            return AStarPF.FindPathToPlayer(_arenaMap, _monster.Position, _monster.AP).ToList()[^1];
+            return AStarPF.FindPathToPlayer(_arenaMap, _monster.Position, _monster.AP, false).ToList()[^1];
+        }
+
+        private bool NotHavePlayerInDetectionRange(int range, bool entityBlockingPath)
+        {
+            return BFS.FindPaths(_arenaMap, _monster.Position, _monster.DetectionRange, entityBlockingPath)
+                .All(p => p.Value != Player.Position);
+        }
+
+        private Point LookRandomPoint(int range)
+        {
+            throw new NotImplementedException();
         }
     }
 }

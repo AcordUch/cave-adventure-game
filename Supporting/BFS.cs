@@ -8,7 +8,7 @@ namespace Cave_Adventure
 {
     public class BFS
     {
-        public static IEnumerable<SinglyLinkedList<Point>> FindPaths(ArenaMap map, Point start, int range, bool skipCellWithEntity = true)
+        public static IEnumerable<SinglyLinkedList<Point>> FindPaths(ArenaMap map, Point start, int range, bool entityBlockingPath = true)
         {
             //В "голове" SinglyLinkedList лежит конечная точка
             var queue = new Queue<(SinglyLinkedList<Point> point, int distance)>();
@@ -30,7 +30,7 @@ namespace Cave_Adventure
                     if (usedPoint.Contains(nextPoint) || !map.InBounds(nextPoint) ||
                         map.Arena[nextPoint.X, nextPoint.Y].cellType != CellType.Floor) 
                             continue;
-                    if (skipCellWithEntity && map.GetListOfEntities().Any(p => p.Position == nextPoint && p.IsAlive))
+                    if (entityBlockingPath && map.GetListOfEntities().Any(p => p.Position == nextPoint && p.IsAlive))
                         continue;
                     queue.Enqueue((new SinglyLinkedList<Point>(nextPoint, currentPoint.point), currentPoint.distance + 1));
                     usedPoint.Add(nextPoint);
