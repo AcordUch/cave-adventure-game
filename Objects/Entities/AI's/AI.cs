@@ -30,7 +30,7 @@ namespace Cave_Adventure
                 return Player.Position.RangeToPoint(pretenderPoint) > 8 ? _monster.Position : pretenderPoint;
             }
             if (NotHavePlayerInDetectionRange(range, entityBlockingPath))
-                return _monster.Position;
+                return LookRandomPoint();
             var rnd = new Random();
             if (rnd.NextDouble() > 0.15 && GlobalConst.PossibleDirections.Any(p => Player.Position + p == _monster.Position))
                 return _monster.Position;
@@ -43,9 +43,22 @@ namespace Cave_Adventure
                 .All(p => p.Value != Player.Position);
         }
 
-        private Point LookRandomPoint(int range)
+        private Point LookRandomPoint()
         {
-            throw new NotImplementedException();
+            var rnd = new Random();
+            var paths = BFS.FindPaths(_arenaMap, _monster.Position, _monster.AP);
+            var count = 0;
+            while (true)
+            {
+                if (count > 750 || rnd.NextDouble() > 0.35)
+                    return _monster.Position;
+                foreach (var path in paths)
+                {
+                    if (rnd.NextDouble() > 0.90)
+                        return path.Value;
+                    count++;
+                }
+            }
         }
     }
 }

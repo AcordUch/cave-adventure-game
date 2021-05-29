@@ -10,8 +10,8 @@ namespace Cave_Adventure
 {
     public class ArenaPainter
     {
-        private const int CellWidth = GlobalConst.AssetsSize;
-        private const int CellHeight = GlobalConst.AssetsSize;
+        private const int CellWidth = GlobalConst.BlockTextureSize;
+        private const int CellHeight = GlobalConst.BlockTextureSize;
         
         private ArenaMap _currentArena;
         private Bitmap _arenaImage;
@@ -63,8 +63,8 @@ namespace Cave_Adventure
                 AdditionalUI();
             }
 
-            graphics.DrawImage(_arenaImage, new Rectangle(0, 0, ArenaSize.Width * GlobalConst.AssetsSize,
-                                                                        ArenaSize.Height * GlobalConst.AssetsSize));
+            graphics.DrawImage(_arenaImage, new Rectangle(0, 0, ArenaSize.Width * GlobalConst.BlockTextureSize,
+                                                                        ArenaSize.Height * GlobalConst.BlockTextureSize));
         }
 
         private void AdditionalUI()

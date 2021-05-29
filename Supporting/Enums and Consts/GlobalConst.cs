@@ -6,7 +6,9 @@ namespace Cave_Adventure
 {
     public static class GlobalConst
     {
-        public const int AssetsSize = 64;
+        public const int BlockTextureSize = 64;
+        public const int EntityTextureSize = 32;
+        public const int BossTextureSize = 96;
         public const int MainTimerInterval = 60;
         public const int AnimTimerInterval = 1000;
         public const int MaxArenaRow = 13;

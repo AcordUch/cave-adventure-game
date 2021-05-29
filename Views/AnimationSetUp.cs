@@ -5,42 +5,51 @@ namespace Cave_Adventure.EntitiesFrames
 {
     public static class AnimationSetUp
     {
-        public static void SetUp(Entity entity, out int frameLimit, out Image entityImage)
+        public static void SetUp(Entity entity, out int frameLimit, out Image entityImage, out int imageSize)
         {
+            imageSize = GlobalConst.EntityTextureSize;
             switch (entity)
             {
                 case Player:
-                    SetUpPlayer(entity.CurrentStates, out frameLimit, out entityImage);
+                    entityImage = Properties.Resources.Gladiator;
+                    SetUpPlayer(entity.CurrentStates, out frameLimit);
                     break;
                 case Slime:
-                    SetUpSlime(entity.CurrentStates, out frameLimit, out entityImage);
+                    entityImage = Properties.Resources.Slime;
+                    SetUpSlime(entity.CurrentStates, out frameLimit);
                     break;
                 case Spider:
-                    SetUpSpider(entity.CurrentStates, out frameLimit, out entityImage);
+                    entityImage = Properties.Resources.Spider;
+                    SetUpSpider(entity.CurrentStates, out frameLimit);
                     break;
                 case Snake:
-                    SetUpSnake(entity.CurrentStates, out frameLimit, out entityImage);
+                    entityImage = Properties.Resources.Cobra;
+                    SetUpSnake(entity.CurrentStates, out frameLimit);
                     break;
                 case Golem:
-                    SetUpGolem(entity.CurrentStates, out frameLimit, out entityImage);
+                    entityImage = Properties.Resources.Mini_Golem;
+                    SetUpGolem(entity.CurrentStates, out frameLimit);
                     break;
                 case Ghoul:
-                    SetUpGhoul(entity.CurrentStates, out frameLimit, out entityImage);
+                    entityImage = Properties.Resources.Ghoul;
+                    SetUpGhoul(entity.CurrentStates, out frameLimit);
                     break;
                 case Witch:
-                    SetUpWitch(entity.CurrentStates, out frameLimit, out entityImage);
+                    entityImage = Properties.Resources.Witch;
+                    SetUpWitch(entity.CurrentStates, out frameLimit);
                     break;
                 case Minotaur:
-                    SetUpMinotaur(entity.CurrentStates, out frameLimit, out entityImage);
+                    entityImage = Properties.Resources.Minotaur;
+                    SetUpMinotaur(entity.CurrentStates, out frameLimit);
+                    imageSize = GlobalConst.BossTextureSize;
                     break;
                 default:
                     throw new Exception("Ошибка в настройке анимации");
             }
         }
 
-        private static void SetUpPlayer(StatesOfAnimation currentAnimation, out int frameLimit, out Image entityImage)
+        private static void SetUpPlayer(StatesOfAnimation currentAnimation, out int frameLimit)
         {
-            entityImage = Properties.Resources.Gladiator;
             switch (currentAnimation)
             {
                 case StatesOfAnimation.Idle:
@@ -61,9 +70,8 @@ namespace Cave_Adventure.EntitiesFrames
             }
         }
 
-        private static void SetUpSlime(StatesOfAnimation currentAnimation, out int frameLimit, out Image entityImage)
+        private static void SetUpSlime(StatesOfAnimation currentAnimation, out int frameLimit)
         {
-            entityImage = Properties.Resources.Slime;
             switch (currentAnimation)
             {
                 case StatesOfAnimation.Idle:
@@ -84,9 +92,8 @@ namespace Cave_Adventure.EntitiesFrames
             }
         }
 
-        private static void SetUpSpider(StatesOfAnimation currentAnimation, out int frameLimit, out Image entityImage)
+        private static void SetUpSpider(StatesOfAnimation currentAnimation, out int frameLimit)
         {
-            entityImage = Properties.Resources.Spider;
             switch (currentAnimation)
             {
                 case StatesOfAnimation.Idle:
@@ -107,9 +114,8 @@ namespace Cave_Adventure.EntitiesFrames
             }
         }
         
-        private static void SetUpSnake(StatesOfAnimation currentAnimation, out int frameLimit, out Image entityImage)
+        private static void SetUpSnake(StatesOfAnimation currentAnimation, out int frameLimit)
         {
-            entityImage = Properties.Resources.Cobra;
             switch (currentAnimation)
             {
                 case StatesOfAnimation.Idle:
@@ -130,9 +136,8 @@ namespace Cave_Adventure.EntitiesFrames
             }
         }
 
-        private static void SetUpGolem(StatesOfAnimation currentAnimation, out int frameLimit, out Image entityImage)
+        private static void SetUpGolem(StatesOfAnimation currentAnimation, out int frameLimit)
         {
-            entityImage = Properties.Resources.Mini_Golem;
             switch (currentAnimation)
             {
                 case StatesOfAnimation.Idle:
@@ -153,9 +158,8 @@ namespace Cave_Adventure.EntitiesFrames
             }
         }
 
-        private static void SetUpGhoul(StatesOfAnimation currentAnimation, out int frameLimit, out Image entityImage)
+        private static void SetUpGhoul(StatesOfAnimation currentAnimation, out int frameLimit)
         {
-            entityImage = Properties.Resources.Ghoul;
             switch (currentAnimation)
             {
                 case StatesOfAnimation.Idle:
@@ -176,9 +180,8 @@ namespace Cave_Adventure.EntitiesFrames
             }
         }
 
-        private static void SetUpWitch(StatesOfAnimation currentAnimation, out int frameLimit, out Image entityImage)
+        private static void SetUpWitch(StatesOfAnimation currentAnimation, out int frameLimit)
         {
-            entityImage = Properties.Resources.Witch;
             switch (currentAnimation)
             {
                 case StatesOfAnimation.Idle:
@@ -199,9 +202,8 @@ namespace Cave_Adventure.EntitiesFrames
             }
         }
 
-        private static void SetUpMinotaur(StatesOfAnimation currentAnimation, out int frameLimit, out Image entityImage)
+        private static void SetUpMinotaur(StatesOfAnimation currentAnimation, out int frameLimit)
         {
-            entityImage = Properties.Resources.Minotaur;
             switch (currentAnimation)
             {
                 case StatesOfAnimation.Idle:

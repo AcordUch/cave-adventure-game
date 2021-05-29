@@ -105,8 +105,14 @@ namespace Cave_Adventure
             var zoom = GetZoomForController();
             ArenaFieldControl.Size =
                 new Size((int)(ArenaFieldControl.Width * zoom.Width), (int)(ArenaFieldControl.Height * zoom.Height));
-            
-            _arenaInfoPanel.Controls[1].Text = $"Текущая арена:\n  {_currentArenaId + 1} из {_levels.Length}";
+            try
+            {
+                _arenaInfoPanel.Controls[1].Text = $"Текущая арена:\n  {_currentArenaId + 1} из {_levels.Length}";
+            }
+            catch
+            {
+                //ignore
+            }
         }
 
         #region ClickOnPointHandler

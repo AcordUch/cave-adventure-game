@@ -8,7 +8,8 @@ namespace Cave_Adventure
 {
     public class EntityPainter
     {
-        private const int ImageSize = 32;
+        //private const int ImageSize = 32;
+        private const int MaxStg = 16;
 
         private bool _configured = false;
         private Dictionary<Entity, int> _currentFrames;
@@ -20,13 +21,14 @@ namespace Cave_Adventure
         private int _currentAnimation;
         private int _currentFrameLimit = 0;
 
-        //public int DisplacementStage { get; set; } = 0;
-
+        private int ImageSize;
+        
         public void Configure(List<Entity> entities)
         {
-            // if (_configured)
-            //     throw new InvalidOperationException();
-            ReConfigure(entities);
+            _currentFrames = entities.ToDictionary(k => k, v => 0);
+            _displacementStage = entities.ToDictionary(k => k, v => 0);
+            _animationShouldStop = entities.ToDictionary(k => k, v => false);
+            _prevState = entities.ToDictionary(k => k, v => StatesOfAnimation.Idle);
             _configured = true;
         }
 
@@ -37,15 +39,7 @@ namespace Cave_Adventure
             _animationShouldStop = null;
             _configured = false;
         }
-
-        public void ReConfigure(List<Entity> entities)
-        {
-            _currentFrames = entities.ToDictionary(k => k, v => 0);
-            _displacementStage = entities.ToDictionary(k => k, v => 0);
-            _animationShouldStop = entities.ToDictionary(k => k, v => false);
-            _prevState = entities.ToDictionary(k => k, v => StatesOfAnimation.Idle);
-        }
-
+        
         public void SetUpAndPaint(Graphics graphics, Entity entity)
         {
             if (!_configured)
@@ -55,7 +49,7 @@ namespace Cave_Adventure
             _currentEntity = entity;
             _mirroring = (int)entity.ViewDirection;
             _currentAnimation = (int)entity.CurrentStates;
-            AnimationSetUp.SetUp(entity, out _currentFrameLimit, out var entityImage);
+            AnimationSetUp.SetUp(entity, out _currentFrameLimit, out var entityImage, out ImageSize);
             if (entity.CurrentStates != _prevState[entity])
             {
                 _prevState[entity] = entity.CurrentStates;
@@ -68,16 +62,35 @@ namespace Cave_Adventure
         {
             ChangeCurrentFrame();
 
+            /*if (ImageSize == GlobalConst.BossTextureSize)
+            {
+                return;
+                graphics.DrawImage(
+                    entityImage,
+                    new Rectangle(
+                        playerPosition.X - _mirroring * ImageSize / 4,
+                        playerPosition.Y,
+                        _mirroring * ImageSize * 2,
+                        ImageSize * 2
+                    ),
+                    32 * _currentFrames[_currentEntity],
+                    32 * _currentAnimation,
+                    ImageSize,
+                    ImageSize,
+                    GraphicsUnit.Pixel
+                );
+            }*/
+            
             graphics.DrawImage(
                 entityImage,
                 new Rectangle(
-                    playerPosition.X - _mirroring * ImageSize / 4,
+                    playerPosition.X - ImageSize / 4,
                     playerPosition.Y,
-                    _mirroring * ImageSize * 2,
-                    ImageSize * 2
+                    GlobalConst.BlockTextureSize,
+                    GlobalConst.BlockTextureSize
                     ),
-                32 * _currentFrames[_currentEntity],
-                32 * _currentAnimation,
+                ImageSize * _currentFrames[_currentEntity],
+                ImageSize * _currentAnimation,
                 ImageSize,
                 ImageSize,
                 GraphicsUnit.Pixel
@@ -111,7 +124,7 @@ namespace Cave_Adventure
                 {
                     dPoint = entity.GetDeltaPoint();
                     _displacementStage[entity]++;
-                    if (_displacementStage[entity] == 15)
+                    if (_displacementStage[entity] == MaxStg - 1)
                     {
                         _displacementStage[entity] = 0;
                         entity.Move(dPoint.X, dPoint.Y);
@@ -119,8 +132,8 @@ namespace Cave_Adventure
                 }
             }
 
-            return new Point(entity.Position.X * GlobalConst.AssetsSize + _displacementStage[entity] * dPoint.X * GlobalConst.AssetsSize / 16,
-                entity.Position.Y * GlobalConst.AssetsSize + _displacementStage[entity] * dPoint.Y * GlobalConst.AssetsSize / 16);
+            return new Point(entity.Position.X * GlobalConst.BlockTextureSize + _displacementStage[entity] * dPoint.X * GlobalConst.BlockTextureSize / MaxStg,
+                entity.Position.Y * GlobalConst.BlockTextureSize + _displacementStage[entity] * dPoint.Y * GlobalConst.BlockTextureSize / MaxStg);
         }
     }
 }
