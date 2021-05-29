@@ -8,8 +8,8 @@ namespace Cave_Adventure
 {
     public class EntityPainter
     {
-        //private const int ImageSize = 32;
         private const int MaxStg = 16;
+        private int ImageSize = 32;
 
         private bool _configured = false;
         private Dictionary<Entity, int> _currentFrames;
@@ -21,8 +21,8 @@ namespace Cave_Adventure
         private int _currentAnimation;
         private int _currentFrameLimit = 0;
 
-        private int ImageSize;
-        
+        //public int DisplacementStage { get; set; } = 0;
+
         public void Configure(List<Entity> entities)
         {
             _currentFrames = entities.ToDictionary(k => k, v => 0);
@@ -39,7 +39,7 @@ namespace Cave_Adventure
             _animationShouldStop = null;
             _configured = false;
         }
-        
+
         public void SetUpAndPaint(Graphics graphics, Entity entity)
         {
             if (!_configured)
@@ -62,35 +62,16 @@ namespace Cave_Adventure
         {
             ChangeCurrentFrame();
 
-            /*if (ImageSize == GlobalConst.BossTextureSize)
-            {
-                return;
-                graphics.DrawImage(
-                    entityImage,
-                    new Rectangle(
-                        playerPosition.X - _mirroring * ImageSize / 4,
-                        playerPosition.Y,
-                        _mirroring * ImageSize * 2,
-                        ImageSize * 2
-                    ),
-                    32 * _currentFrames[_currentEntity],
-                    32 * _currentAnimation,
-                    ImageSize,
-                    ImageSize,
-                    GraphicsUnit.Pixel
-                );
-            }*/
-            
             graphics.DrawImage(
                 entityImage,
                 new Rectangle(
-                    playerPosition.X - ImageSize / 4,
+                    playerPosition.X - _mirroring * ImageSize / 4,
                     playerPosition.Y,
-                    GlobalConst.BlockTextureSize,
-                    GlobalConst.BlockTextureSize
+                    _mirroring * ImageSize * 2,
+                    ImageSize * 2
                     ),
-                ImageSize * _currentFrames[_currentEntity],
-                ImageSize * _currentAnimation,
+                32 * _currentFrames[_currentEntity],
+                32 * _currentAnimation,
                 ImageSize,
                 ImageSize,
                 GraphicsUnit.Pixel
