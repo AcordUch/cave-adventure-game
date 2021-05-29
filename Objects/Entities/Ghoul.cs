@@ -13,7 +13,7 @@ namespace Cave_Adventure
             Damage = GlobalConst.GhoulDamage;
             Defense = GlobalConst.GhoulDefence;
             Initiative = 9;
-            Description = "Это существо прекрасно владеет руками и не только...";
+            Description = "Острые клыки, стальные когти - это всё про него";
             AI = new GhoulAI(this);
             DetectionRange = GlobalConst.GhoulDetectionRadius;
         }

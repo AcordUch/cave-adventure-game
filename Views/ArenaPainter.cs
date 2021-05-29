@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Cave_Adventure.Properties;
@@ -58,6 +59,7 @@ namespace Cave_Adventure
             if(_currentArena.PlayerSelected)
             {
                 PaintPath();
+                PaintAttackBacklighting();
                 AdditionalUI();
             }
 
@@ -72,7 +74,33 @@ namespace Cave_Adventure
                 graphics.DrawRectangle(Pens.Goldenrod, _pointToRectangle[_currentArena.Player.Position]);
             }
         }
-        
+
+        private void PaintAttackBacklighting()
+        {
+            using (var graphics = Graphics.FromImage(_arenaImage))
+            {
+                foreach (var path in _currentArena.PlayerAttackPoint.Where(aP => _currentArena.Monsters.Any(m => m.Position == aP.Value && m.IsAlive)))
+                {
+                    var point = path.Value;
+                    var brush = new SolidBrush(Color.FromArgb(35, Color.Red));
+                    graphics.FillRectangle(brush, point.X * CellWidth, point.Y * CellHeight, CellWidth, CellHeight);
+                }
+            }
+        }
+
+        private void PaintPath()
+        {
+            using (var graphics = Graphics.FromImage(_arenaImage))
+            {
+                foreach (var path in _currentArena.PlayerPaths)
+                {
+                    var point = path.Value;
+                    var brush = new SolidBrush(Color.FromArgb(25, Color.White));
+                    graphics.FillRectangle(brush, point.X * CellWidth, point.Y * CellHeight, CellWidth, CellHeight);
+                }
+            }
+        }
+
         private void TypeEntity()
         {
             using (var graphics = Graphics.FromImage(_arenaImage))
@@ -111,19 +139,6 @@ namespace Cave_Adventure
                 graphics.DrawString(_currentArena.Player.IsSelected ? "P!" : "P", new Font(SystemFonts.DefaultFont.FontFamily, 30),
                     Brushes.Black, new Point(_currentArena.Player.Position.X * CellWidth,
                         _currentArena.Player.Position.Y * CellHeight));
-            }
-        }
-
-        private void PaintPath()
-        {
-            using (var graphics = Graphics.FromImage(_arenaImage))
-            {
-                foreach (var path in _currentArena.PlayerPaths)
-                {
-                    var temp = path.Value;
-                    var brush = new SolidBrush(Color.FromArgb(25, Color.White));
-                    graphics.FillRectangle(brush, temp.X * CellWidth, temp.Y * CellHeight, CellWidth, CellHeight);
-                }
             }
         }
 

@@ -115,18 +115,19 @@ namespace Cave_Adventure
         {
             if (args.Button == MouseButtons.Left)
             {
-                var actionCompleted = false;
+               
+                //var actionCompleted = false;
                 
                 if (_needInspect)
                 {
                     InspectMonster(point);
-                    actionCompleted = true;
+                    return;
                 }
                 
                 if (!ArenaFieldControl.ArenaMap.IsPlayerTurnNow)
                     return;
                 
-                if (point == ArenaFieldControl.Player.Position && !actionCompleted)
+                if (point == ArenaFieldControl.Player.Position)
                 {
                     if (ArenaFieldControl.Player.IsSelected)
                     {
@@ -136,21 +137,22 @@ namespace Cave_Adventure
                     {
                         SelectPlayer();
                     }
-                    actionCompleted = true;
+                    return;
                 }
                 
-                if (ArenaFieldControl.Player.IsSelected && !actionCompleted)
+                if (ArenaFieldControl.Player.IsSelected)
                 {
-                    if (!actionCompleted && ArenaFieldControl.ArenaMap.Monsters.Any(m => m.Position == point && m.IsAlive))
+                    if (ArenaFieldControl.ArenaMap.Monsters.Any(m => m.Position == point && m.IsAlive) &&
+                        ArenaFieldControl.ArenaMap.PlayerAttackPoint.Any(p => p.Value == point))
                     {
                         AttackMonster(point);
-                        actionCompleted = true;
+                        return;
                     }
-                    
-                    if (!actionCompleted && ArenaFieldControl.ArenaMap.PlayerPaths.Any(p => p.Contains(point)))
+
+                    if (ArenaFieldControl.ArenaMap.PlayerPaths.Any(p => p.Contains(point)))
                     {
                         MovePlayer(point);
-                        actionCompleted = true;
+                        return;
                     }
                 }
             }
@@ -186,11 +188,14 @@ namespace Cave_Adventure
                 _attackMonsterButton.Enabled = true; //можно убрать?
             }
 
-            var path = BFS.FindPaths(
+            var movePaths = BFS.FindPaths(
                 ArenaFieldControl.ArenaMap,
                 ArenaFieldControl.Player.Position,
                 ArenaFieldControl.Player.AP).ToArray();
-            ArenaFieldControl.ArenaMap.SetPlayerPaths(path);
+            var attackPaths = BFS.FindPaths(ArenaFieldControl.ArenaMap,
+                        ArenaFieldControl.Player.Position,
+                        ArenaFieldControl.Player.Weapon.WeaponRadius, false).ToArray();
+            ArenaFieldControl.ArenaMap.SetPlayerPaths(movePaths, attackPaths);
 
             ArenaFieldControl.Player.IsSelected = true;
             ArenaFieldControl.ArenaPainter.Update();

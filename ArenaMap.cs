@@ -23,6 +23,7 @@ namespace Cave_Adventure
         public bool IsPlayerTurnNow { get; private set; } = true;
         public bool AttackButtonPressed { get; set; }
         public SinglyLinkedList<Point>[] PlayerPaths { get; private set; }
+        public SinglyLinkedList<Point>[] PlayerAttackPoint { get; private set; }
         
         public int Step { get; private set; } = 1;
 
@@ -43,11 +44,12 @@ namespace Cave_Adventure
             }
         }
 
-        public void SetPlayerPaths(SinglyLinkedList<Point>[] paths)
+        public void SetPlayerPaths(SinglyLinkedList<Point>[] movePaths, SinglyLinkedList<Point>[] attackPaths)
         {
             if(!PlayerSelected)
             {
-                PlayerPaths = paths;
+                PlayerPaths = movePaths;
+                PlayerAttackPoint = attackPaths;
                 PlayerSelected = true;
             }
         }
