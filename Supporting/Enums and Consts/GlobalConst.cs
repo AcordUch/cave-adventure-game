@@ -8,7 +8,7 @@ namespace Cave_Adventure
     {
         public const int BlockTextureSize = 64;
         public const int EntityTextureSize = 32;
-        public const int BossTextureSize = 96;
+        public const int BossTextureSize = 75;
         public const int MainTimerInterval = 60;
         public const int AnimTimerInterval = 1000;
         public const int MaxArenaRow = 13;
