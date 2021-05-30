@@ -32,8 +32,6 @@ namespace Cave_Adventure
                         continue;
                     if (entityBlockingPath && map.GetListOfEntities().Any(p => p.Position == nextPoint && p.IsAlive))
                         continue;
-                    if(map.Player.Position == nextPoint)
-                        continue;
                     queue.Enqueue((new SinglyLinkedList<Point>(nextPoint, currentPoint.point), currentPoint.distance + 1));
                     usedPoint.Add(nextPoint);
                 }

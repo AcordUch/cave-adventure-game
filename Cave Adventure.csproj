@@ -6,10 +6,15 @@
 		<StartupObject>Cave_Adventure.Program</StartupObject>
         <UseWindowsForms>true</UseWindowsForms>
         <TargetFramework>net5.0-windows</TargetFramework>
+        <NeutralLanguage>ru</NeutralLanguage>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>CaveAdventure.pfx</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
       <Optimize>false</Optimize>
+      <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>

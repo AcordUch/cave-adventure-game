@@ -171,7 +171,7 @@ namespace Cave_Adventure
                 Margin = new Padding(0, 20, 0, 5),
                 BackgroundImage = Properties.Resources.grass1
             };
-            tutorialMenu.LinkClicked += _game.SwitchOnTutorialMenu;
+            tutorialMenu.LinkClicked += _game.SwitchOnTutorial1;
 
             buttonMenu.Controls.Add(Arenas);
             buttonMenu.Controls.Add(levelSelectionMenu);

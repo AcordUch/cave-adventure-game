@@ -498,6 +498,36 @@ namespace Cave_Adventure.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap grass3 {
+            get {
+                object obj = ResourceManager.GetObject("grass3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap grass4 {
+            get {
+                object obj = ResourceManager.GetObject("grass4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap grass5 {
+            get {
+                object obj = ResourceManager.GetObject("grass5", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap gravelBackground {
             get {
                 object obj = ResourceManager.GetObject("gravelBackground", resourceCulture);
@@ -702,6 +732,38 @@ namespace Cave_Adventure.Properties {
             get {
                 object obj = ResourceManager.GetObject("transparentDebug", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Привет! Позволь мне рассказать тебе вкратце как тут всё работает с:
+        ///      
+        ///Игра поделена на арены. На каждой твоя цель - победить всех монстров. Но ̶и̶з̶-̶з̶а̶ ̶к̶р̶и̶в̶о̶г̶о̶ ̶б̶а̶л̶а̶н̶с̶а это может быть не легко.
+        ///Кхм, так вот. На каждое твоё действие тратятся твои ОД. Ты можешь их восстановить нажав на //Следующий ход//, но при этом совершат ход монстры.
+        ///Так же тут ̶и̶з̶л̶и̶ш̶н̶е̶ ̶м̶у̶д̶р̶ё̶н̶а̶я не очевидная боевая система. Есть 3 основных показателя: Атака, Защита и Урон. Если кратко: чем больше а [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Tutorial1 {
+            get {
+                return ResourceManager.GetString("Tutorial1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ты ещё читаешь это? Ну тогда лови более подробное объяснение системы расчёта урона:
+        ///      
+        ///1) Атака нападающего ≥ защиты обороняющегося:
+        ///    a. Наносится полный урон;
+        ///    b. Но если атака нападающего ≥ 1.25 * защита обороняющегося, то наносится на 50 % урона больше;
+        ///      
+        ///2) Атака нападающего &lt; защиты обороняющегося:
+        ///    a. Наносится на 25 % урона меньше;
+        ///    b. Но если атака нападающего ≤ 0.75 * защита защищающегося, то наносится на 50 % урона меньше.
+        ///      
+        ///Ах да, тут ещё есть консоль разработч [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Tutorial2 {
+            get {
+                return ResourceManager.GetString("Tutorial2", resourceCulture);
             }
         }
         

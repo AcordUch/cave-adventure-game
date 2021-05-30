@@ -29,10 +29,14 @@ namespace Cave_Adventure
             ChangeStage(GameScreen.StoryIntro);
         }
         
-
-        public void SwitchOnTutorialMenu(object sender, EventArgs e)
+        public void SwitchOnTutorial1(object sender, EventArgs e)
         {
-            ChangeStage(GameScreen.TutorialMenu);
+            ChangeStage(GameScreen.TutorialMenu1);
+        }
+        
+        public void SwitchOnTutorial2(object sender, EventArgs e)
+        {
+            ChangeStage(GameScreen.TutorialMenu2);
         }
 
         private void ChangeStage(GameScreen stage)
