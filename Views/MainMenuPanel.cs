@@ -17,24 +17,24 @@ namespace Cave_Adventure
         private bool _configured = false;
         private Panel _imagePanel;
         // private PictureBox _imageBox;
-        
+
         public event Action<string> LoadLevel;
         public event Action<int> SetLevelId;
 
         public MainMenuPanel(Game game)
         {
             _game = game;
-            
+
             var table = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
                 AutoSize = true,
             };
             ConfigureTable(table);
-            
+
             Controls.Add(table);
         }
-        
+
         protected override void InitLayout()
         {
             base.InitLayout();
@@ -159,9 +159,23 @@ namespace Cave_Adventure
                 BackgroundImage = Properties.Resources.grass1
             };
             levelSelectionMenu.LinkClicked += _game.SwitchOnLevelSelectionMenu;
-            
+
+            var tutorialMenu = new LinkLabel
+            {
+                Text = "Tutorial",
+                TextAlign = ContentAlignment.MiddleCenter,
+                LinkColor = Color.White,
+                ActiveLinkColor = Color.White,
+                Size = new Size(100, 35),
+                AutoSize = true,
+                Margin = new Padding(0, 20, 0, 5),
+                BackgroundImage = Properties.Resources.grass1
+            };
+            tutorialMenu.LinkClicked += _game.SwitchOnTutorialMenu;
+
             buttonMenu.Controls.Add(Arenas);
             buttonMenu.Controls.Add(levelSelectionMenu);
+            buttonMenu.Controls.Add(tutorialMenu);
         }
     }
 }

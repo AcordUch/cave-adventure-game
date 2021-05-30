@@ -6,5 +6,6 @@ namespace Cave_Adventure
         LevelSelectionMenu,
         Arenas,
         StoryIntro
+        TutorialMenu
     }
 }

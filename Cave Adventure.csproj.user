@@ -25,5 +25,8 @@
     <Compile Update="Views\StoryIntroPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="Views\TutorialMenuPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
