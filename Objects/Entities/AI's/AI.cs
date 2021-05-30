@@ -46,11 +46,13 @@ namespace Cave_Adventure
         private Point LookRandomPoint()
         {
             var rnd = new Random();
+            if (rnd.NextDouble() > 0.40)
+                return _monster.Position;
             var paths = BFS.FindPaths(_arenaMap, _monster.Position, _monster.AP);
             var count = 0;
             while (true)
             {
-                if (count > 750 || rnd.NextDouble() > 0.35)
+                if (count > 1000)
                     return _monster.Position;
                 foreach (var path in paths)
                 {

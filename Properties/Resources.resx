@@ -211,11 +211,11 @@
   <data name="ironBarsBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Texture\UI\ironBarsBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="mazePicBackgroun1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Texture\UI\mazePicBackgroun1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="mazePicBackground1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\mazePicBackground1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="mazePicBackgroun2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Texture\UI\mazePicBackgroun2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="mazePicBackground2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\mazePicBackground2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="mazePicMainMenu" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Texture\UI\mazePicMainMenu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -234,6 +234,24 @@
   </data>
   <data name="obsidianBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Texture\UI\obsidianBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="polishedAndesiteBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\polishedAndesiteBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="polishedBasaltBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\polishedBasaltBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="polishedBlackstoneBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\polishedBlackstoneBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="polishedDioriteBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\polishedDioriteBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="polishedGraniteBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\polishedGraniteBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="quartzBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\quartzBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Slime" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Texture\Assets\Slime.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -267,5 +285,10 @@
   </data>
   <data name="Witch" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Texture\Assets\Witch.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BeginningOfStory" xml:space="preserve">
+    <value>Холод и сырость. Вот что вас окружает. «Где я?» - бегает мысль в вашей голове.
+Вы очнулись в непонятном подземелье, мало что помня о себе. Единственным источником света является огромная расщелина в потолке, через которую в холодную комнату проникают теплые лучи солнца, но она слишком высоко, что бы можно было выбраться через неё. «И почему люди не могут летать?» - с этой мыслю вы осматриваете пространство вокруг себя и обнаруживаете на полу старый, но добротный меч и факел с огнивом. Подобрав вещи, вы смотрите в проход в стене, в этот мрачный коридор, куда, к счастью, ещё проникает солнечный свет. Но долго ли так будет? Там явно ступеньки, а значит этот путь ведёт вниз, глубже в землю, глубже в тьму. «Что же таит в себе эта крипта? Ладно, идти туда явно лучше, чем просто сидеть здесь, ожидая голодную смерть» - думаете вы и начинаете спуск вниз. Ваше приключение начинается здесь.
+</value>
   </data>
 </root>

@@ -4,6 +4,7 @@ namespace Cave_Adventure
     {
         MainMenu,
         LevelSelectionMenu,
-        Arenas
+        Arenas,
+        StoryIntro
     }
 }

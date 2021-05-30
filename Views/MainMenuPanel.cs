@@ -136,7 +136,7 @@ namespace Cave_Adventure
             
             var Arenas = new LinkLabel
             {
-                Text = "Start Play Arena Mode",
+                Text = "Начать приключение",
                 TextAlign = ContentAlignment.MiddleCenter,
                 LinkColor = Color.White,
                 ActiveLinkColor = Color.White,
@@ -145,16 +145,11 @@ namespace Cave_Adventure
                 Margin = new Padding(0, 20, 0, 5),
                 BackgroundImage = Properties.Resources.grass1
             };
-            Arenas.LinkClicked += (sender, args) =>
-            {
-                _game.SwitchOnArenas(sender, args);
-                // LoadLevel?.Invoke(_levels[arenaId]);
-                // SetLevelId?.Invoke(arenaId);
-            };
+            Arenas.LinkClicked += _game.SwitchOnStoryIntroPanel;
             
             var levelSelectionMenu = new LinkLabel
             {
-                Text = "Levels",
+                Text = "Выбор уровней",
                 TextAlign = ContentAlignment.MiddleCenter,
                 LinkColor = Color.White,
                 ActiveLinkColor = Color.White,

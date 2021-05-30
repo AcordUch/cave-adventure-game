@@ -23,6 +23,11 @@ namespace Cave_Adventure
         {
             ChangeStage(GameScreen.LevelSelectionMenu);
         }
+
+        public void SwitchOnStoryIntroPanel(object sender, EventArgs e)
+        {
+            ChangeStage(GameScreen.StoryIntro);
+        }
         
         private void ChangeStage(GameScreen stage)
         {

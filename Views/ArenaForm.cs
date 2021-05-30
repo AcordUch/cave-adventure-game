@@ -14,6 +14,7 @@ namespace Cave_Adventure
         private readonly ArenaPanel _arenaPanel;
         private readonly MainMenuPanel _mainMenuPanel;
         private readonly LevelSelectionMenuPanel _levelSelectionMenuPanel;
+        private readonly StoryIntroPanel _storyIntroPanel;
         private readonly Game _game;
 
         protected override void OnLoad(EventArgs e)
@@ -22,6 +23,7 @@ namespace Cave_Adventure
             DoubleBuffered = true;
             Size = new Size(1500, 900);
             MinimumSize = new Size(1500, 900);
+            //MaximumSize = new Size(1920, 1080);
             WindowState = FormWindowState.Maximized;
             Text = GlobalConst.GetSplash();
             KeyPreview = true;
@@ -55,6 +57,13 @@ namespace Cave_Adventure
                 Location = new Point(0, 0),
                 Name = "arenaPanel"
             };
+            _storyIntroPanel = new StoryIntroPanel(_game)
+            {
+                Dock = DockStyle.Fill,
+                Size = new Size(800, 600),
+                Location = new Point(0, 0),
+                Name = "storyIntroPanel"
+            };
 
             // _mainMenuPanel.LoadLevel += _arenaPanel.ArenaFieldControl.LoadLevel;
             // _mainMenuPanel.SetLevelId += _arenaPanel.OnSetCurrentArenaId;
@@ -65,12 +74,10 @@ namespace Cave_Adventure
             Controls.Add(_arenaPanel);
             Controls.Add(_mainMenuPanel);
             Controls.Add(_levelSelectionMenuPanel);
+            Controls.Add(_storyIntroPanel);
             
             ResumeLayout();
 
-            // KeyDown += _arenaPanel.ArenaFieldControl.OnKeyDown;
-            // KeyUp += _arenaPanel.ArenaFieldControl.OnKeyUp;
-            
             ShowMainMenu();
             
             _timer = new Timer { Interval = GlobalConst.MainTimerInterval };
@@ -91,6 +98,9 @@ namespace Cave_Adventure
                     break;
                 case GameScreen.LevelSelectionMenu:
                     ShowLevelSelectionMenu();
+                    break;
+                case GameScreen.StoryIntro:
+                    ShowStoryIntro();
                     break;
             }
             ResumeLayout();
@@ -117,12 +127,20 @@ namespace Cave_Adventure
             _levelSelectionMenuPanel.Show();
         }
 
+        private void ShowStoryIntro()
+        {
+            HideScreens();
+            _storyIntroPanel.Configure();
+            _storyIntroPanel.Show();
+        }
+
         private void HideScreens()
         {
             DropScreens();
             _arenaPanel.Hide();
             _mainMenuPanel.Hide();
             _levelSelectionMenuPanel.Hide();
+            _storyIntroPanel.Hide();
         }
 
         private void DropScreens()
@@ -130,6 +148,7 @@ namespace Cave_Adventure
             _arenaPanel.Drop();
             _mainMenuPanel.Drop();
             _levelSelectionMenuPanel.Drop();
+            _storyIntroPanel.Drop();
         }
         
         private void TimerTick(object sender, EventArgs e)

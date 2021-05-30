@@ -58,7 +58,7 @@ namespace Cave_Adventure.Views
         {
             try
             {
-                _imageBox.Image = new Bitmap(Properties.Resources.mazePicBackgroun2, Size);
+                _imageBox.Image = new Bitmap(Properties.Resources.mazePicBackground2, Size);
             }
             catch
             {
@@ -101,7 +101,7 @@ namespace Cave_Adventure.Views
             {
                 Dock = DockStyle.Fill,
                 AutoSize = true,
-                Image = new Bitmap(Properties.Resources.mazePicBackgroun2, Size)
+                Image = new Bitmap(Properties.Resources.mazePicBackground2, Size)
             };
 
             var secondColumn = new TableLayoutPanel()

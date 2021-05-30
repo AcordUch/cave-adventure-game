@@ -29,8 +29,10 @@ namespace Cave_Adventure
                     var nextPoint = new Point(currentPoint.point.Value.X + dx, currentPoint.point.Value.Y + dy);
                     if (usedPoint.Contains(nextPoint) || !map.InBounds(nextPoint) ||
                         map.Arena[nextPoint.X, nextPoint.Y].cellType != CellType.Floor) 
-                            continue;
+                        continue;
                     if (entityBlockingPath && map.GetListOfEntities().Any(p => p.Position == nextPoint && p.IsAlive))
+                        continue;
+                    if(map.Player.Position == nextPoint)
                         continue;
                     queue.Enqueue((new SinglyLinkedList<Point>(nextPoint, currentPoint.point), currentPoint.distance + 1));
                     usedPoint.Add(nextPoint);
