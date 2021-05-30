@@ -9,7 +9,6 @@ namespace Cave_Adventure
     public class EntityPainter
     {
         private const int MaxStg = 16;
-        private int ImageSize = 32;
 
         private bool _configured = false;
         private Dictionary<Entity, int> _currentFrames;
@@ -17,6 +16,7 @@ namespace Cave_Adventure
         private Dictionary<Entity, bool> _animationShouldStop;
         private Dictionary<Entity, StatesOfAnimation> _prevState;
         private Entity _currentEntity;
+        private int _imageSize = 32;
         private int _mirroring = 1;
         private int _currentAnimation;
         private int _currentFrameLimit = 0;
@@ -49,7 +49,7 @@ namespace Cave_Adventure
             _currentEntity = entity;
             _mirroring = (int)entity.ViewDirection;
             _currentAnimation = (int)entity.CurrentStates;
-            AnimationSetUp.SetUp(entity, out _currentFrameLimit, out var entityImage, out ImageSize);
+            AnimationSetUp.SetUp(entity, out _currentFrameLimit, out var entityImage, out _imageSize);
             if (entity.CurrentStates != _prevState[entity])
             {
                 _prevState[entity] = entity.CurrentStates;
@@ -62,18 +62,37 @@ namespace Cave_Adventure
         {
             ChangeCurrentFrame();
 
+            if (_imageSize == GlobalConst.BossTextureSize)
+            {
+                graphics.DrawImage(
+                    entityImage,
+                    new Rectangle(
+                        playerPosition.X,
+                        playerPosition.Y - GlobalConst.BlockTextureSize,
+                        GlobalConst.BlockTextureSize * 2,
+                        GlobalConst.BlockTextureSize * 2
+                    ),
+                    _imageSize * _currentFrames[_currentEntity],
+                    _imageSize * _currentAnimation,
+                    _imageSize,
+                    _imageSize,
+                    GraphicsUnit.Pixel
+                );
+                return;
+            }
+
             graphics.DrawImage(
                 entityImage,
                 new Rectangle(
-                    playerPosition.X - _mirroring * ImageSize / 4,
+                    playerPosition.X,
                     playerPosition.Y,
-                    _mirroring * ImageSize * 2,
-                    ImageSize * 2
+                    GlobalConst.BlockTextureSize,
+                    GlobalConst.BlockTextureSize
                     ),
-                32 * _currentFrames[_currentEntity],
-                32 * _currentAnimation,
-                ImageSize,
-                ImageSize,
+                _imageSize * _currentFrames[_currentEntity],
+                _imageSize * _currentAnimation,
+                _imageSize,
+                _imageSize,
                 GraphicsUnit.Pixel
                 );
         }
