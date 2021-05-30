@@ -17,36 +17,36 @@ namespace Cave_Adventure
         private bool _configured = false;
         private Panel _imagePanel;
         // private PictureBox _imageBox;
-        
+
         public event Action<string> LoadLevel;
         public event Action<int> SetLevelId;
 
         public MainMenuPanel(Game game)
         {
             _game = game;
-            
+
             var table = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
                 AutoSize = true,
             };
             ConfigureTable(table);
-            
+
             Controls.Add(table);
         }
-        
+
         protected override void InitLayout()
         {
             base.InitLayout();
             ResizeRedraw = true;
             DoubleBuffered = true;
         }
-        
+
         public void Configure()
         {
             if (_configured)
                 throw new InvalidOperationException();
-            
+
             _configured = true;
         }
 
@@ -93,27 +93,27 @@ namespace Cave_Adventure
             //     AutoSize = true,
             //     Image = new Bitmap(Properties.Resources.mazePicMainMenu, Size)
             // };
-            
+
             var secondColumn = new TableLayoutPanel()
             {
                 Dock = DockStyle.Fill,
                 AutoSize = true,
                 BackgroundImage = Properties.Resources.grass1,
             };
-            
+
             secondColumn.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
             secondColumn.RowStyles.Add(new RowStyle(SizeType.Absolute, 10));
             secondColumn.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 15));
             secondColumn.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
             secondColumn.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 15));
-            
+
             secondColumn.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Properties.Resources.obsidianBackground }, 0, 0);
             secondColumn.Controls.Add(buttonMenu, 1, 0);
             secondColumn.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Properties.Resources.obsidianBackground }, 2, 0);
             secondColumn.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Properties.Resources.obsidianBackground }, 0, 1);
             secondColumn.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Properties.Resources.obsidianBackground }, 1, 1);
             secondColumn.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Properties.Resources.obsidianBackground }, 2, 1);
-            
+
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 82));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18));
             table.Controls.Add(_imagePanel, 0, 0);
@@ -133,7 +133,7 @@ namespace Cave_Adventure
                 Font = new Font(SystemFonts.DialogFont.FontFamily, 15),
                 BackgroundImage = Properties.Resources.grass1,
             });
-            
+
             var Arenas = new LinkLabel
             {
                 Text = "Start Play Arena Mode",
@@ -151,7 +151,7 @@ namespace Cave_Adventure
                 // LoadLevel?.Invoke(_levels[arenaId]);
                 // SetLevelId?.Invoke(arenaId);
             };
-            
+
             var levelSelectionMenu = new LinkLabel
             {
                 Text = "Levels",
@@ -164,9 +164,23 @@ namespace Cave_Adventure
                 BackgroundImage = Properties.Resources.grass1
             };
             levelSelectionMenu.LinkClicked += _game.SwitchOnLevelSelectionMenu;
-            
+
+            var tutorialMenu = new LinkLabel
+            {
+                Text = "Tutorial",
+                TextAlign = ContentAlignment.MiddleCenter,
+                LinkColor = Color.White,
+                ActiveLinkColor = Color.White,
+                Size = new Size(100, 35),
+                AutoSize = true,
+                Margin = new Padding(0, 20, 0, 5),
+                BackgroundImage = Properties.Resources.grass1
+            };
+            tutorialMenu.LinkClicked += _game.SwitchOnTutorialMenu;
+
             buttonMenu.Controls.Add(Arenas);
             buttonMenu.Controls.Add(levelSelectionMenu);
+            buttonMenu.Controls.Add(tutorialMenu);
         }
     }
 }

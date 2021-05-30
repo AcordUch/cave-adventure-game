@@ -83,13 +83,13 @@ namespace Cave_Adventure.Properties {
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на #4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.
-        ///#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.Sl.  .  .#4.#4.#4.#4.#4.#4.
-        ///#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.Sl.  .  .  .  .#4.#4.#4.#4.#4.
-        ///#4.#4.#4.  .  .  .  .#4.#4.Sl.  .  .  .Sl.Sl.  .#4.#4.#4.#4.
-        ///#4.Wi.  .  .#4.#4.  .#4.Sl.  .  .Sl.Sl.  .  .  .  .#4.#4.#4.
-        ///#4.  .#4.  .#4.#4.  .#4.  .  .Sl.  .  .  .  .  .  .#4.#4.#4.
-        ///#4.  .  .  .#4.#4.  .  .  .Sl.  .  .  .  .  .  .Mi.  .  .  .
-        ///#4.  .#4.  .#4.#4.  .#4.  .  .Sl.  .  .  .  .  .  .#4.#4.#4.
+        ///#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.Sl.  .  .  .#4.#4.#4.#4.#4.
+        ///#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.Sl.  .  .  .  .  .#4.#4.#4.#4.
+        ///#4.#4.#4.  .  .  .  .#4.#4.Sl.  .  .  .Sl.Sl.  .  .#4.#4.#4.
+        ///#4.Wi.  .  .#4.#4.  .#4.Sl.  .  .Sl.Sl.  .  .  .  .  .#4.#4.
+        ///#4.  .#4.  .#4.#4.  .#4.  .  .Sl.  .  .  .  .  .  .  .#4.#4.
+        ///#4.  .  .  .#4.#4.  .  .  .Sl.  .  .  .  .  .  .  .Mi.  .  .
+        ///#4.  .#4.  .#4.#4.  .#4.  .  .Sl.  .  .  .  .  .  .  .#4.#4.
         ///#4.Wi.  .  .#4.# [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string Arena10 {
@@ -170,17 +170,17 @@ namespace Cave_Adventure.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на # .P .# .# .# .# .# .# .# .# .# .# .
-        ///# .  .# .  .  .  .  .  .  .  .  .# .
-        ///# .  .# .  .# .  .Sp.  .Sp.  .  .# .
-        ///# .  .# .  .# .  .  .  .  .  .  .# .
+        ///   Ищет локализованную строку, похожую на # .# .# .# .# .# .# .# .# .# .# .
+        ///# ..# .  .  .  .  .  .  .  .  .# .
+        ///# . .# .  .# .  .  .  .  .  .  .# .
+        ///# .  .# .  .# .  .  .  . .  .
         ///# .  .  .  .# .# .# .# .# .  .# .# .
         ///# .# .# .  .  .  .  .  .  .  .  .# .
-        ///# .  .# .  .  .  .  .  .  .  .  .# .
-        ///# .  .  .  .# .  .Sn.  .# .  .# .# .
-        ///# .  .  .Sn.# .  .  .  .# .  .  .# .
-        ///# .Sp.  .  .# .  .# .# .# .  .  .# .
-        ///# .  .Sp.  .# .  .  .  .  .  .  .# .
+        ///# .  .# .  .  .  .P .  .  .  .  .# .
+        ///# .  .  .  .# .  .# .# .# .# .# .# .
+        ///# .  .  .  .# .Go.Sp.  .  .  .  .# .
+        ///# .  .  .  .# .  .  .  .  .  .  .# .
+        ///# .  .  .  .# .Sp.  .  .  .  .  .# .
         ///# .# .# .# .# .# .# .# .# .# .# .# ..
         /// </summary>
         internal static string Arena3Debug {
@@ -481,6 +481,36 @@ namespace Cave_Adventure.Properties {
         internal static System.Drawing.Bitmap grass2 {
             get {
                 object obj = ResourceManager.GetObject("grass2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap grass3 {
+            get {
+                object obj = ResourceManager.GetObject("grass3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap grass4 {
+            get {
+                object obj = ResourceManager.GetObject("grass4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap grass5 {
+            get {
+                object obj = ResourceManager.GetObject("grass5", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

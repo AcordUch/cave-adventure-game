@@ -23,7 +23,12 @@ namespace Cave_Adventure
         {
             ChangeStage(GameScreen.LevelSelectionMenu);
         }
-        
+
+        public void SwitchOnTutorialMenu(object sender, EventArgs e)
+        {
+            ChangeStage(GameScreen.TutorialMenu);
+        }
+
         private void ChangeStage(GameScreen stage)
         {
             Screen = stage;
