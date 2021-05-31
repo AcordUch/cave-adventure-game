@@ -83,13 +83,13 @@ namespace Cave_Adventure.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to #4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.
-        ///#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.Sl.  .  .  .#4.#4.#4.#4.#4.
+        ///#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.  .  .  .  .#4.#4.#4.#4.#4.
         ///#4.#4.#4.#4.#4.#4.#4.#4.#4.#4.Sl.  .  .  .  .  .#4.#4.#4.#4.
-        ///#4.#4.#4.  .  .  .  .#4.#4.Sl.  .  .  .Sl.Sl.  .  .#4.#4.#4.
+        ///#4.#4.#4.  .  .  .  .#4.#4.  .  .  .  .  .  .  .  .#4.#4.#4.
         ///#4.Wi.  .  .#4.#4.  .#4.Sl.  .  .Sl.Sl.  .  .  .  .  .#4.#4.
-        ///#4.  .#4.  .#4.#4.  .#4.  .  .Sl.  .  .  .  .  .  .  .#4.#4.
-        ///#4.  .  .  .#4.#4.  .  .  .Sl.  .  .  .  .  .  .  .Mi.  .  .
-        ///#4.  .#4.  .#4.#4.  .#4.  .  .Sl.  .  .  .  .  .  .  .#4.#4.
+        ///#4.  .#4.  .#4.#4.  .#4.  .  .  .  .  .  .  .  .  .  .#4.#4.
+        ///#4.  .  .  .#4.#4.  .  .  .Sl.Sl.  .  .  .  .  .  .Mi.  .  .
+        ///#4.  .#4.  .#4.#4.  .#4.  .  .  .  .  .  .  .  .  .  .#4.#4.
         ///#4.Wi.  .  .#4.# [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Arena10 {
@@ -321,7 +321,10 @@ namespace Cave_Adventure.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to # .# .# .# .# .# .# .# .# .# .
-        ///# .P .  .  .  .  .  .  .  .# .
+        ///# .P .# .  .  .  .  .  .  .# .
+        ///# .  .# .# .  .  .  .  .  .# .
+        ///# .Mi.  .# .  .  .  .  .  .# .
+        ///# .# .# .# .  .  .  .  .  .# .
         ///# .  .  .  .  .  .  .  .  .# .
         ///# .  .  .  .  .  .  .  .  .# .
         ///# .  .  .  .  .  .  .  .  .# .
@@ -329,9 +332,6 @@ namespace Cave_Adventure.Properties {
         ///# .  .  .  .  .  .  .  .  .# .
         ///# .  .  .  .  .  .  .  .  .# .
         ///# .  .  .  .  .  .  .  .  .# .
-        ///# .  .  .  .  .  .  .  .  .# .
-        ///# .  .  .  .  .  .  .  .  .# .
-        ///# .Sp.Sn.Sp.Sn.Sp.Sn.Sp.Sn.# .
         ///# .# .# .# .# .# .# .# .# .# ..
         /// </summary>
         internal static string Arena7Debug {
@@ -422,6 +422,20 @@ namespace Cave_Adventure.Properties {
             get {
                 object obj = ResourceManager.GetObject("endBackground", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Минотавр повержен. Вы проходите в коридор, который он закрывал. 
+        ///Этот проход явно длиннее всех остальных. Вы готовитесь к худшему. Однако, неожиданно для себя, вы встречаете лестницу. И она ведёт вверх! Неужели это выход?
+        ///      
+        ///Спустя длительное время вы замечаете, что становиться светлее. Откуда-то спереди, с того поворота льётся свет!
+        ///      
+        ///И вот вы наконец-то на поверхность земли. Свежий воздух пьянит вашу голову. И вам не вериться, что вы смогли выбраться из того кошмара. Однако это так. Вы на св [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string EndOfStory {
+            get {
+                return ResourceManager.GetString("EndOfStory", resourceCulture);
             }
         }
         
@@ -682,6 +696,18 @@ namespace Cave_Adventure.Properties {
             get {
                 object obj = ResourceManager.GetObject("quartzBackground", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to by Acord_Uch, GreenLight
+        ///      
+        ///УрФУ, матмех
+        ///2021.
+        /// </summary>
+        internal static string Signgature {
+            get {
+                return ResourceManager.GetString("Signgature", resourceCulture);
             }
         }
         

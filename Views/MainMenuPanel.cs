@@ -136,8 +136,22 @@ namespace Cave_Adventure
             };
             levelSelectionMenu.LinkClicked += _game.SwitchOnLevelSelectionMenu;
 
+            var signature = new Label
+            {
+                Text = Properties.Resources.Signgature,
+                Dock = DockStyle.Bottom,
+                TextAlign = ContentAlignment.BottomRight,
+                ForeColor = Color.White,
+                Size = new Size(350, 50),
+                AutoSize = true,
+                Margin = new Padding(50, 600, 3, 0),
+                Font = new Font(SystemFonts.DialogFont.FontFamily, 11),
+                BackgroundImage = Properties.Resources.grass1,
+            };
+
             buttonMenu.Controls.Add(arenas);
             buttonMenu.Controls.Add(levelSelectionMenu);
+            buttonMenu.Controls.Add(signature);
         }
     }
 }

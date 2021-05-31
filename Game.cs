@@ -38,6 +38,16 @@ namespace Cave_Adventure
         {
             ChangeStage(GameScreen.TutorialMenu2);
         }
+        
+        public void SwitchOnEndGame(object sender, EventArgs e)
+        {
+            SwitchOnEndGame();
+        }
+        
+        public void SwitchOnEndGame()
+        {
+            ChangeStage(GameScreen.EndGame);
+        }
 
         private void ChangeStage(GameScreen stage)
         {
