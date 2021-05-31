@@ -347,7 +347,6 @@ namespace Cave_Adventure
             arenaLayoutPanel.Controls.Add(ArenaFieldControl);
             bottomTable.Controls.Add(_backToMenuButton, 0, 2);
             bottomTable.Controls.Add(_nextLevelButton, 0, 1);
-            //bottomTable.Controls.Add(_attackMonsterButton, 2, 0);
             bottomTable.Controls.Add(_inspectEntityButton, 2, 1);
             bottomTable.Controls.Add(_nextTurnButton, 2, 2);
             firstColumnTable.Controls.Add(_arenaInfoPanel, 0, 0);
