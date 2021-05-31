@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Cave_Adventure.Objects.Items;
 using Cave_Adventure.Views;
 using Timer = System.Timers.Timer;
 
@@ -12,13 +13,16 @@ namespace Cave_Adventure
 {
     public class ArenaMap
     {
-        public CellType[,] Arena { get; private set; }
+        private Entity _currentAttacker;
+        private Entity _currentDefender;
+        
+        public (CellType cellType, CellSubtype cellSubtype)[,] Arena { get; private set; }
         public Player Player { get; private set; }
         public Monster[] Monsters { get; private set; }
         public bool PlayerSelected { get; set; }
         public bool IsPlayerTurnNow { get; private set; } = true;
-        public bool AttackButtonPressed { get; set; }
         public SinglyLinkedList<Point>[] PlayerPaths { get; private set; }
+        public SinglyLinkedList<Point>[] PlayerAttackPoint { get; private set; }
         
         public int Step { get; private set; } = 1;
 
@@ -28,7 +32,7 @@ namespace Cave_Adventure
         public event Action AllMonsterDead;
         public event Action PlayerDead;
         
-        public ArenaMap(CellType[,] arena, Player player, Monster[] monsters)
+        public ArenaMap((CellType, CellSubtype)[,] arena, Player player, Monster[] monsters)
         {
             Arena = arena;
             Player = player;
@@ -39,11 +43,12 @@ namespace Cave_Adventure
             }
         }
 
-        public void SetPlayerPaths(SinglyLinkedList<Point>[] paths)
+        public void SetPlayerPaths(SinglyLinkedList<Point>[] movePaths, SinglyLinkedList<Point>[] attackPaths)
         {
             if(!PlayerSelected)
             {
-                PlayerPaths = paths;
+                PlayerPaths = movePaths;
+                PlayerAttackPoint = attackPaths;
                 PlayerSelected = true;
             }
         }
@@ -54,7 +59,7 @@ namespace Cave_Adventure
             Player.IsSelected = false;
             PlayerPaths = null;
             PlayerSelected = false;
-            var monsters = Monsters.ToList().OrderByDescending(m => m.Initiative);
+            var monsters = Monsters.OrderByDescending(m => m.Initiative);
             await MonsterMoveControl(monsters);
             await MonsterAttackController(monsters);
             foreach (var monster in monsters)
@@ -76,6 +81,10 @@ namespace Cave_Adventure
 
         public void Attacking(Entity attacker, Entity target)
         {
+            _currentAttacker = attacker;
+            _currentDefender = target;
+            _currentAttacker.EntityDied += AddHeal;
+            _currentDefender.EntityDied += AddHeal;
             if(attacker.AP > 0)
             {
                 target.Defending(attacker);
@@ -88,6 +97,25 @@ namespace Cave_Adventure
             }
         }
 
+        public void AddHeal()
+        {
+            var baseRandom = new Random();
+            var rnd = new Random(baseRandom.Next() + 54356237);
+            var rndNext = rnd.NextDouble();
+            switch (rndNext)
+            {
+                case > 0.9:
+                    Player.Inventory.AddHeals(new HealthPotionBig());
+                    break;
+                case > 0.75:
+                    Player.Inventory.AddHeals(new HealthPotionMedium());
+                    break;
+                case > 0.55:
+                    Player.Inventory.AddHeals(new HealthPotionSmall());
+                    break;
+            }
+        }
+
         public void CheckOnWinning()
         {
             if(Monsters.All(m => m.IsDead) || Monsters.Length == 0)
@@ -97,6 +125,8 @@ namespace Cave_Adventure
         private void BlockUnblockUI()
         {
             IsPlayerTurnNow = !IsPlayerTurnNow;
+            if(IsPlayerTurnNow)
+                CheckOnWinning();
             ChangeStateOfUI?.Invoke();
         }
 
@@ -110,14 +140,15 @@ namespace Cave_Adventure
                                      || !GlobalConst.PossibleDirections.Any(p => entity.Position + p == Player.Position))
                         continue;
                     var flag = true;
-                    var timer = new Timer {Interval = 2 * GlobalConst.AnimTimerInterval + 200 };
+                    var timer = new Timer {Interval = 2 * GlobalConst.AnimTimerInterval + 200, AutoReset = false};
                     timer.Elapsed += (_, __) =>
                     {
                         flag = false;
                         timer.Stop();
+                        timer.Dispose();
                     };
                     timer.Start();
-                    Player.Defending(entity);
+                    Attacking(entity, Player);
                     while (flag)
                     {
                         
@@ -170,7 +201,7 @@ namespace Cave_Adventure
                 var path = new Point[0];
                 try
                 {
-                    path = (BFS.FindPaths(this, entity.Position, entity.AP)
+                    path = (BFS.FindPaths(this, entity.Position, entity.AP, false)
                                 .FirstOrDefault(p => p.Value == targetPoint)
                             ?? throw new InvalidOperationException(
                                 "Среди доступных точек нет необходимой. В методе откуда вызов нет проверки?"))
@@ -216,7 +247,7 @@ namespace Cave_Adventure
         }
 
         private static ArenaMap CreateNewArenaMap(
-            (CellType[,] arenaMap, Player player, Monster[] monsters) arenaInfo)
+            ((CellType, CellSubtype)[,] arenaMap, Player player, Monster[] monsters) arenaInfo)
         {
             return new ArenaMap(arenaInfo.arenaMap, arenaInfo.player, arenaInfo.monsters);
         }

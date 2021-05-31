@@ -32,20 +32,37 @@ namespace Cave_Adventure
         public void OneAttackPerSpider() => OneAttackOnMonster(_spider, 0.0);
 
         [Test]
-        public void SnakeKilledPlayer() => MonsterKilledPlayer(_snake, 19);
+        public void SnakeKilledPlayer() => MonsterKilledPlayer(_snake, 29);
 
         [Test]
         public void SpiderKilledPlayer() => MonsterKilledPlayer(_spider, 46);
 
         [Test]
-        public void CheckCharactersAP()
+        public void CheckCharactersAPWithSpider()
         {
-            _snake.Defending(_player); //Андрей, у игрока после этого должно быть 0 AP
             _spider.Defending(_player);
 
             Assert.AreEqual(0, _player.AP);
+            Assert.AreEqual(3, _spider.AP);
+
+            _player.Defending(_spider);
+
+            Assert.AreEqual(0, _player.AP);
+            Assert.AreEqual(0, _spider.AP);
+        }
+
+        [Test]
+        public void CheckCharactersAPWithSnake()
+        {
+            _snake.Defending(_player);
+
+            Assert.AreEqual(0, _player.AP);
             Assert.AreEqual(2, _snake.AP);
-            Assert.AreEqual(2, _spider.AP);
+
+            _player.Defending(_snake);
+
+            Assert.AreEqual(0, _player.AP);
+            Assert.AreEqual(0, _snake.AP);
         }
 
         [Test]
@@ -54,12 +71,12 @@ namespace Cave_Adventure
             _snake.Defending(_spider);
 
             Assert.IsTrue(_snake.CheckIsAliveAndChangeState());
-            Assert.AreEqual(20.5, _snake.Health);
+            Assert.AreEqual(21.25, _snake.Health);
 
             _spider.Defending(_snake);
 
             Assert.IsTrue(_spider.CheckIsAliveAndChangeState());
-            Assert.AreEqual(14.75, _spider.Health);
+            Assert.AreEqual(17.0, _spider.Health);
 
             for (var i = 0; i < 5; i++)
             {
@@ -67,8 +84,8 @@ namespace Cave_Adventure
                 _spider.Defending(_snake);
             }
 
-            Assert.IsFalse(_snake.CheckIsAliveAndChangeState());
-            Assert.IsFalse(_spider.CheckIsAliveAndChangeState());
+            Assert.IsTrue(_snake.CheckIsAliveAndChangeState());
+            Assert.IsTrue(_spider.CheckIsAliveAndChangeState());
         }
 
         private void OneAttackOnMonster(Monster monster, double expectedHealth)

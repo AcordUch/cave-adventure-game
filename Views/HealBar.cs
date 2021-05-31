@@ -8,11 +8,11 @@ namespace Cave_Adventure.Views
     {
         private class HealBarPainter
         {
-            private const int Shift = 20;
+            private const int Shift = 10;
             
             private readonly HealBar _healBar;
             private ArenaMap _arenaMap;
-            private Bitmap _ghostBar;
+            private Bitmap _emptyBar;
             private SizeF _labelSize;
             private int _barHeight = 35;
             private bool _configured = false;
@@ -43,14 +43,14 @@ namespace Cave_Adventure.Views
                 CreateEmptyBar();
                 FillBar(g);
                 var rec = new Rectangle(Shift / 2, Shift, _healBar.Width - 2 * Shift, _barHeight);
-                g.DrawImage(_ghostBar, rec);
+                g.DrawImage(_emptyBar, rec);
             }
             
             private void FillBar(Graphics g)
             {
-                var recWidth = (_healBar.Width - 2 * Shift) * _arenaMap.Player.Health / GlobalConst.PlayerHP;
-                var rec = new Rectangle(Shift / 2, Shift, (int)recWidth, _barHeight);
-                using (var graphics = Graphics.FromImage(_ghostBar))
+                var recWidth = (_healBar.Width - Shift) * _arenaMap.Player.Health / GlobalConst.PlayerHP;
+                var rec = new Rectangle(Shift, 2 * Shift, (int)recWidth, _barHeight);
+                using (var graphics = Graphics.FromImage(_emptyBar))
                 {
                     graphics.FillRectangle(Brushes.Red, rec);
                     var emSize = PickEmSize(g);
@@ -64,10 +64,10 @@ namespace Cave_Adventure.Views
 
             private void CreateEmptyBar()
             {
-                _ghostBar = new Bitmap(_healBar.Width, _healBar.Height);
-                using (var graphics = Graphics.FromImage(_ghostBar))
+                _emptyBar = new Bitmap(_healBar.Width, _healBar.Height);
+                using (var graphics = Graphics.FromImage(_emptyBar))
                 {
-                    var rec = new Rectangle(Shift / 2, Shift, _healBar.Width - 2 * Shift, _barHeight);
+                    var rec = new Rectangle(Shift, 2 * Shift, _healBar.Width - Shift, _barHeight);
                     graphics.DrawRectangle(new Pen(Color.Black, 2), rec);
                 }
             }

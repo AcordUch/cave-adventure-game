@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using Cave_Adventure.Interfaces;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
 using ContentAlignment = System.Drawing.ContentAlignment;
 
 namespace Cave_Adventure
@@ -15,25 +16,21 @@ namespace Cave_Adventure
         private readonly Game _game;
         private bool _configured = false;
         private Panel _imagePanel;
-        private PictureBox _imageBox;
         
-        public event Action<string> LoadLevel;
-        public event Action<int> SetLevelId;
-
         public MainMenuPanel(Game game)
         {
             _game = game;
-            
+
             var table = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
-                AutoSize = true
+                AutoSize = true,
             };
             ConfigureTable(table);
-            
+
             Controls.Add(table);
         }
-        
+
         protected override void InitLayout()
         {
             base.InitLayout();
@@ -53,19 +50,7 @@ namespace Cave_Adventure
         {
             _configured = false;
         }
-
-        public new void Update()
-        {
-            try
-            {
-                _imageBox.Image = new Bitmap(Properties.Resources.mazePicMainMenu, Size);
-            }
-            catch
-            {
-                //ignore
-            }
-        }
-
+        
         private void ConfigureTable(TableLayoutPanel table)
         {
             var buttonMenu = new FlowLayoutPanel
@@ -73,9 +58,9 @@ namespace Cave_Adventure
                 FlowDirection = FlowDirection.TopDown,
                 Dock = DockStyle.Fill,
                 AutoSize = true,
-                BackColor = Color.Red,
                 Padding = new Padding(25, 10, 0, 0),
-                Font = new Font(SystemFonts.DialogFont.FontFamily, 12)
+                Font = new Font(SystemFonts.DialogFont.FontFamily, 12),
+                BackgroundImage = Properties.Resources.grass1
             };
             SetUpButtonMenu(buttonMenu);
             _imagePanel = new Panel()
@@ -84,18 +69,31 @@ namespace Cave_Adventure
                 AutoSize = true,
                 BackgroundImage = new Bitmap(Properties.Resources.mazePicMainMenu, Size)
             };
-
-            _imageBox = new PictureBox()
+            
+            var secondColumn = new TableLayoutPanel()
             {
                 Dock = DockStyle.Fill,
                 AutoSize = true,
-                Image = new Bitmap(Properties.Resources.mazePicMainMenu, Size)
+                BackgroundImage = Properties.Resources.grass1,
             };
             
-            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 85));
-            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15));
+            secondColumn.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            secondColumn.RowStyles.Add(new RowStyle(SizeType.Absolute, 10));
+            secondColumn.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 15));
+            secondColumn.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+            secondColumn.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 15));
+            
+            secondColumn.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Properties.Resources.obsidianBackground }, 0, 0);
+            secondColumn.Controls.Add(buttonMenu, 1, 0);
+            secondColumn.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Properties.Resources.obsidianBackground }, 2, 0);
+            secondColumn.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Properties.Resources.obsidianBackground }, 0, 1);
+            secondColumn.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Properties.Resources.obsidianBackground }, 1, 1);
+            secondColumn.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Properties.Resources.obsidianBackground }, 2, 1);
+            
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 82));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18));
             table.Controls.Add(_imagePanel, 0, 0);
-            table.Controls.Add(buttonMenu, 1, 0);
+            table.Controls.Add(secondColumn, 1, 0);
         }
 
         private void SetUpButtonMenu(FlowLayoutPanel buttonMenu)
@@ -104,43 +102,41 @@ namespace Cave_Adventure
             {
                 Text = "Little TB Game",
                 TextAlign = ContentAlignment.MiddleRight,
-                ForeColor = Color.Black,
+                ForeColor = Color.White,
                 Size = new Size(350, 50),
                 AutoSize = true,
                 Margin = new Padding(30, 25, 0, 0),
-                Font = new Font(SystemFonts.DialogFont.FontFamily, 15)
+                Font = new Font(SystemFonts.DialogFont.FontFamily, 15),
+                BackgroundImage = Properties.Resources.grass1,
             });
             
-            var Arenas = new LinkLabel
+            var arenas = new LinkLabel
             {
-                Text = "Start Play Arena Mode",
+                Text = "Начать приключение",
                 TextAlign = ContentAlignment.MiddleCenter,
-                LinkColor = Color.Black,
+                LinkColor = Color.White,
                 ActiveLinkColor = Color.White,
                 Size = new Size(100, 35),
                 AutoSize = true,
                 Margin = new Padding(0, 20, 0, 5),
+                BackgroundImage = Properties.Resources.grass1
             };
-            Arenas.LinkClicked += (sender, args) =>
-            {
-                _game.SwitchOnArenas(sender, args);
-                // LoadLevel?.Invoke(_levels[arenaId]);
-                // SetLevelId?.Invoke(arenaId);
-            };
+            arenas.LinkClicked += _game.SwitchOnStoryIntroPanel;
             
             var levelSelectionMenu = new LinkLabel
             {
-                Text = "Levels",
+                Text = "Выбор уровня",
                 TextAlign = ContentAlignment.MiddleCenter,
-                LinkColor = Color.Black,
+                LinkColor = Color.White,
                 ActiveLinkColor = Color.White,
                 Size = new Size(100, 35),
                 AutoSize = true,
                 Margin = new Padding(0, 20, 0, 5),
+                BackgroundImage = Properties.Resources.grass1
             };
             levelSelectionMenu.LinkClicked += _game.SwitchOnLevelSelectionMenu;
-            
-            buttonMenu.Controls.Add(Arenas);
+
+            buttonMenu.Controls.Add(arenas);
             buttonMenu.Controls.Add(levelSelectionMenu);
         }
     }

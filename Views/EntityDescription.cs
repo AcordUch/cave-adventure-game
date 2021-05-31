@@ -14,7 +14,7 @@ namespace Cave_Adventure.Views
         {
             base.OnLoad(e);
             DoubleBuffered = true;
-            Size = new Size(500, 650);
+            Size = new Size(550, 450);
             Text = "А ты, любопытный с:";
             KeyPreview = true;
         }
@@ -28,7 +28,6 @@ namespace Cave_Adventure.Views
                 Text = $"{WriteEntityDescription()}",
                 ForeColor = Color.Black,
                 Size = this.Size,
-                // Margin = new Padding(10, 0, 0, 0)
             };
             
             Controls.Add(_infoLabel);
@@ -47,12 +46,19 @@ namespace Cave_Adventure.Views
 Оружие: {_entity.Weapon.ToString()}
 Жизни: {_entity.Health} из {_entity.MaxHealth}
 ОД: {_entity.AP} из {_entity.MaxAP}
-Инициатива {_entity.Initiative}
+Инициатива: {_entity.Initiative}
 Атака: {_entity.Attack}
 Защита: {_entity.Defense}
-Урон: {_entity.Damage} 
-Текущее состояние: {_entity.CurrentStates.ToString()}
+Урон: {_entity.Damage}
+{WriteMonsterRadius()}
 ";
+        }
+
+        private string WriteMonsterRadius()
+        {
+            if (_entity is Monster)
+                return $"Радиус обнаружения: {((Monster)_entity).DetectionRange}";
+            return "";
         }
     }
 }

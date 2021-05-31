@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Cave_Adventure.Views
@@ -13,10 +14,13 @@ namespace Cave_Adventure.Views
 
         private readonly AutoCompleteStringCollection _autoCompleteSource = new AutoCompleteStringCollection
         {
-            "kill", "killbyconsole", "completelevel", "heal", "zatva", "makemehurt", "makemezerohp"
+            "kill", "killbyconsole", "completelevel", "heal", "zatva", "makemehurt", "makemezerohp", "tdebug", "help",
+            "simpledrawmode"
         };
 
         public ArenaMap ArenaMap => _arenaFieldControl.ArenaMap;
+
+        public event Action ChangeDebug;
         
         protected override void OnLoad(EventArgs e)
         {
@@ -65,7 +69,8 @@ namespace Cave_Adventure.Views
             }
             
             _textBox.ReadOnly = true;
-            
+
+            var needClear = true;
             var superMonster = new SuperMonster(new Point(-1, -1));
             switch (_textBox.Text.ToLower())
             {
@@ -93,8 +98,24 @@ namespace Cave_Adventure.Views
                 case "makemezerohp":
                     _arenaFieldControl.Player.Health = 0;
                     break;
+                case "tdebug":
+                    ChangeDebug?.Invoke();
+                    break;
+                case "help":
+                    needClear = false;
+                    var strBld = new StringBuilder();
+                    foreach (var com in _autoCompleteSource)
+                    {
+                        strBld.Append(com.ToString()).Append(' ');
+                    }
+                    _textBox.Text = strBld.ToString();
+                    break;
+                case "simpledrawmode":
+                    _arenaFieldControl.ArenaPainter.OnSimpleMode();
+                    break;
             }
-            _textBox.Clear();
+            if(needClear)
+                _textBox.Clear();
             
             _textBox.ReadOnly = false;
         }

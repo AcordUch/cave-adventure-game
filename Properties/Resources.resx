@@ -118,40 +118,217 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="andesiteBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\andesiteBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Arena1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArenaLevels\Arena1.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="Arena10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArenaLevels\Arena10.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="Arena1Debug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArenaLevels\Arena1Debug.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
   <data name="Arena2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArenaLevels\Arena2.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
+  <data name="Arena2Debug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArenaLevels\Arena2Debug.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
   <data name="Arena3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArenaLevels\Arena3.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="Arena3Debug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArenaLevels\Arena3Debug.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
   <data name="Arena4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArenaLevels\Arena4.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
+  <data name="Arena4Debug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArenaLevels\Arena4Debug.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
   <data name="Arena5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArenaLevels\Arena5.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="Arena5Debug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArenaLevels\Arena5Debug.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
   <data name="Arena6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArenaLevels\Arena6.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
+  <data name="Arena6Debug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArenaLevels\Arena6Debug.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
   <data name="Arena7" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArenaLevels\Arena7.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
+  <data name="Arena7Debug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArenaLevels\Arena7Debug.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="Arena8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArenaLevels\Arena8.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="Arena9" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArenaLevels\Arena9.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
   <data name="Cobra" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Assets\Cobra.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\Texture\Assets\Cobra.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dioriteBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\dioriteBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Dwarf" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Assets\Dwarf.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\Texture\Assets\Dwarf.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="endBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\endBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="floorStone1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\block\floorStone1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="floorStone2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\block\floorStone2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="floorStoneBroken" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\block\floorStoneBroken.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ghoul" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\Assets\Ghoul.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Gladiator" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Assets\Gladiator.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\Texture\Assets\Gladiator.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="grass1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\grass1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="grass2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\grass2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="gravelBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\gravelBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ironBarsBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\ironBarsBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mazePicBackground1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\mazePicBackground1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mazePicBackground2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\mazePicBackground2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="mazePicMainMenu" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Assets\mazePicMainMenu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\Texture\UI\mazePicMainMenu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Mini_Golem" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\Assets\Mini Golem.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Minotaur" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\Assets\Minotaur.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="netherBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\netherBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="noTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\block\noTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="obsidianBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\obsidianBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="polishedAndesiteBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\polishedAndesiteBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="polishedBasaltBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\polishedBasaltBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="polishedBlackstoneBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\polishedBlackstoneBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="polishedDioriteBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\polishedDioriteBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="polishedGraniteBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\polishedGraniteBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="quartzBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\quartzBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Slime" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\Assets\Slime.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Spider" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Assets\Spider.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\Texture\Assets\Spider.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stoneBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\stoneBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="transparent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\block\transparent.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="transparentDebug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\block\transparentDebug.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wall0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\block\wall0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wall1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\block\wall1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wall2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\block\wall2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wall3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\block\wall3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wall4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\block\wall4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Witch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\Assets\Witch.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BeginningOfStory" xml:space="preserve">
+    <value>Холод и сырость. Вот что вас окружает. «Где я?» - бегает мысль в вашей голове.
+Вы очнулись в непонятном подземелье, мало что помня о себе. Единственным источником света является огромная расщелина в потолке, через которую в холодную комнату проникают теплые лучи солнца, но она слишком высоко, что бы можно было выбраться через неё. «И почему люди не могут летать?» - с этой мыслю вы осматриваете пространство вокруг себя и обнаруживаете на полу старый, но добротный меч и факел с огнивом. Подобрав вещи, вы смотрите в проход в стене, в этот мрачный коридор, куда, к счастью, ещё проникает солнечный свет. Но долго ли так будет? Там явно ступеньки, а значит этот путь ведёт вниз, глубже в землю, глубже в тьму. «Что же таит в себе эта крипта? Ладно, идти туда явно лучше, чем просто сидеть здесь, ожидая голодную смерть» - думаете вы и начинаете спуск вниз. Ваше приключение начинается здесь.
+</value>
+  </data>
+  <data name="grass3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\grass3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="grass4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\grass4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="grass5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texture\UI\grass5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Tutorial1" xml:space="preserve">
+    <value>Привет! Позволь мне рассказать тебе вкратце как тут всё работает с:
+      
+Игра поделена на арены. На каждой твоя цель - победить всех монстров. Но ̶и̶з̶-̶з̶а̶ ̶к̶р̶и̶в̶о̶г̶о̶ ̶б̶а̶л̶а̶н̶с̶а это может быть не легко.
+Кхм, так вот. На каждое твоё действие тратятся твои ОД. Ты можешь их восстановить нажав на //Следующий ход//, но при этом совершат ход монстры.
+Так же тут ̶и̶з̶л̶и̶ш̶н̶е̶ ̶м̶у̶д̶р̶ё̶н̶а̶я не очевидная боевая система. Есть 3 основных показателя: Атака, Защита и Урон. Если кратко: чем больше атака превосходит защиту, тем больше урона пройдёт. И наоборот.
+Что бы было полегче, у персонажа изначально есть 3 зелья лечения, а ещё они могут выпасть из монстров и магическим образом оказаться в карманах героя.
+      
+Монстры, если игрока нет рядом, могут заниматься своими монстрячими дела. Ну, гулять там. Я не знаю чем обычно занимаются монстры в древнем подземелье.
+При этом если у них остаётся мало жизней, они пытаются убежать от игрока. Знаете, все любят жизнь...
+      
+      
+Ах да, чтобы совершить какие-либо действие, персонажа сначала надо выбрать с:
+</value>
+  </data>
+  <data name="Tutorial2" xml:space="preserve">
+    <value>Ты ещё читаешь это? Ну тогда лови более подробное объяснение системы расчёта урона:
+      
+1) Атака нападающего ≥ защиты обороняющегося:
+    a. Наносится полный урон;
+    b. Но если атака нападающего ≥ 1.25 * защита обороняющегося, то наносится на 50 % урона больше;
+      
+2) Атака нападающего &lt; защиты обороняющегося:
+    a. Наносится на 25 % урона меньше;
+    b. Но если атака нападающего ≤ 0.75 * защита защищающегося, то наносится на 50 % урона меньше.
+      
+Ах да, тут ещё есть консоль разработчика, но вот как открыть её, я тебе не скажу с:
+      
+Удачи, она понадобиться на боссе! //Злобный смех//
+</value>
   </data>
 </root>

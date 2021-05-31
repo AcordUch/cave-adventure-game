@@ -1,8 +1,8 @@
-namespace Cave_Adventure
+﻿namespace Cave_Adventure
 {
-    public class FangsAndClaws : Weapon
+    public class Spell : Weapon
     {
-        public FangsAndClaws() : base(GlobalConst.FangsAndClawsFactor, GlobalConst.FangsAndClawsRadius)
+        public Spell() : base(GlobalConst.SpellFactor, GlobalConst.SpellRadius)
         {
         }
 
@@ -11,10 +11,10 @@ namespace Cave_Adventure
             entity.ReduceAP(entity.AP);
             return base.GetDamage(in entity);
         }
-        
+
         public override string ToString()
         {
-            return "Когти, зубы, лапы";
+            return "Заклинание";
         }
     }
 }

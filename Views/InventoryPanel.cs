@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Cave_Adventure.Interfaces;
+using Cave_Adventure.Properties;
 
 namespace Cave_Adventure.Views
 {
@@ -13,6 +14,7 @@ namespace Cave_Adventure.Views
         private readonly ArenaFieldControl _arenaFieldControl;
 
         private Label _infoLabel;
+        private Label _detailInfoLabel;
         private Button _healButton;
 
         private Player Player => _arenaFieldControl.Player;
@@ -34,6 +36,7 @@ namespace Cave_Adventure.Views
         public new void Update()
         {
             _infoLabel.Text = MakeTextForInfoLabel();
+            _detailInfoLabel.Text = MakeTextForDetailInfoLabel();
         }
 
         private void ConfigureTable(TableLayoutPanel table)
@@ -42,6 +45,14 @@ namespace Cave_Adventure.Views
             {
                 TextAlign = ContentAlignment.MiddleCenter,
                 Text = MakeTextForInfoLabel(),
+                ForeColor = Color.Black,
+                Size = this.Size,
+                AutoSize = true
+            };
+            _detailInfoLabel = new Label
+            {
+                TextAlign = ContentAlignment.MiddleLeft,
+                Text = MakeTextForDetailInfoLabel(),
                 ForeColor = Color.Black,
                 Size = this.Size,
                 AutoSize = true
@@ -57,12 +68,13 @@ namespace Cave_Adventure.Views
             };
             _healButton.Click += (sender, args) =>
             {
-                var healKit = Player.Inventory.FirstOrDefault(i => i.Tag == ItemType.HealthPotion);
-                if(healKit == null) return;
-                Player.Health += 35;
-                Player.Inventory.Remove(healKit);
+                if(Player.AP > 0)
+                {
+                    Player.UseHealthPotionFromInventory();
+                    Player.ReduceAP(1);
+                }
             };
-            
+
             table.RowStyles.Add(new RowStyle(SizeType.Absolute, 10));
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 10));
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 10));
@@ -72,21 +84,21 @@ namespace Cave_Adventure.Views
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 15));
             
-            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 0, 0);
-            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Red }, 1, 0);
-            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 2, 0);
-            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 0, 1);
+            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Resources.obsidianBackground }, 0, 0);
+            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Resources.obsidianBackground }, 1, 0);
+            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Resources.obsidianBackground }, 2, 0);
+            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Resources.obsidianBackground }, 0, 1);
             table.Controls.Add(_infoLabel, 1, 1);
-            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 2, 1);
-            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 0, 2);
+            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Resources.obsidianBackground }, 2, 1);
+            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Resources.obsidianBackground }, 0, 2);
             table.Controls.Add(_healButton, 1, 2);
-            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 2, 2);
-            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 0, 3);
-            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.White }, 1, 3);
-            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 2, 3);
-            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 0, 4);
-            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Red }, 1, 4);
-            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackColor = Color.Black }, 2, 4);
+            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Resources.obsidianBackground }, 2, 2);
+            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Resources.obsidianBackground }, 0, 3);
+            table.Controls.Add(_detailInfoLabel, 1, 3);
+            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Resources.obsidianBackground }, 2, 3);
+            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Resources.obsidianBackground }, 0, 4);
+            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Resources.obsidianBackground }, 1, 4);
+            table.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Resources.obsidianBackground }, 2, 4);
         }
 
         public void OnBlockUnblockUI()
@@ -98,7 +110,17 @@ namespace Cave_Adventure.Views
         {
             if (_arenaFieldControl.Player == null)
                 return "";
-            return $"В ваших карманах лежит {Player.Inventory.Count(i => i.Tag == ItemType.HealthPotion).ToString()} хилки";
+            return $"В карманах зелий лечения: {Player.Inventory.AmountOfPotion}";
+        }
+
+        private string MakeTextForDetailInfoLabel()
+        {
+            if (_arenaFieldControl.Player == null)
+                return "";
+            return 
+$@"Малых флаконов: {Player.Inventory.AmountSmallPotion}
+Средних флаконов: {Player.Inventory.AmountMediumPotion}
+Больших флаконов: {Player.Inventory.AmountBigPotion}";
         }
     }
 }
