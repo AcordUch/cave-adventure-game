@@ -71,7 +71,7 @@ namespace Cave_Adventure
             _snake.Defending(_spider);
 
             Assert.IsTrue(_snake.CheckIsAliveAndChangeState());
-            Assert.AreEqual(21.25, _snake.Health);
+            Assert.AreEqual(20.0, _snake.Health);
 
             _spider.Defending(_snake);
 
@@ -84,7 +84,7 @@ namespace Cave_Adventure
                 _spider.Defending(_snake);
             }
 
-            Assert.IsTrue(_snake.CheckIsAliveAndChangeState());
+            Assert.IsFalse(_snake.CheckIsAliveAndChangeState());
             Assert.IsTrue(_spider.CheckIsAliveAndChangeState());
         }
 

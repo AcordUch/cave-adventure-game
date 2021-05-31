@@ -5,13 +5,13 @@ using Cave_Adventure.Properties;
 
 namespace Cave_Adventure.Views
 {
-    public class Tutorial2Panel : Panel
+    public class EndGamePanel : Panel
     {
         private readonly Game _game;
         private Button _nextScreenButton;
         private bool _configured = false;
 
-        public Tutorial2Panel(Game game)
+        public EndGamePanel(Game game)
         {
             _game = game;
 
@@ -77,19 +77,9 @@ namespace Cave_Adventure.Views
         
         private void ConfigureInnerTable(TableLayoutPanel innerTable)
         {
-            var tutorialTitle = new Label
+            var storyLabel = new Label()
             {
-                Text = "Обучение",
-                TextAlign = ContentAlignment.MiddleCenter,
-                AutoSize = true,
-                Margin = new Padding(0, 25, 0, 50),
-                Font = new Font(SystemFonts.DialogFont.FontFamily, 17),
-                BackgroundImage = Resources.quartzBackground,
-            };
-
-            var tutorial = new Label
-            {
-                Text = Resources.Tutorial2,
+                Text = Resources.EndOfStory,
                 TextAlign = ContentAlignment.MiddleLeft,
                 AutoSize = true,
                 Margin = new Padding(10, 25, 15, 25),
@@ -97,36 +87,16 @@ namespace Cave_Adventure.Views
                 BackgroundImage = Resources.quartzBackground,
             };
             
-            var backToMainMenuButton = new Button
-            {
-                Text = $"Погодите, хочу назад",
-                TextAlign = ContentAlignment.MiddleCenter,
-                Dock = DockStyle.Fill,
-                Size = new Size(350, 50),
-                AutoSize = true,
-            };
-            backToMainMenuButton.Click += _game.SwitchOnStoryIntroPanel;
-            
             _nextScreenButton = new Button
             {
-                Text = $"И зачем я на это согласился...",
+                Text = $"Удачи, путник!",
                 TextAlign = ContentAlignment.MiddleCenter,
                 Dock = DockStyle.Fill,
                 Size = new Size(350, 50),
                 AutoSize = true,
             };
-            _nextScreenButton.Click += _game.SwitchOnArenas;
+            _nextScreenButton.Click += _game.SwitchOnMainMenu;
 
-            var textTable = new FlowLayoutPanel()
-            {
-                FlowDirection = FlowDirection.TopDown,
-                Dock = DockStyle.Fill,
-                AutoSize = true,
-                BackgroundImage = Resources.quartzBackground
-            };
-            textTable.Controls.Add(tutorialTitle);
-            textTable.Controls.Add(tutorial);
-            
             var buttonTable = new TableLayoutPanel()
             {
                 Dock = DockStyle.Fill,
@@ -139,15 +109,18 @@ namespace Cave_Adventure.Views
             buttonTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
             buttonTable.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
             
-            buttonTable.Controls.Add(backToMainMenuButton, 0, 0);
             buttonTable.Controls.Add(_nextScreenButton, 2, 0);
             
             innerTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-            innerTable.RowStyles.Add(new RowStyle(SizeType.Percent, 94));
-            innerTable.RowStyles.Add(new RowStyle(SizeType.Percent, 6));
+            innerTable.RowStyles.Add(new RowStyle(SizeType.Percent, 95));
+            innerTable.RowStyles.Add(new RowStyle(SizeType.Percent, 5));
 
-            innerTable.Controls.Add(textTable, 0, 0);
+            innerTable.Controls.Add(storyLabel, 0, 0);
             innerTable.Controls.Add(buttonTable, 0, 1);
         }  
+    }
+
+    public class Controls
+    {
     }
 }

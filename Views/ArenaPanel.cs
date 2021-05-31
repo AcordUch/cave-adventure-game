@@ -22,7 +22,6 @@ namespace Cave_Adventure
         private ComboBox _levelMenu;
         private FlowLayoutPanel _arenaInfoPanel;
         private Button _nextTurnButton;
-        //private Button _attackMonsterButton;
         private Button _nextLevelButton;
         private Button _inspectEntityButton;
         private Button _backToMenuButton;
@@ -35,7 +34,13 @@ namespace Cave_Adventure
         public int CurrentArenaId
         {
             get => _currentArenaId;
-            private set => _currentArenaId = value >= _levels.Length ? 0 : value;
+            private set
+            {
+                if (value < _levels.Length)
+                    _currentArenaId = value;
+                else
+                    GameEnd();
+            }
         }
 
         public ArenaPanel(Game game)
@@ -522,6 +527,11 @@ namespace Cave_Adventure
         
         #endregion
 
+        private void GameEnd()
+        {
+            _game.SwitchOnEndGame();
+        }
+        
         private (double Width, double Height) GetZoomForController()
         {
             var width = ArenaFieldControl.Width != 0 && ClientSize.Width - 25 > 0
