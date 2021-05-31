@@ -34,10 +34,10 @@ namespace Cave_Adventure
 
         public void Drop()
         {
+            _configured = false;
             _currentFrames = null;
             _displacementStage = null;
             _animationShouldStop = null;
-            _configured = false;
         }
 
         public void SetUpAndPaint(Graphics graphics, Entity entity)

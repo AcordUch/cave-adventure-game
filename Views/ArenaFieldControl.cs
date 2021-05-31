@@ -71,6 +71,7 @@ namespace Cave_Adventure
         
         public void LoadLevel(string newMap)
         {
+            _entityPainter.Drop();
             ArenaMap = ArenaMap.CreateNewArenaMap(ArenaParser.PrepareMap(newMap));
             _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
             ArenaPainter.Configure(ArenaMap, _pointToRectangle);

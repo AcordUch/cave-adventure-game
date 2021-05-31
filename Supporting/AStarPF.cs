@@ -84,7 +84,7 @@ namespace Cave_Adventure
             SinglyLinkedList<Point> result;
             while (true)
             {
-                if (map.Monsters.Any(m => m.Position == end))
+                if (map.Monsters.Any(m => m.Position == end && m.IsAlive))
                 {
                     end = track[end].prevRangePair.previous;
                     continue;
