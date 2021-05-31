@@ -27,7 +27,7 @@ namespace Cave_Adventure
             Size = new Size(1500, 900);
             MinimumSize = new Size(1500, 900);
             MaximumSize = new Size(1920, 1080);
-            //WindowState = FormWindowState.Maximized;
+            WindowState = FormWindowState.Maximized;
             Text = GlobalConst.GetSplash();
             KeyPreview = true;
         }
@@ -42,49 +42,42 @@ namespace Cave_Adventure
             _mainMenuPanel = new MainMenuPanel(_game)
             {
                 Dock = DockStyle.Fill,
-                //Size = new Size(800, 600),
                 Location = new Point(0, 0),
                 Name = "mainMenuPanel"
             };
             _levelSelectionMenuPanel = new LevelSelectionMenuPanel(_game)
             {
                 Dock = DockStyle.Fill,
-                //Size = new Size(800, 600),
                 Location = new Point(0, 0),
                 Name = "levelSelectionMenuPanel"
             };
             _arenaPanel = new ArenaPanel(_game)
             {
                 Dock = DockStyle.Fill,
-                //Size = new Size(800, 600),
                 Location = new Point(0, 0),
                 Name = "arenaPanel"
             };
             _tutorial1Panel = new Tutorial1Panel(_game)
             {
                 Dock = DockStyle.Fill,
-                //Size = new Size(800, 600),
                 Location = new Point(0, 0),
                 Name = "tutorial1Panel"
             };
             _tutorial2Panel = new Tutorial2Panel(_game)
             {
                 Dock = DockStyle.Fill,
-                //Size = new Size(800, 600),
                 Location = new Point(0, 0),
                 Name = "tutorial2Panel"
             };
             _storyIntroPanel = new StoryIntroPanel(_game)
             {
                 Dock = DockStyle.Fill,
-                //Size = new Size(800, 600),
                 Location = new Point(0, 0),
                 Name = "storyIntroPanel"
             };
             _endGamePanel = new EndGamePanel(_game)
             {
                 Dock = DockStyle.Fill,
-                //Size = new Size(800, 600),
                 Location = new Point(0, 0),
                 Name = "endGamePanel"
             };
@@ -99,15 +92,9 @@ namespace Cave_Adventure
             Controls.Add(_tutorial1Panel);
             Controls.Add(_tutorial2Panel);
             Controls.Add(_endGamePanel);
-
             
-
-            WindowState = FormWindowState.Minimized;
-            _storyIntroPanel.ShowAndHide();
-            _tutorial1Panel.ShowAndHide();
-            _tutorial2Panel.ShowAndHide();
             ShowMainMenu();
-            WindowState = FormWindowState.Maximized;
+            
             _timer = new Timer { Interval = GlobalConst.MainTimerInterval };
             _timer.Tick += TimerTick;
             _timer.Start();
