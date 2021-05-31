@@ -36,7 +36,7 @@ namespace Cave_Adventure.Views
 
             public void Paint(Graphics g)
             {
-                if(_healBar == null || !_configured)
+                if(_healBar == null || _arenaMap == null || !_configured)
                     return;
                 
                 _barHeight = (int)(_healBar.Height * 0.45);

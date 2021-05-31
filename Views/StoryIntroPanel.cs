@@ -124,8 +124,8 @@ namespace Cave_Adventure.Views
             buttonTable.Controls.Add(_nextScreenButton, 2, 0);
             
             innerTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-            innerTable.RowStyles.Add(new RowStyle(SizeType.Percent, 95));
-            innerTable.RowStyles.Add(new RowStyle(SizeType.Percent, 5));
+            innerTable.RowStyles.Add(new RowStyle(SizeType.Percent, 94));
+            innerTable.RowStyles.Add(new RowStyle(SizeType.Percent, 6));
 
             innerTable.Controls.Add(storyLabel, 0, 0);
             innerTable.Controls.Add(buttonTable, 0, 1);
