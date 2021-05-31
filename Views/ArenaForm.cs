@@ -17,6 +17,7 @@ namespace Cave_Adventure
         private readonly StoryIntroPanel _storyIntroPanel;
         private readonly Tutorial1Panel _tutorial1Panel;
         private readonly Tutorial2Panel _tutorial2Panel;
+        private readonly EndGamePanel _endGamePanel;
         private readonly Game _game;
 
         protected override void OnLoad(EventArgs e)
@@ -80,6 +81,13 @@ namespace Cave_Adventure
                 Location = new Point(0, 0),
                 Name = "storyIntroPanel"
             };
+            _endGamePanel = new EndGamePanel(_game)
+            {
+                Dock = DockStyle.Fill,
+                Size = new Size(800, 600),
+                Location = new Point(0, 0),
+                Name = "endGamePanel"
+            };
             
             _levelSelectionMenuPanel.LoadLevel += _arenaPanel.ArenaFieldControl.LoadLevel;
             _levelSelectionMenuPanel.SetLevelId += _arenaPanel.OnSetCurrentArenaId;
@@ -90,6 +98,7 @@ namespace Cave_Adventure
             Controls.Add(_storyIntroPanel);
             Controls.Add(_tutorial1Panel);
             Controls.Add(_tutorial2Panel);
+            Controls.Add(_endGamePanel);
 
             ResumeLayout();
 
@@ -122,6 +131,9 @@ namespace Cave_Adventure
                     break;
                 case GameScreen.TutorialMenu2:
                     ShowTutorial2();
+                    break;
+                case GameScreen.EndGame:
+                    ShowEndGame();
                     break;
             }
             ResumeLayout();
@@ -168,6 +180,13 @@ namespace Cave_Adventure
             _tutorial2Panel.Configure();
             _tutorial2Panel.Show();
         }
+        
+        private void ShowEndGame()
+        {
+            HideScreens();
+            _endGamePanel.Configure();
+            _endGamePanel.Show();
+        }
 
         private void HideScreens()
         {
@@ -178,6 +197,7 @@ namespace Cave_Adventure
             _storyIntroPanel.Hide();
             _tutorial1Panel.Hide();
             _tutorial2Panel.Hide();
+            _endGamePanel.Hide();
         }
 
         private void DropScreens()
@@ -188,6 +208,7 @@ namespace Cave_Adventure
             _storyIntroPanel.Drop();
             _tutorial1Panel.Drop();
             _tutorial2Panel.Drop();
+            _endGamePanel.Drop();
         }
 
         private void TimerTick(object sender, EventArgs e)
