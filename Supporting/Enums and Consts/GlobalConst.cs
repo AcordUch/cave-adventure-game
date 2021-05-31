@@ -6,17 +6,24 @@ namespace Cave_Adventure
 {
     public static class GlobalConst
     {
-        public const int AssetsSize = 64;
+        public const int BlockTextureSize = 64;
+        public const int EntityTextureSize = 32;
+        public const int BossTextureSize = 75;
         public const int MainTimerInterval = 60;
-        public const int AnimTimerInterval = 2000;
+        public const int AnimTimerInterval = 1000;
         public const int MaxArenaRow = 13;
         public const int MaxArenaColumn = 20;
+        
+        // ===HealPotion===
+        public const int SmallHealPower = 15;
+        public const int MediumHealPower = 30;
+        public const int BigHealPower = 65;
         
         // ===Weapon===
         public const double SwordFactor = 1;
         public const double BowFactor = 0.7;
         public const double FireBallFactor = 2.5;
-        public const double FangsAndClawsFactor = 1;
+        public const double FangsFactor = 1;
         public const double StickyBodyFactor = 1;
         public const double StonePawsFactor = 1;
         public const double VampireSwingFactor = 1;
@@ -26,7 +33,7 @@ namespace Cave_Adventure
         public const int SwordRadius = 1;
         public const int BowRadius = 7;
         public const int FireBallRadius = 4;
-        public const int FangsAndClawsRadius = 1;
+        public const int FangsRadius = 1;
         public const int StickyBodyRadius = 1;
         public const int StonePawsRadius = 1;
         public const int VampireSwingRadius = 1;
@@ -34,51 +41,51 @@ namespace Cave_Adventure
         public const int BattleAxeRadius = 1;
 
         // ===Entity===
+        public const int PlayerDamage = 15;
+        public const int SlimeDamage = 2;
+        public const int SpiderDamage = 5;
+        public const int SnakeDamage = 6;
+        public const int GolemDamage = 9;
+        public const int GhoulDamage = 12;
+        public const int WitchDamage = 20;
+        public const int MinotaurDamage = 15;
+
+        public const int PlayerAttack = 11;
+        public const int SlimeAttack = 2;
+        public const int SpiderAttack = 4;
+        public const int SnakeAttack = 5;
+        public const int GolemAttack = 7;
+        public const int GhoulAttack = 11;
+        public const int WitchAttack = 14;
+        public const int MinotaurAttack = 30;
+        
+        public const int PlayerDefence = 12;
+        public const int SlimeDefence = 2;
+        public const int SpiderDefence = 7;
+        public const int SnakeDefence = 4;
+        public const int GolemDefence = 15;
+        public const int GhoulDefence = 9;
+        public const int WitchDefence = 3;
+        public const int MinotaurDefence = 14;
+
+        public const int PlayerHP = 90;
+        public const int SlimeHP = 10;
+        public const int SpiderHP = 20;
+        public const int SnakeHP = 25;
+        public const int GolemHP = 35;
+        public const int GhoulHP = 80;
+        public const int WitchHP = 30;
+        public const int MinotaurHP = 200;
+        
         public const int PlayerAP = 3;
         public const int SlimeAP = 3;
         public const int SpiderAP = 3;
         public const int SnakeAP = 2;
-        public const int GolemAP = 2;
+        public const int GolemAP = 1;
         public const int GhoulAP = 2;
-        public const int WitchAP = 2;
+        public const int WitchAP = 4;
         public const int MinotaurAP = 2;
-
-        public const int PlayerAttack = 9;
-        public const int SlimeAttack = 2;
-        public const int SpiderAttack = 4;
-        public const int SnakeAttack = 6;
-        public const int GolemAttack = 8;
-        public const int GhoulAttack = 10;
-        public const int WitchAttack = 12;
-        public const int MinotaurAttack = 30;
-
-        public const int PlayerHP = 70;
-        public const int SlimeHP = 10;
-        public const int SpiderHP = 20;
-        public const int SnakeHP = 25;
-        public const int GolemHP = 40;
-        public const int GhoulHP = 50;
-        public const int WitchHP = 60;
-        public const int MinotaurHP = 200;
-
-        public const int PlayerDamage = 15;
-        public const int SlimeDamage = 2;
-        public const int SpiderDamage = 3;
-        public const int SnakeDamage = 7;
-        public const int GolemDamage = 8;
-        public const int GhoulDamage = 9;
-        public const int WitchDamage = 10;
-        public const int MinotaurDamage = 11;
-
-        public const int PlayerDefence = 9;
-        public const int SlimeDefence = 8;
-        public const int SpiderDefence = 7;
-        public const int SnakeDefence = 2;
-        public const int GolemDefence = 5;
-        public const int GhoulDefence = 4;
-        public const int WitchDefence = 3;
-        public const int MinotaurDefence = 2;
-
+        
         public const double SlimeHealDropChange = 0.1;
         public const double SpiderHealDropChange = 0.2;
         public const double SnakeHealDropChange = 0.3;
@@ -88,12 +95,12 @@ namespace Cave_Adventure
         public const double MinotaurHealDropChange = 0.7;
 
         // ===AI===
-        public const int SlimeDetectionRadius = 2;
+        public const int SlimeDetectionRadius = 4;
         public const int SpiderDetectionRadius = 4;
         public const int SnakeDetectionRadius = 5;
-        public const int GolemDetectionRadius = 4;
-        public const int GhoulDetectionRadius = 5;
-        public const int WitchDetectionRadius = 5;
+        public const int GolemDetectionRadius = 3;
+        public const int GhoulDetectionRadius = 4;
+        public const int WitchDetectionRadius = 8;
         public const int MinotaurDetectionRadius = 6;
 
         // ===Supporting===
@@ -147,5 +154,37 @@ namespace Cave_Adventure
                 new Size(1, -1),
                 new Size(0, -1),
             };
+
+        public static string GetSplash()
+        {
+            var rnd = new Random();
+            return Splashes[rnd.Next(0, Splashes.Length - 1)];
+        }
+
+        private static readonly string[] Splashes = new[]
+        {
+            "Заходит в бар улитка, говорит...",
+            "Пятый Месяц, Четвёртый день, Третья декады луны в тельце...",
+            "Придумывать подписи слоооожна",
+            "Как дела?",
+            "Ctrl + ` открывает чит-меню :>",
+            "Это вообще кто-нибудь когда-нибудь прочитает?",
+            "inst: acord_Uch - подпишись, там иногда бывает красиво (⌒_⌒;)",
+            "Хээээй |ᐕ)",
+            "meow~~~ ฅ^•ﻌ•^ฅ",
+            "Эй ты, да ты! Ты потрясающий!",
+            "Тут есть разные подписи, соберешь их все?",
+            "Матмеху привет, ********* **********",
+            "Хочу медовухи",
+            "Кофе - единственный напиток, которым могут наслаждаться гули",
+            "Купил мужик шляпу, а она ему как раз",
+            "Продам гараж",
+            "Amongus",
+            "Панки хой!",
+            "Продам гараж",
+            "Мегумин самая милая",
+            "Который день, который год, спокойно ест и спит народ, ведь щедро охраняем КГБ!",
+            "F3 CDC5CED1 D0C9D7CF"
+        };
     }
 }

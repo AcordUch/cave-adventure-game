@@ -15,6 +15,7 @@ namespace Cave_Adventure
             Initiative = 6;
             Description = "Хоть и маленький, но смелый";
             AI = new SpiderAI(this);
+            DetectionRange = GlobalConst.SpiderDetectionRadius;
         }
 
         public override void ResetAP()

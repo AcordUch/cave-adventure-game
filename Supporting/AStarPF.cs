@@ -9,7 +9,8 @@ namespace Cave_Adventure
     {
         private const double GrafCost = 1;
         
-        public static SinglyLinkedList<Point> FindPathToPlayer(ArenaMap map, Point start, int range)
+        //В голове списка лежит начальная точка;
+        public static SinglyLinkedList<Point> FindPathToPlayer(ArenaMap map, Point start, int range, bool entityBlockingPath = true)
         {
             var breakWhile = false;
             
@@ -43,15 +44,18 @@ namespace Cave_Adventure
                 {
                     for (int dx = -1; dx < 2; dx++)
                     {
-                        if ((dy == 0 && dx == 0) || (Math.Abs(dy) == 1 && Math.Abs(dx) == 1)) continue;
+                        if ((dy == 0 && dx == 0) || (Math.Abs(dy) == 1 && Math.Abs(dx) == 1))
+                            continue;
                         var nextPoint = new Point(toOpen.X + dx, toOpen.Y + dy);
                         if (visitedPoints.Contains(nextPoint) || !map.InBounds(nextPoint) ||
-                            map.Arena[nextPoint.X, nextPoint.Y].cellType != CellType.Floor ||
-                            map.GetListOfEntities().Any(p => p.Position == nextPoint && p.IsAlive)) continue;
+                            map.Arena[nextPoint.X, nextPoint.Y].cellType != CellType.Floor)
+                            continue;
+                        if(entityBlockingPath && map.GetListOfEntities().Any(p => p.Position == nextPoint && p.IsAlive))
+                            continue;
                         var currentPrice = track[toOpen].priorCostPair.cost + GrafCost;
                         if (!track.ContainsKey(nextPoint) || track[nextPoint].priorCostPair.cost > currentPrice)
                         {
-                            var priority = currentPrice + Heuristic(nextPoint, map.Player.Position);
+                            var priority = currentPrice + nextPoint.RangeToPoint(map.Player.Position);
                             track[nextPoint] = ((toOpen, track[toOpen].prevRangePair.range + 1),
                                 (priority, currentPrice));
                             lastPoint = nextPoint;
@@ -70,19 +74,24 @@ namespace Cave_Adventure
                     break;
             }
 
-            return GetPathList(track, lastPoint);
-        }
-        
-        private static double Heuristic(Point a, Point b)
-        {
-            return Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
+            return GetPathList(track, lastPoint, map);
         }
         
         private static SinglyLinkedList<Point> GetPathList
         (Dictionary<Point, ((Point previous, int range) prevRangePair, (double priority, double cost) priorCostPair)> track,
-            Point end)
+            Point end, ArenaMap map)
         {
-            var result = new SinglyLinkedList<Point>(end);
+            SinglyLinkedList<Point> result;
+            while (true)
+            {
+                if (map.Monsters.Any(m => m.Position == end && m.IsAlive))
+                {
+                    end = track[end].prevRangePair.previous;
+                    continue;
+                }
+                result = new SinglyLinkedList<Point>(end);
+                break;
+            }
             var first = true;
             while (end.X != -1)
             {

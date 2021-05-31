@@ -15,6 +15,7 @@ namespace Cave_Adventure
             Initiative = 5;
             Description = "Самый слабый, но не стоит его недооценивать";
             AI = new SlimeAI(this);
+            DetectionRange = GlobalConst.SlimeDetectionRadius;
         }
 
         public override void ResetAP()

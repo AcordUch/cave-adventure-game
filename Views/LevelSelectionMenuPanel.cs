@@ -13,7 +13,6 @@ namespace Cave_Adventure.Views
         private readonly string[] _levels;
         private readonly Game _game;
         private PictureBox _imageBox;
-        // private Panel _imagePanel;
         private bool _configured = false;
         public event Action<string> LoadLevel;
         public event Action<int> SetLevelId;
@@ -58,7 +57,7 @@ namespace Cave_Adventure.Views
         {
             try
             {
-                _imageBox.Image = new Bitmap(Properties.Resources.mazePicBackgroun2, Size);
+                _imageBox.Image = new Bitmap(Properties.Resources.mazePicBackground2, Size);
             }
             catch
             {
@@ -90,18 +89,11 @@ namespace Cave_Adventure.Views
             };
             backToMainMenuButton.Click += _game.SwitchOnMainMenu;
 
-            // _imagePanel = new Panel()
-            // {
-            //     Dock = DockStyle.Fill,
-            //     AutoSize = true,
-            //     BackgroundImage = new Bitmap(Properties.Resources.mazePicBackgroun2, Size)
-            // };
-            
             _imageBox = new PictureBox()
             {
                 Dock = DockStyle.Fill,
                 AutoSize = true,
-                Image = new Bitmap(Properties.Resources.mazePicBackgroun2, Size)
+                Image = new Bitmap(Properties.Resources.mazePicBackground2, Size)
             };
 
             var secondColumn = new TableLayoutPanel()

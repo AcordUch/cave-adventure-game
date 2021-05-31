@@ -21,8 +21,8 @@ namespace Cave_Adventure
         public Monster[] Monsters { get; private set; }
         public bool PlayerSelected { get; set; }
         public bool IsPlayerTurnNow { get; private set; } = true;
-        public bool AttackButtonPressed { get; set; }
         public SinglyLinkedList<Point>[] PlayerPaths { get; private set; }
+        public SinglyLinkedList<Point>[] PlayerAttackPoint { get; private set; }
         
         public int Step { get; private set; } = 1;
 
@@ -43,11 +43,12 @@ namespace Cave_Adventure
             }
         }
 
-        public void SetPlayerPaths(SinglyLinkedList<Point>[] paths)
+        public void SetPlayerPaths(SinglyLinkedList<Point>[] movePaths, SinglyLinkedList<Point>[] attackPaths)
         {
             if(!PlayerSelected)
             {
-                PlayerPaths = paths;
+                PlayerPaths = movePaths;
+                PlayerAttackPoint = attackPaths;
                 PlayerSelected = true;
             }
         }
@@ -144,6 +145,7 @@ namespace Cave_Adventure
                     {
                         flag = false;
                         timer.Stop();
+                        timer.Dispose();
                     };
                     timer.Start();
                     Attacking(entity, Player);
@@ -199,7 +201,7 @@ namespace Cave_Adventure
                 var path = new Point[0];
                 try
                 {
-                    path = (BFS.FindPaths(this, entity.Position, entity.AP)
+                    path = (BFS.FindPaths(this, entity.Position, entity.AP, false)
                                 .FirstOrDefault(p => p.Value == targetPoint)
                             ?? throw new InvalidOperationException(
                                 "Среди доступных точек нет необходимой. В методе откуда вызов нет проверки?"))

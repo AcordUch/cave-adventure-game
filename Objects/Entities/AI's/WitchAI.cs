@@ -8,9 +8,9 @@ namespace Cave_Adventure
         {
         }
 
-        public override Point LookTargetMovePoint(int range = 25)
+        public override Point LookTargetMovePoint(int range = 25, bool entityBlockingPath = true)
         {
-            return base.LookTargetMovePoint(GlobalConst.WitchDetectionRadius);
+            return base.LookTargetMovePoint(GlobalConst.WitchDetectionRadius, entityBlockingPath);
         }
     }
 }

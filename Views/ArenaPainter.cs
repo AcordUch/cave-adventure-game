@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Cave_Adventure.Properties;
@@ -9,8 +10,8 @@ namespace Cave_Adventure
 {
     public class ArenaPainter
     {
-        private const int CellWidth = GlobalConst.AssetsSize;
-        private const int CellHeight = GlobalConst.AssetsSize;
+        private const int CellWidth = GlobalConst.BlockTextureSize;
+        private const int CellHeight = GlobalConst.BlockTextureSize;
         
         private ArenaMap _currentArena;
         private Bitmap _arenaImage;
@@ -56,11 +57,50 @@ namespace Cave_Adventure
             if(_debugMode)
                 TypeEntity();
             if(_currentArena.PlayerSelected)
+            {
                 PaintPath();
-            graphics.DrawImage(_arenaImage, new Rectangle(0, 0, ArenaSize.Width * GlobalConst.AssetsSize,
-                                                                        ArenaSize.Height * GlobalConst.AssetsSize));
+                PaintAttackBacklighting();
+                AdditionalUI();
+            }
+
+            graphics.DrawImage(_arenaImage, new Rectangle(0, 0, ArenaSize.Width * GlobalConst.BlockTextureSize,
+                                                                        ArenaSize.Height * GlobalConst.BlockTextureSize));
         }
-        
+
+        private void AdditionalUI()
+        {
+            using (var graphics = Graphics.FromImage(_arenaImage))
+            {
+                graphics.DrawRectangle(Pens.Goldenrod, _pointToRectangle[_currentArena.Player.Position]);
+            }
+        }
+
+        private void PaintAttackBacklighting()
+        {
+            using (var graphics = Graphics.FromImage(_arenaImage))
+            {
+                foreach (var path in _currentArena.PlayerAttackPoint.Where(aP => _currentArena.Monsters.Any(m => m.Position == aP.Value && m.IsAlive)))
+                {
+                    var point = path.Value;
+                    var brush = new SolidBrush(Color.FromArgb(35, Color.Red));
+                    graphics.FillRectangle(brush, point.X * CellWidth, point.Y * CellHeight, CellWidth, CellHeight);
+                }
+            }
+        }
+
+        private void PaintPath()
+        {
+            using (var graphics = Graphics.FromImage(_arenaImage))
+            {
+                foreach (var path in _currentArena.PlayerPaths)
+                {
+                    var point = path.Value;
+                    var brush = new SolidBrush(Color.FromArgb(25, Color.White));
+                    graphics.FillRectangle(brush, point.X * CellWidth, point.Y * CellHeight, CellWidth, CellHeight);
+                }
+            }
+        }
+
         private void TypeEntity()
         {
             using (var graphics = Graphics.FromImage(_arenaImage))
@@ -102,19 +142,6 @@ namespace Cave_Adventure
             }
         }
 
-        private void PaintPath()
-        {
-            using (var graphics = Graphics.FromImage(_arenaImage))
-            {
-                foreach (var path in _currentArena.PlayerPaths)
-                {
-                    var temp = path.Value;
-                    var brush = new SolidBrush(Color.FromArgb(25, Color.White));
-                    graphics.FillRectangle(brush, temp.X * CellWidth, temp.Y * CellHeight, CellWidth, CellHeight);
-                }
-            }
-        }
-
         private void CreateArena()
         {
             _arenaImage = new Bitmap(ArenaSize.Width * CellWidth, ArenaSize.Height * CellHeight);
@@ -140,7 +167,7 @@ namespace Cave_Adventure
             return cell.cellType == CellType.Floor ? Brushes.DimGray : Brushes.Firebrick;
         }
 
-        private static Image ChooseImage((CellType cellType, CellSubtype cellSubtype) cell)
+        private Image ChooseImage((CellType cellType, CellSubtype cellSubtype) cell)
         {
             Bitmap image;
             switch (cell.cellSubtype)
@@ -153,7 +180,9 @@ namespace Cave_Adventure
                 case CellSubtype.floorStone1: image = Resources.floorStone1; break;
                 case CellSubtype.floorStone2: image = Resources.floorStone2; break;
                 case CellSubtype.floorStoneBroken: image = Resources.floorStoneBroken; break;
-                case CellSubtype.transparent: image = Resources.transparent; break;
+                case CellSubtype.transparent:
+                    image = _debugMode ? Resources.transparentDebug : Resources.transparent;
+                    break;
                 default: image = Resources.noTexture; break;
             }
             return image;

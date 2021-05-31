@@ -68,7 +68,11 @@ namespace Cave_Adventure.Views
             };
             _healButton.Click += (sender, args) =>
             {
-                Player.UseHealthPotionFromInventory();
+                if(Player.AP > 0)
+                {
+                    Player.UseHealthPotionFromInventory();
+                    Player.ReduceAP(1);
+                }
             };
 
             table.RowStyles.Add(new RowStyle(SizeType.Absolute, 10));

@@ -12,8 +12,8 @@ namespace Cave_Adventure
     public partial class ArenaFieldControl : UserControl
     {
         private const int ShiftFromUpAndDownBorder = 10;
-        private const int CellWidth = GlobalConst.AssetsSize;
-        private const int CellHeight = GlobalConst.AssetsSize;
+        private const int CellWidth = GlobalConst.BlockTextureSize;
+        private const int CellHeight = GlobalConst.BlockTextureSize;
         
         private readonly EntityPainter _entityPainter;
         private PointF _logicalCenterPos;
@@ -71,6 +71,7 @@ namespace Cave_Adventure
         
         public void LoadLevel(string newMap)
         {
+            _entityPainter.Drop();
             ArenaMap = ArenaMap.CreateNewArenaMap(ArenaParser.PrepareMap(newMap));
             _pointToRectangle = GeneratePointToRectangle(this, ArenaMap);
             ArenaPainter.Configure(ArenaMap, _pointToRectangle);

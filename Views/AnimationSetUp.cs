@@ -5,8 +5,9 @@ namespace Cave_Adventure.EntitiesFrames
 {
     public static class AnimationSetUp
     {
-        public static void SetUp(Entity entity, out int frameLimit, out Image entityImage)
+        public static void SetUp(Entity entity, out int frameLimit, out Image entityImage, out int imageSize)
         {
+            imageSize = GlobalConst.EntityTextureSize;
             switch (entity)
             {
                 case Player:
@@ -31,6 +32,7 @@ namespace Cave_Adventure.EntitiesFrames
                     SetUpWitch(entity.CurrentStates, out frameLimit, out entityImage);
                     break;
                 case Minotaur:
+                    imageSize = GlobalConst.BossTextureSize;
                     SetUpMinotaur(entity.CurrentStates, out frameLimit, out entityImage);
                     break;
                 default:

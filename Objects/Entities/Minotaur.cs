@@ -15,6 +15,7 @@ namespace Cave_Adventure
             Initiative = 11;
             Description = "Грозный страж подземелья";
             AI = new MinotaurAI(this);
+            DetectionRange = GlobalConst.MinotaurDetectionRadius;
         }
         
         public override void ResetAP()
