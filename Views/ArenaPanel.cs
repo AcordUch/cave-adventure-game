@@ -22,7 +22,7 @@ namespace Cave_Adventure
         private ComboBox _levelMenu;
         private FlowLayoutPanel _arenaInfoPanel;
         private Button _nextTurnButton;
-        private Button _attackMonsterButton;
+        //private Button _attackMonsterButton;
         private Button _nextLevelButton;
         private Button _inspectEntityButton;
         private Button _backToMenuButton;
@@ -62,6 +62,7 @@ namespace Cave_Adventure
             ArenaFieldControl.KeyUp += OnKeyUp;
             
             Controls.Add(table);
+            SizeChanged += OnSizeChangedHandler;
         }
 
         protected override void InitLayout()
@@ -101,16 +102,6 @@ namespace Cave_Adventure
             _healBarPanel.Invalidate();
             _inventoryPanel.Update();
             _playerInfoPanel.Update();
-            //Вынести в метод OnSizeChange
-            var zoom = GetZoomForController();
-            ArenaFieldControl.Size =
-                new Size((int)(ArenaFieldControl.Width * zoom.Width), (int)(ArenaFieldControl.Height * zoom.Height));
-            
-            try
-            {
-                _arenaInfoPanel.Controls[1].Text = $"Текущая арена:\n  {_currentArenaId + 1} из {_levels.Length}";
-            }
-            catch{}
         }
 
         #region ClickOnPointHandler
@@ -119,9 +110,6 @@ namespace Cave_Adventure
         {
             if (args.Button == MouseButtons.Left)
             {
-               
-                //var actionCompleted = false;
-                
                 if (_needInspect)
                 {
                     InspectMonster(point);
@@ -186,12 +174,6 @@ namespace Cave_Adventure
 
         private void SelectPlayer()
         {
-            if (ArenaFieldControl.Player.GetNeighbors()
-                .Any(neighborsPos => ArenaFieldControl.Monsters.Any(monster => monster.Position == neighborsPos)))
-            {
-                _attackMonsterButton.Enabled = true; //можно убрать?
-            }
-
             var movePaths = BFS.FindPaths(
                 ArenaFieldControl.ArenaMap,
                 ArenaFieldControl.Player.Position,
@@ -208,17 +190,14 @@ namespace Cave_Adventure
         private void AttackMonster(Point point)
         {
             ArenaFieldControl.ArenaMap.Attacking(ArenaFieldControl.Player, point);
-            ArenaFieldControl.ArenaMap.AttackButtonPressed = false;
             ArenaFieldControl.ArenaMap.PlayerSelected = false;
             ArenaFieldControl.Player.IsSelected = false;
-            _attackMonsterButton.Enabled = false;
         }
 
         private void MovePlayer(Point point)
         {
             ArenaFieldControl.ArenaMap.MovePlayerAlongThePath(point);
             ArenaFieldControl.ArenaMap.PlayerSelected = false;
-            _attackMonsterButton.Enabled = false;
         }
 
         #endregion
@@ -280,18 +259,7 @@ namespace Cave_Adventure
                 Enabled = false
             };
             _nextLevelButton.Click += OnNextLevelButtonClick;
-
-            _attackMonsterButton = new Button()
-            {
-                Text = $"Атака!",
-                TextAlign = ContentAlignment.MiddleCenter,
-                Dock = DockStyle.Fill,
-                Size = new Size(350, 50),
-                AutoSize = true,
-                Enabled = false
-            };
-            _attackMonsterButton.Click += OnAttackButtonClick;
-
+            
             _inspectEntityButton = new Button()
             {
                 Text = $"Осмотреть",
@@ -491,11 +459,6 @@ namespace Cave_Adventure
             ArenaFieldControl.ArenaMap.NextTurn();
         }
         
-        private void OnAttackButtonClick(object sender, EventArgs e)
-        {
-            ArenaFieldControl.ArenaMap.AttackButtonPressed = true;
-        }
-
         private void OnNextLevelButtonClick(object sender, EventArgs e)
         {
             CurrentArenaId++;
@@ -537,8 +500,25 @@ namespace Cave_Adventure
                     MessageBoxDefaultButton.Button1);
                 ArenaFieldControl.LoadLevel(_levels[CurrentArenaId]);
                 timer.Close();
+                timer.Dispose();
             };
             timer.Start();
+        }
+
+        private void OnSizeChangedHandler(object sender, EventArgs eventArgs)
+        {
+            var zoom = GetZoomForController();
+            ArenaFieldControl.Size =
+                new Size((int)(ArenaFieldControl.Width * zoom.Width), (int)(ArenaFieldControl.Height * zoom.Height));
+            
+            try
+            {
+                _arenaInfoPanel.Controls[1].Text = $"Текущая арена:\n  {_currentArenaId + 1} из {_levels.Length}";
+            }
+            catch
+            {
+                // ignored
+            }
         }
         
         #endregion

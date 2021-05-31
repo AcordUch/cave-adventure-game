@@ -21,7 +21,6 @@ namespace Cave_Adventure
         public Monster[] Monsters { get; private set; }
         public bool PlayerSelected { get; set; }
         public bool IsPlayerTurnNow { get; private set; } = true;
-        public bool AttackButtonPressed { get; set; }
         public SinglyLinkedList<Point>[] PlayerPaths { get; private set; }
         public SinglyLinkedList<Point>[] PlayerAttackPoint { get; private set; }
         
@@ -146,6 +145,7 @@ namespace Cave_Adventure
                     {
                         flag = false;
                         timer.Stop();
+                        timer.Dispose();
                     };
                     timer.Start();
                     Attacking(entity, Player);

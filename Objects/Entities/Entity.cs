@@ -7,7 +7,7 @@ using Cave_Adventure.Views;
 
 namespace Cave_Adventure
 {
-    public abstract class Entity: IEntity
+    public abstract class Entity
     {
         private Point _position;
         private double _health;
@@ -88,7 +88,7 @@ namespace Cave_Adventure
                 attacker.Defending(this, false);
                 this.AP = this.MaxAP;
                 timer.Stop();
-                timer.Close();
+                timer.Dispose();
             };
             timer.Start();
         }

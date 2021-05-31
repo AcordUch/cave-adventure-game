@@ -28,7 +28,6 @@ namespace Cave_Adventure.Views
                 Text = $"{WriteEntityDescription()}",
                 ForeColor = Color.Black,
                 Size = this.Size,
-                // Margin = new Padding(10, 0, 0, 0)
             };
             
             Controls.Add(_infoLabel);

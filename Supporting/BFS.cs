@@ -37,11 +37,7 @@ namespace Cave_Adventure
                 }
             }
         }
-
-        // if(Math.Abs(dy) == 1 && Math.Abs(dx) == 1
-        //     && map.Arena[nextPoint.X, currentPoint.point.Value.Y] == CellType.Wall
-        //     && map.Arena[currentPoint.point.Value.X, nextPoint.Y] == CellType.Wall) continue;
-
+        
         public static Point FindFarPoint(ArenaMap map, Point enemyPos, Entity entity)
         {
             var paths = FindPaths(map, entity.Position, entity.AP).ToArray();

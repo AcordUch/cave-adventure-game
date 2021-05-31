@@ -121,7 +121,6 @@ namespace Cave_Adventure.Views
             buttonTable.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
             
             buttonTable.Controls.Add(backToMainMenuButton, 0, 0);
-            //buttonTable.Controls.Add(new Panel() { Dock = DockStyle.Fill, BackgroundImage = Resources.obsidianBackground }, 1, 0);
             buttonTable.Controls.Add(_nextScreenButton, 2, 0);
             
             innerTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));

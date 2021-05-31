@@ -25,7 +25,7 @@ namespace Cave_Adventure
             DoubleBuffered = true;
             Size = new Size(1500, 900);
             MinimumSize = new Size(1500, 900);
-            //MaximumSize = new Size(1920, 1080);
+            MaximumSize = new Size(1920, 1080);
             WindowState = FormWindowState.Maximized;
             Text = GlobalConst.GetSplash();
             KeyPreview = true;
@@ -80,10 +80,7 @@ namespace Cave_Adventure
                 Location = new Point(0, 0),
                 Name = "storyIntroPanel"
             };
-
-            // _mainMenuPanel.LoadLevel += _arenaPanel.ArenaFieldControl.LoadLevel;
-            // _mainMenuPanel.SetLevelId += _arenaPanel.OnSetCurrentArenaId;
-
+            
             _levelSelectionMenuPanel.LoadLevel += _arenaPanel.ArenaFieldControl.LoadLevel;
             _levelSelectionMenuPanel.SetLevelId += _arenaPanel.OnSetCurrentArenaId;
 
@@ -200,13 +197,8 @@ namespace Cave_Adventure
                 case GameScreen.Arenas:
                     _arenaPanel.Update();
                     break;
-                case GameScreen.MainMenu:
-                    _mainMenuPanel.Update();
-                    break;
                 case GameScreen.LevelSelectionMenu:
                     _levelSelectionMenuPanel.Update();
-                    break;
-                default:
                     break;
             }
         }

@@ -16,7 +16,6 @@ namespace Cave_Adventure
         private readonly Game _game;
         private bool _configured = false;
         private Panel _imagePanel;
-        // private PictureBox _imageBox;
 
         public event Action<string> LoadLevel;
         public event Action<int> SetLevelId;
@@ -54,19 +53,7 @@ namespace Cave_Adventure
         {
             _configured = false;
         }
-
-        public new void Update()
-        {
-            // try
-            // {
-            //     _imageBox.Image = new Bitmap(Properties.Resources.mazePicMainMenu, Size);
-            // }
-            // catch
-            // {
-            //     //ignore
-            // }
-        }
-
+        
         private void ConfigureTable(TableLayoutPanel table)
         {
             var buttonMenu = new FlowLayoutPanel
@@ -74,7 +61,6 @@ namespace Cave_Adventure
                 FlowDirection = FlowDirection.TopDown,
                 Dock = DockStyle.Fill,
                 AutoSize = true,
-                // BackColor = Color.Red,
                 Padding = new Padding(25, 10, 0, 0),
                 Font = new Font(SystemFonts.DialogFont.FontFamily, 12),
                 BackgroundImage = Properties.Resources.grass1
@@ -86,13 +72,6 @@ namespace Cave_Adventure
                 AutoSize = true,
                 BackgroundImage = new Bitmap(Properties.Resources.mazePicMainMenu, Size)
             };
-
-            // _imageBox = new PictureBox()
-            // {
-            //     Dock = DockStyle.Fill,
-            //     AutoSize = true,
-            //     Image = new Bitmap(Properties.Resources.mazePicMainMenu, Size)
-            // };
             
             var secondColumn = new TableLayoutPanel()
             {

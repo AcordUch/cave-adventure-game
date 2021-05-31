@@ -20,9 +20,7 @@ namespace Cave_Adventure
         private int _mirroring = 1;
         private int _currentAnimation;
         private int _currentFrameLimit = 0;
-
-        //public int DisplacementStage { get; set; } = 0;
-
+        
         public void Configure(List<Entity> entities)
         {
             _currentFrames = entities.ToDictionary(k => k, v => 0);
