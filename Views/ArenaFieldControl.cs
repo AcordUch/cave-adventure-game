@@ -123,11 +123,12 @@ namespace Cave_Adventure
             
             ArenaPainter.Paint(e.Graphics);
             
-            _entityPainter.SetUpAndPaint(e.Graphics, ArenaMap.Player);
             ArenaPainter.Update();       
             
             foreach (var monster in ArenaMap.Monsters)
                 _entityPainter.SetUpAndPaint(e.Graphics, monster);
+            
+            _entityPainter.SetUpAndPaint(e.Graphics, ArenaMap.Player);
         }
 
         #region Не используемое
@@ -174,7 +175,7 @@ $@"Текущий ход: {ArenaMap.Step}
         {
             return ArenaMap == null ? "null" : 
 $@"   ||DEBUG||
-ArenaLogPos: {_logicalCenterPos}
+ArenaLogPos: {_logicalCenterPos} | Teleport: {ArenaMap.TeleportMode}
 PlayerPos: {Player.Position} | PlayerTarget: {Player.TargetPoint}
 IsSelected: {Player.IsSelected} | IsMoving: {Player.IsMoving}
 State: {Player.CurrentStates} | Monster: {GetMonsterInfo()}

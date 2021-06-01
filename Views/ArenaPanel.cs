@@ -179,10 +179,11 @@ namespace Cave_Adventure
 
         private void SelectPlayer()
         {
+            var ap = ArenaFieldControl.ArenaMap.TeleportMode ? 999 : ArenaFieldControl.Player.AP; 
             var movePaths = BFS.FindPaths(
                 ArenaFieldControl.ArenaMap,
                 ArenaFieldControl.Player.Position,
-                ArenaFieldControl.Player.AP).ToArray();
+                ap, !ArenaFieldControl.ArenaMap.TeleportMode).ToArray();
             var attackPaths = BFS.FindPaths(ArenaFieldControl.ArenaMap,
                         ArenaFieldControl.Player.Position,
                         ArenaFieldControl.Player.Weapon.WeaponRadius, false).ToArray();
@@ -252,7 +253,11 @@ namespace Cave_Adventure
                 Size = new Size(350, 50),
                 AutoSize = true
             };
-            _backToMenuButton.Click += _game.SwitchOnMainMenu;
+            _backToMenuButton.Click += (sender, args) =>
+            {
+                _nextLevelButton.Enabled = false;
+                _game.SwitchOnMainMenu(sender, args);
+            };
 
             _nextLevelButton = new Button()
             {

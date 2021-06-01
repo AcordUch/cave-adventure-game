@@ -15,7 +15,7 @@ namespace Cave_Adventure.Views
         private readonly AutoCompleteStringCollection _autoCompleteSource = new AutoCompleteStringCollection
         {
             "kill", "killbyconsole", "completelevel", "heal", "zatva", "makemehurt", "makemezerohp", "tdebug", "help",
-            "simpledrawmode"
+            "simpledrawmode", "tp"
         };
 
         public ArenaMap ArenaMap => _arenaFieldControl.ArenaMap;
@@ -112,6 +112,9 @@ namespace Cave_Adventure.Views
                     break;
                 case "simpledrawmode":
                     _arenaFieldControl.ArenaPainter.OnSimpleMode();
+                    break;
+                case "tp":
+                    _arenaFieldControl.ArenaMap.ChangeMoveMode(this);
                     break;
             }
             if(needClear)

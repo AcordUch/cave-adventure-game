@@ -105,7 +105,7 @@ namespace Cave_Adventure.Views
                 Size = new Size(350, 50),
                 AutoSize = true,
             };
-            backToMainMenuButton.Click += _game.SwitchOnStoryIntroPanel;
+            backToMainMenuButton.Click += _game.SwitchOnTutorial1;
             
             _nextScreenButton = new Button
             {
