@@ -7,6 +7,9 @@
     <Compile Update="Views\ArenaPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="Views\EndGamePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="Views\HealBar.cs">
       <SubType>Component</SubType>
     </Compile>
