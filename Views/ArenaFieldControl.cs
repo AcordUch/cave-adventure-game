@@ -28,7 +28,7 @@ namespace Cave_Adventure
         public Monster[] Monsters => ArenaMap.Monsters;
 
         public event Action BindEvent;
-        
+
         public ArenaFieldControl()
         {
             InitializeComponent();

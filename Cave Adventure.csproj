@@ -10,11 +10,22 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <SignAssembly>false</SignAssembly>
         <AssemblyOriginatorKeyFile>CaveAdventure.pfx</AssemblyOriginatorKeyFile>
+        <ApplicationIcon />
+        <Company>Little TB Game</Company>
+        <Authors>Acord_Uch; Green Light</Authors>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
       <Optimize>false</Optimize>
       <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <PlatformTarget>AnyCPU</PlatformTarget>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <DefineConstants>TRACE</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>

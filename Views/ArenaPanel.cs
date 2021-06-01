@@ -46,8 +46,8 @@ namespace Cave_Adventure
         public ArenaPanel(Game game)
         {
             _game = game;
-            // _levels = GlobalConst.LoadLevels().ToArray();
-            _levels = GlobalConst.LoadDebugLevels().ToArray();
+            _levels = GlobalConst.LoadLevels().ToArray();
+            //_levels = GlobalConst.LoadDebugLevels().ToArray();
 
             ArenaFieldControl = new ArenaFieldControl()
             {
@@ -460,6 +460,7 @@ namespace Cave_Adventure
         public void OnSetCurrentArenaId(int arenaId)
         {
             CurrentArenaId = arenaId;
+            _arenaInfoPanel.Controls[1].Text = $"Текущая арена:\n  {_currentArenaId + 1} из {_levels.Length}";
         }
         
         private void ClickOnNextTurnButton(object sender, EventArgs e)
@@ -472,6 +473,7 @@ namespace Cave_Adventure
         {
             CurrentArenaId++;
             ArenaFieldControl.LoadLevel(_levels[_currentArenaId]);
+            _arenaInfoPanel.Controls[1].Text = $"Текущая арена:\n  {_currentArenaId + 1} из {_levels.Length}";
             _nextLevelButton.Enabled = false;
         }
 

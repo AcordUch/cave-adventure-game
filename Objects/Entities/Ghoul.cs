@@ -25,7 +25,7 @@ namespace Cave_Adventure
 
         public override string ToString()
         {
-            return "Вурдалак";
+            return "Гуль";
         }
     }
 }
