@@ -56,7 +56,7 @@ namespace Cave_Adventure
             PlayAnimation(graphics, playerPositionReal, entityImage);
         }
 
-        private void PlayAnimation(Graphics graphics, Point playerPosition, Image entityImage)
+        private void PlayAnimation(Graphics graphics, Point entityPosition, Image entityImage)
         {
             ChangeCurrentFrame();
 
@@ -65,8 +65,8 @@ namespace Cave_Adventure
                 graphics.DrawImage(
                     entityImage,
                     new Rectangle(
-                        playerPosition.X,
-                        playerPosition.Y - GlobalConst.BlockTextureSize,
+                        entityPosition.X - GlobalConst.BlockTextureSize / 2,
+                        entityPosition.Y - GlobalConst.BlockTextureSize,
                         GlobalConst.BlockTextureSize * 2,
                         GlobalConst.BlockTextureSize * 2
                     ),
@@ -82,8 +82,8 @@ namespace Cave_Adventure
             graphics.DrawImage(
                 entityImage,
                 new Rectangle(
-                    playerPosition.X,
-                    playerPosition.Y,
+                    entityPosition.X,
+                    entityPosition.Y,
                     GlobalConst.BlockTextureSize,
                     GlobalConst.BlockTextureSize
                     ),

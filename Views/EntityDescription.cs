@@ -6,6 +6,8 @@ namespace Cave_Adventure.Views
 {
     public partial class EntityDescription : Form
     {
+        private static readonly Size _entDescrSize = new Size(600, 450);
+
         private readonly Entity _entity;
         private readonly Label _infoLabel;
         private bool _configured = false;
@@ -14,7 +16,9 @@ namespace Cave_Adventure.Views
         {
             base.OnLoad(e);
             DoubleBuffered = true;
-            Size = new Size(550, 450);
+            Size = _entDescrSize;
+            MaximumSize = _entDescrSize;
+            MinimumSize = _entDescrSize;
             Text = "А ты, любопытный с:";
             KeyPreview = true;
         }

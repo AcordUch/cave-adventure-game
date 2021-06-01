@@ -15,12 +15,13 @@ namespace Cave_Adventure
     {
         private Entity _currentAttacker;
         private Entity _currentDefender;
-        
+
         public (CellType cellType, CellSubtype cellSubtype)[,] Arena { get; private set; }
         public Player Player { get; private set; }
         public Monster[] Monsters { get; private set; }
         public bool PlayerSelected { get; set; }
         public bool IsPlayerTurnNow { get; private set; } = true;
+        public bool TeleportMode { get; private set; } = false;
         public SinglyLinkedList<Point>[] PlayerPaths { get; private set; }
         public SinglyLinkedList<Point>[] PlayerAttackPoint { get; private set; }
         
@@ -161,7 +162,12 @@ namespace Cave_Adventure
         
         public async void MovePlayerAlongThePath(Point targetPoint)
         {
-            if (PlayerSelected && Player.AP > 0)
+            if (TeleportMode)
+            {
+                Player.TeleportToPoint(targetPoint);
+                Player.IsSelected = false;
+            }
+            else if (PlayerSelected && Player.AP > 0)
             {
                 ChangeStateOfUI?.Invoke();
                 var path = (PlayerPaths
@@ -271,6 +277,14 @@ namespace Cave_Adventure
             if(cheatMenu.ArenaMap == this)
             {
                 AllMonsterDead?.Invoke();
+            }
+        }
+
+        public void ChangeMoveMode(CheatMenu cheatMenu)
+        {
+            if(cheatMenu.ArenaMap == this)
+            {
+                TeleportMode = !TeleportMode;
             }
         }
     }
