@@ -25,181 +25,181 @@
 
     <ItemGroup>
       <Content Include="Resources\ArenaLevels\Arena1.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\ArenaLevels\Arena10.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\ArenaLevels\Arena1Debug.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\ArenaLevels\Arena2.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\ArenaLevels\Arena2Debug.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\ArenaLevels\Arena3.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\ArenaLevels\Arena3Debug.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\ArenaLevels\Arena4.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\ArenaLevels\Arena4Debug.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\ArenaLevels\Arena5.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\ArenaLevels\Arena5Debug.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\ArenaLevels\Arena6.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\ArenaLevels\Arena6Debug.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\ArenaLevels\Arena7.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\ArenaLevels\Arena7Debug.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\ArenaLevels\Arena8.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\ArenaLevels\Arena9.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\Assets\Cobra.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\Assets\Dwarf.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\Assets\Ghoul.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\Assets\Gladiator.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\Assets\Mini Golem.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\Assets\Minotaur.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\Assets\Slime.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\Assets\Spider.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\Assets\Witch.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\block\floorStone1.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\block\floorStone2.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\block\floorStoneBroken.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\block\noTexture.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\block\transparent.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\block\transparentDebug.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\block\wall0.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\block\wall1.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\block\wall2.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\block\wall3.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\block\wall4.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\andesiteBackground.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\dioriteBackground.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\endBackground.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\grass1.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\grass2.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\grass3.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\grass4.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\grass5.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\gravelBackground.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\ironBarsBackground.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\mazePicBackground1.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\mazePicBackground2.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\mazePicMainMenu.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\netherBackground.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\obsidianBackground.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\polishedAndesiteBackground.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\polishedBasaltBackground.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\polishedBlackstoneBackground.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\polishedDioriteBackground.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\polishedGraniteBackground.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\quartzBackground.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <Content Include="Resources\Texture\UI\stoneBackground.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
       <None Remove="ArenaLevels\Arena1.txt" />
       <None Remove="ArenaLevels\Arena2.txt" />
