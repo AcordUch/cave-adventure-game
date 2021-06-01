@@ -10,3 +10,5 @@ riderModule.iml
 /Cave Adventure.sln.DotSettings.user
 /.vs/Cave Adventure/v16/TestStore/1/testlog.manifest
 /publish
+/Properties/PublishProfiles/ClickOnceProfile.pubxml
+/Properties/PublishProfiles/ClickOnceProfile.pubxml.user
