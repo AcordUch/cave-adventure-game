@@ -96,16 +96,16 @@ namespace Cave_Adventure
                 var cell = map[y, x];
                 switch (cell)
                 {
-                    case "#T": arena[x, y] = (CellType.Wall, CellSubtype.transparent); break;
+                    case "#T": arena[x, y] = (CellType.Wall, CellSubtype.Transparent); break;
                     case "# ":
-                    case "#0": arena[x, y] = (CellType.Wall, CellSubtype.wall0); break;
-                    case "#1": arena[x, y] = (CellType.Wall, CellSubtype.wall1); break;
-                    case "#2": arena[x, y] = (CellType.Wall, CellSubtype.wall2); break;
-                    case "#3": arena[x, y] = (CellType.Wall, CellSubtype.wall3); break;
-                    case "#4": arena[x, y] = (CellType.Wall, CellSubtype.wall4); break;
-                    case "  ": arena[x, y] = (CellType.Floor, CellSubtype.floorStone2); break;
+                    case "#0": arena[x, y] = (CellType.Wall, CellSubtype.Wall0); break;
+                    case "#1": arena[x, y] = (CellType.Wall, CellSubtype.Wall1); break;
+                    case "#2": arena[x, y] = (CellType.Wall, CellSubtype.Wall2); break;
+                    case "#3": arena[x, y] = (CellType.Wall, CellSubtype.Wall3); break;
+                    case "#4": arena[x, y] = (CellType.Wall, CellSubtype.Wall4); break;
+                    case "  ": arena[x, y] = (CellType.Floor, CellSubtype.FloorStone2); break;
                     case "P ":
-                        arena[x, y] = (CellType.Floor, CellSubtype.floorStone2);
+                        arena[x, y] = (CellType.Floor, CellSubtype.FloorStone2);
                         player = new Player(new Point(x, y));
                         break;
                     case "Sl":
@@ -115,11 +115,11 @@ namespace Cave_Adventure
                     case "Gh":
                     case "Wi":
                     case "Mi":
-                        arena[x, y] = (CellType.Floor, CellSubtype.floorStone2);
+                        arena[x, y] = (CellType.Floor, CellSubtype.FloorStone2);
                         monsters.Add(StringCodeToEntity[cell].Invoke(new Point(x, y)));
                         break;
                     default:
-                        arena[x, y] = (CellType.Floor, CellSubtype.noTexture);
+                        arena[x, y] = (CellType.Floor, CellSubtype.NoTexture);
                         break;
                     }
             }

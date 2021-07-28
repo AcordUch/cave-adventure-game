@@ -243,7 +243,7 @@ namespace Cave_Adventure
                 Size = new Size(350, 50),
                 AutoSize = true
             };
-            _nextTurnButton.Click += ClickOnNextTurnButton;
+            _nextTurnButton.Click += OnNextTurnButtonClick;
 
             _backToMenuButton = new Button()
             {
@@ -462,7 +462,7 @@ namespace Cave_Adventure
             CurrentArenaId = arenaId;
         }
         
-        private void ClickOnNextTurnButton(object sender, EventArgs e)
+        private void OnNextTurnButtonClick(object sender, EventArgs e)
         {
             ArenaFieldControl.ArenaMap.CheckOnWinning();
             ArenaFieldControl.ArenaMap.NextTurn();

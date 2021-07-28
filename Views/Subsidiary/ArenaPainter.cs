@@ -172,15 +172,15 @@ namespace Cave_Adventure
             Bitmap image;
             switch (cell.cellSubtype)
             {
-                case CellSubtype.wall0: image = Resources.wall0; break;
-                case CellSubtype.wall1: image = Resources.wall1; break;
-                case CellSubtype.wall2: image = Resources.wall2; break;
-                case CellSubtype.wall3: image = Resources.wall3; break;
-                case CellSubtype.wall4: image = Resources.wall4; break;
-                case CellSubtype.floorStone1: image = Resources.floorStone1; break;
-                case CellSubtype.floorStone2: image = Resources.floorStone2; break;
-                case CellSubtype.floorStoneBroken: image = Resources.floorStoneBroken; break;
-                case CellSubtype.transparent:
+                case CellSubtype.Wall0: image = Resources.wall0; break;
+                case CellSubtype.Wall1: image = Resources.wall1; break;
+                case CellSubtype.Wall2: image = Resources.wall2; break;
+                case CellSubtype.Wall3: image = Resources.wall3; break;
+                case CellSubtype.Wall4: image = Resources.wall4; break;
+                case CellSubtype.FloorStone1: image = Resources.floorStone1; break;
+                case CellSubtype.FloorStone2: image = Resources.floorStone2; break;
+                case CellSubtype.FloorStoneBroken: image = Resources.floorStoneBroken; break;
+                case CellSubtype.Transparent:
                     image = _debugMode ? Resources.transparentDebug : Resources.transparent;
                     break;
                 default: image = Resources.noTexture; break;

@@ -276,14 +276,47 @@
       <Compile Update="Views\ArenaForm.cs">
         <SubType>Form</SubType>
       </Compile>
-      <Compile Update="Views\ArenaFieldControl.cs">
-        <SubType>UserControl</SubType>
-      </Compile>
       <Compile Update="Views\CheatMenu.cs">
         <SubType>Form</SubType>
       </Compile>
       <Compile Update="Views\EntityDescription.cs">
         <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="Views\Screens\ArenaPanel.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Views\Screens\LevelSelectionMenuPanel.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Views\Screens\MainMenuPanel.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Views\Subsidiary\HealBar.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Views\Subsidiary\HealBarPanel.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Views\Subsidiary\InventoryPanel.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Views\Subsidiary\PlayerInfoPanel.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Views\Subsidiary\ArenaFieldControl.cs">
+        <SubType>UserControl</SubType>
+      </Compile>
+      <Compile Update="Views\Screens\NotUsed\StoryIntroPanel.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Views\Screens\NotUsed\Tutorial1Panel.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Views\Screens\NotUsed\Tutorial2Panel.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Views\Screens\NotUsed\EndGamePanel.cs">
+        <SubType>Component</SubType>
       </Compile>
     </ItemGroup>
 
