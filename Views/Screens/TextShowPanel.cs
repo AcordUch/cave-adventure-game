@@ -8,7 +8,6 @@ namespace Cave_Adventure.Views.Screens
 {
     public class TextShowPanel : Panel, IPanel
     {
-        private delegate void tempNameDelegate(object sender, EventArgs e);
         private readonly Game _game;
         private bool _configured = false;
 
@@ -92,7 +91,7 @@ namespace Cave_Adventure.Views.Screens
         };
         
         /// <remarks>
-        /// Действие на клик кнопок нужно проставлять после описания объекта
+        /// Действие на нажатие кнопок нужно проставлять после создания объекта
         /// </remarks>
         public TextShowPanel(Game game)
         {
