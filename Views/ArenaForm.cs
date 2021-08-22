@@ -55,49 +55,14 @@ namespace Cave_Adventure
                 Dock = DockStyle.Fill,
                 Name = "arenaPanel"
             };
-
-            _tutorial1Panel = new TextShowPanel()
-            {
-                Title = {Text = "Обучение"},
-                InnerTextLabel = {Text = Resources.Tutorial1},
-                FirstButton = { Text = "Погодите, хочу назад", Visible = true},
-                SecondButton = {Text = "Хочу уже играть", Visible = true},
-                ThirdButton = { Text = "Хмм, понял, давай дальше", Visible = true}
-            };
-            _tutorial1Panel.FirstButton.Click += Game.Instance.SwitchOnStoryIntroPanel;
-            _tutorial1Panel.SecondButton.Click += Game.Instance.SwitchOnArenas;
-            _tutorial1Panel.ThirdButton.Click += Game.Instance.SwitchOnTutorial2;
             
-            _tutorial2Panel = new TextShowPanel()
-            {
-                Title = {Text = "Обучение"},
-                InnerTextLabel = {Text = Resources.Tutorial2},
-                FirstButton = { Text = "Погодите, хочу назад", Visible = true},
-                ThirdButton = { Text = "И зачем я на это согласился...", Visible = true}
-            };
-            _tutorial2Panel.FirstButton.Click += Game.Instance.SwitchOnTutorial1;
-            _tutorial2Panel.ThirdButton.Click += Game.Instance.SwitchOnArenas;
-
-            _storyIntroPanel = new TextShowPanel()
-            {
-                Title = {Visible = false},
-                InnerTextLabel = {Text = Resources.BeginningOfStory},
-                FirstButton = { Text = "Погодите, хочу назад", Visible = true},
-                ThirdButton = { Text = "И глубже в тьму", Visible = true}
-            };
-            _storyIntroPanel.FirstButton.Click += Game.Instance.SwitchOnMainMenu;
-            _storyIntroPanel.ThirdButton.Click += Game.Instance.SwitchOnTutorial1;
-            
-            _endGamePanel = new TextShowPanel()
-            {
-                Title = {Visible = false},
-                InnerTextLabel = {Text = Resources.EndOfStory},
-                ThirdButton = { Text = "Удачи, путник!", Visible = true}
-            };
-            _endGamePanel.ThirdButton.Click += Game.Instance.SwitchOnMainMenu;
-
             _levelSelectionMenuPanel.LoadLevel += _arenaPanel.ArenaFieldControl.LoadLevel;
             _levelSelectionMenuPanel.SetLevelId += _arenaPanel.OnSetCurrentArenaId;
+            
+            _tutorial1Panel = TextShowPanelHub.CreateTutorial1Panel();
+            _tutorial2Panel = TextShowPanelHub.CreateTutorial2Panel();
+            _storyIntroPanel = TextShowPanelHub.CreateStoryIntroPanel();
+            _endGamePanel = TextShowPanelHub.CreateEndGamePanel();
 
             Controls.Add(_arenaPanel);
             Controls.Add(_mainMenuPanel);
