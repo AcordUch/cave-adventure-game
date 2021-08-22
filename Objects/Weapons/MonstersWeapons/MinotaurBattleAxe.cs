@@ -1,8 +1,8 @@
 ﻿namespace Cave_Adventure
 {
-    public class Spell : Weapon
+    public class MinotaurBattleAxe : Weapon
     {
-        public Spell() : base(GlobalConst.SpellFactor, GlobalConst.SpellRadius)
+        public MinotaurBattleAxe() : base(GlobalConst.BattleAxeFactor, GlobalConst.BattleAxeRadius)
         {
         }
 
@@ -14,7 +14,7 @@
 
         public override string ToString()
         {
-            return "Заклинание";
+            return "Боевой топор";
         }
     }
 }

@@ -243,7 +243,7 @@ namespace Cave_Adventure
                 Size = new Size(350, 50),
                 AutoSize = true
             };
-            _nextTurnButton.Click += ClickOnNextTurnButton;
+            _nextTurnButton.Click += OnNextTurnButtonClick;
 
             _backToMenuButton = new Button()
             {
@@ -414,7 +414,7 @@ namespace Cave_Adventure
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             _pressedKeys.Add(e.KeyCode);
-            if (_pressedKeys.Contains(Keys.ControlKey) && _pressedKeys.Contains(Keys.Oemtilde) && _pressedKeys.Count == 2)
+            if (_pressedKeys.Contains(Keys.ControlKey) && _pressedKeys.Contains(Keys.Oemtilde))
             {
                 if(!Application.OpenForms.OfType<CheatMenu>().Any())
                 {
@@ -426,6 +426,11 @@ namespace Cave_Adventure
                 _pressedKeys.Clear();
             }
         }
+        
+        private void OnKeyUp(object sender, KeyEventArgs e)
+        {
+            _pressedKeys.Remove(e.KeyCode);
+        }
 
         private void OnChangeDebug()
         {
@@ -435,11 +440,6 @@ namespace Cave_Adventure
             ArenaFieldControl.ArenaPainter.OnDebugChange();
         }
 
-        private void OnKeyUp(object sender, KeyEventArgs e)
-        {
-            _pressedKeys.Remove(e.KeyCode);
-        }
-        
         private void OnBlockUnblockUI()
         {
             _inventoryPanel.OnBlockUnblockUI();
@@ -463,7 +463,7 @@ namespace Cave_Adventure
             _arenaInfoPanel.Controls[1].Text = $"Текущая арена:\n  {_currentArenaId + 1} из {_levels.Length}";
         }
         
-        private void ClickOnNextTurnButton(object sender, EventArgs e)
+        private void OnNextTurnButtonClick(object sender, EventArgs e)
         {
             ArenaFieldControl.ArenaMap.CheckOnWinning();
             ArenaFieldControl.ArenaMap.NextTurn();
