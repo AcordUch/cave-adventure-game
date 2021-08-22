@@ -6,7 +6,7 @@ namespace Cave_Adventure
     {
         public Witch(Point position) : base(position, EntityType.Witch)
         {
-            Weapon = new Spell();
+            Weapon = new WitchSpell();
             AP = MaxAP = GlobalConst.WitchAP;
             Attack = GlobalConst.WitchAttack;
             Health = MaxHealth = GlobalConst.WitchHP;

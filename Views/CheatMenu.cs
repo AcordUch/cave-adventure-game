@@ -26,7 +26,7 @@ namespace Cave_Adventure.Views
         {
             base.OnLoad(e);
             DoubleBuffered = true;
-            Size = new Size(450, 175);
+            Size = new Size(450, 575);
             Text = "Запомните дети, консоль нужна для debug'а, а не для баловства";
             KeyPreview = true;
         }
@@ -39,7 +39,7 @@ namespace Cave_Adventure.Views
                 Dock = DockStyle.Fill,
                 AutoCompleteSource = AutoCompleteSource.CustomSource,
                 AutoCompleteCustomSource = _autoCompleteSource,
-                AutoCompleteMode = AutoCompleteMode.Suggest
+                AutoCompleteMode = AutoCompleteMode.Suggest,
             };
             _textBox.KeyDown += (sender, args) =>
             {
@@ -50,8 +50,16 @@ namespace Cave_Adventure.Views
                     args.SuppressKeyPress = true;
                 }
             };
+            var label = new Label()
+            {
+                AutoSize = true,
+                Dock = DockStyle.Fill,
+                Location = new Point(0, _textBox.Height + 25),
+                Text = MakeListOfCommand(false),
+            };
             
             Controls.Add(_textBox);
+            Controls.Add(label);
         }
 
         public void Configure(ArenaFieldControl arenaFieldControl)
@@ -103,12 +111,7 @@ namespace Cave_Adventure.Views
                     break;
                 case "help":
                     needClear = false;
-                    var strBld = new StringBuilder();
-                    foreach (var com in _autoCompleteSource)
-                    {
-                        strBld.Append(com.ToString()).Append(' ');
-                    }
-                    _textBox.Text = strBld.ToString();
+                    _textBox.Text = MakeListOfCommand();
                     break;
                 case "simpledrawmode":
                     _arenaFieldControl.ArenaPainter.OnSimpleMode();
@@ -121,6 +124,17 @@ namespace Cave_Adventure.Views
                 _textBox.Clear();
             
             _textBox.ReadOnly = false;
+        }
+
+        private string MakeListOfCommand(bool inLine = true)
+        {
+            var appendChar = inLine ? " " : "\n";
+            var strBld = new StringBuilder();
+            foreach (var com in _autoCompleteSource)
+            {
+                strBld.Append(com.ToString()).Append(appendChar);
+            }
+            return strBld.ToString();
         }
     }
 }

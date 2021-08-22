@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Cave_Adventure.Interfaces;
 using Cave_Adventure.Properties;
 using Cave_Adventure.Views;
+using Cave_Adventure.Views.Screens;
 
 namespace Cave_Adventure
 {
@@ -14,10 +16,10 @@ namespace Cave_Adventure
         private readonly ArenaPanel _arenaPanel;
         private readonly MainMenuPanel _mainMenuPanel;
         private readonly LevelSelectionMenuPanel _levelSelectionMenuPanel;
-        private readonly StoryIntroPanel _storyIntroPanel;
-        private readonly Tutorial1Panel _tutorial1Panel;
-        private readonly Tutorial2Panel _tutorial2Panel;
-        private readonly EndGamePanel _endGamePanel;
+        private readonly TextShowPanel _storyIntroPanel;
+        private readonly TextShowPanel _tutorial1Panel;
+        private readonly TextShowPanel _tutorial2Panel;
+        private readonly TextShowPanel _endGamePanel;
         private readonly Game _game;
 
         protected override void OnLoad(EventArgs e)
@@ -42,46 +44,59 @@ namespace Cave_Adventure
             _mainMenuPanel = new MainMenuPanel(_game)
             {
                 Dock = DockStyle.Fill,
-                Location = new Point(0, 0),
                 Name = "mainMenuPanel"
             };
             _levelSelectionMenuPanel = new LevelSelectionMenuPanel(_game)
             {
                 Dock = DockStyle.Fill,
-                Location = new Point(0, 0),
                 Name = "levelSelectionMenuPanel"
             };
             _arenaPanel = new ArenaPanel(_game)
             {
                 Dock = DockStyle.Fill,
-                Location = new Point(0, 0),
                 Name = "arenaPanel"
             };
-            _tutorial1Panel = new Tutorial1Panel(_game)
+
+            _tutorial1Panel = new TextShowPanel(_game)
             {
-                Dock = DockStyle.Fill,
-                Location = new Point(0, 0),
-                Name = "tutorial1Panel"
+                Title = {Text = "Обучение"},
+                InnerTextLabel = {Text = Resources.Tutorial1},
+                FirstButton = { Text = "Погодите, хочу назад", Visible = true},
+                SecondButton = {Text = "Хочу уже играть", Visible = true},
+                ThirdButton = { Text = "Хмм, понял, давай дальше", Visible = true}
             };
-            _tutorial2Panel = new Tutorial2Panel(_game)
-            {
-                Dock = DockStyle.Fill,
-                Location = new Point(0, 0),
-                Name = "tutorial2Panel"
-            };
-            _storyIntroPanel = new StoryIntroPanel(_game)
-            {
-                Dock = DockStyle.Fill,
-                Location = new Point(0, 0),
-                Name = "storyIntroPanel"
-            };
-            _endGamePanel = new EndGamePanel(_game)
-            {
-                Dock = DockStyle.Fill,
-                Location = new Point(0, 0),
-                Name = "endGamePanel"
-            };
+            _tutorial1Panel.FirstButton.Click += _game.SwitchOnStoryIntroPanel;
+            _tutorial1Panel.SecondButton.Click += _game.SwitchOnArenas;
+            _tutorial1Panel.ThirdButton.Click += _game.SwitchOnTutorial2;
             
+            _tutorial2Panel = new TextShowPanel(_game)
+            {
+                Title = {Text = "Обучение"},
+                InnerTextLabel = {Text = Resources.Tutorial2},
+                FirstButton = { Text = "Погодите, хочу назад", Visible = true},
+                ThirdButton = { Text = "И зачем я на это согласился...", Visible = true}
+            };
+            _tutorial2Panel.FirstButton.Click += _game.SwitchOnTutorial1;
+            _tutorial2Panel.ThirdButton.Click += _game.SwitchOnArenas;
+
+            _storyIntroPanel = new TextShowPanel(_game)
+            {
+                Title = {Visible = false},
+                InnerTextLabel = {Text = Resources.BeginningOfStory},
+                FirstButton = { Text = "Погодите, хочу назад", Visible = true},
+                ThirdButton = { Text = "И глубже в тьму", Visible = true}
+            };
+            _storyIntroPanel.FirstButton.Click += _game.SwitchOnMainMenu;
+            _storyIntroPanel.ThirdButton.Click += _game.SwitchOnTutorial1;
+            
+            _endGamePanel = new TextShowPanel(_game)
+            {
+                Title = {Visible = false},
+                InnerTextLabel = {Text = Resources.EndOfStory},
+                ThirdButton = { Text = "Удачи, путник!", Visible = true}
+            };
+            _endGamePanel.ThirdButton.Click += _game.SwitchOnMainMenu;
+
             _levelSelectionMenuPanel.LoadLevel += _arenaPanel.ArenaFieldControl.LoadLevel;
             _levelSelectionMenuPanel.SetLevelId += _arenaPanel.OnSetCurrentArenaId;
 
@@ -99,6 +114,33 @@ namespace Cave_Adventure
             _timer.Tick += TimerTick;
             _timer.Start();
         }
+
+        #region Неиспользуемое
+        // _tutorial1Panel = new Tutorial1Panel(_game)
+        // {
+        //     Dock = DockStyle.Fill,
+        //     Location = new Point(0, 0),
+        //     Name = "tutorial1Panel"
+        // };
+        // _tutorial2Panel = new Tutorial2Panel(_game)
+        // {
+        //     Dock = DockStyle.Fill,
+        //     Location = new Point(0, 0),
+        //     Name = "tutorial2Panel"
+        // };
+        // _storyIntroPanel = new StoryIntroPanel(_game)
+        // {
+        //     Dock = DockStyle.Fill,
+        //     Location = new Point(0, 0),
+        //     Name = "storyIntroPanel"
+        // };
+        // _endGamePanel = new EndGamePanel(_game)
+        // {
+        //     Dock = DockStyle.Fill,
+        //     Location = new Point(0, 0),
+        //     Name = "endGamePanel"
+        // };
+        #endregion
 
         private void OnScreenChange(GameScreen screen)
         {
@@ -182,26 +224,20 @@ namespace Cave_Adventure
         private void HideScreens()
         {
             DropScreens();
-            _arenaPanel.Hide();
-            _mainMenuPanel.Hide();
-            _levelSelectionMenuPanel.Hide();
-            _storyIntroPanel.Hide();
-            _tutorial1Panel.Hide();
-            _tutorial2Panel.Hide();
-            _endGamePanel.Hide();
+            foreach (Control control in Controls)
+            {
+                control.Hide();
+            }
         }
 
         private void DropScreens()
         {
-            _arenaPanel.Drop();
-            _mainMenuPanel.Drop();
-            _levelSelectionMenuPanel.Drop();
-            _storyIntroPanel.Drop();
-            _tutorial1Panel.Drop();
-            _tutorial2Panel.Drop();
-            _endGamePanel.Drop();
+            foreach (IPanel control in Controls)
+            {
+                control.Drop();
+            }
         }
-
+        
         private void TimerTick(object sender, EventArgs e)
         {
             switch (_game.Screen)

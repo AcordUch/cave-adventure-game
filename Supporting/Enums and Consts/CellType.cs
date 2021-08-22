@@ -8,8 +8,8 @@ namespace Cave_Adventure
 
     public enum CellSubtype
     {
-        noTexture, transparent,
-        floorStone1, floorStone2, floorStoneBroken,
-        wall0, wall1, wall2, wall3, wall4
+        NoTexture, Transparent,
+        FloorStone1, FloorStone2, FloorStoneBroken,
+        Wall0, Wall1, Wall2, Wall3, Wall4
     }
 }

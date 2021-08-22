@@ -6,7 +6,7 @@ namespace Cave_Adventure
     {
         public Minotaur(Point position) : base(position, EntityType.Minotaur)
         {
-            Weapon = new BattleAxe();
+            Weapon = new MinotaurBattleAxe();
             AP = MaxAP = GlobalConst.MinotaurAP;
             Attack = GlobalConst.MinotaurAttack;
             Health = MaxHealth = GlobalConst.MinotaurHP;
