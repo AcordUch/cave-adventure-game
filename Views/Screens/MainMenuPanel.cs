@@ -13,14 +13,11 @@ namespace Cave_Adventure
 {
     public class MainMenuPanel : Panel, IPanel
     {
-        private readonly Game _game;
         private bool _configured = false;
         private Panel _imagePanel;
         
-        public MainMenuPanel(Game game)
+        public MainMenuPanel()
         {
-            _game = game;
-
             var table = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
@@ -121,7 +118,7 @@ namespace Cave_Adventure
                 Margin = new Padding(0, 20, 0, 5),
                 BackgroundImage = Properties.Resources.grass1
             };
-            arenas.LinkClicked += _game.SwitchOnStoryIntroPanel;
+            arenas.LinkClicked += Game.Instance.SwitchOnStoryIntroPanel;
             
             var levelSelectionMenu = new LinkLabel
             {
@@ -134,7 +131,7 @@ namespace Cave_Adventure
                 Margin = new Padding(0, 20, 0, 5),
                 BackgroundImage = Properties.Resources.grass1
             };
-            levelSelectionMenu.LinkClicked += _game.SwitchOnLevelSelectionMenu;
+            levelSelectionMenu.LinkClicked += Game.Instance.SwitchOnLevelSelectionMenu;
 
             var signature = new Label
             {

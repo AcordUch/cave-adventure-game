@@ -8,7 +8,6 @@ namespace Cave_Adventure.Views.Screens
 {
     public class TextShowPanel : Panel, IPanel
     {
-        private readonly Game _game;
         private bool _configured = false;
 
         #region Неиспользуемое
@@ -93,12 +92,10 @@ namespace Cave_Adventure.Views.Screens
         /// <remarks>
         /// Действие на нажатие кнопок нужно проставлять после создания объекта
         /// </remarks>
-        public TextShowPanel(Game game)
+        public TextShowPanel()
         {
             this.Dock = DockStyle.Fill;
             
-            _game = game;
-
             var table = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,

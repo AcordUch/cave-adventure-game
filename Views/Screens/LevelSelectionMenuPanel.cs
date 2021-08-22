@@ -11,15 +11,13 @@ namespace Cave_Adventure.Views
     public class LevelSelectionMenuPanel: Panel, IPanel
     {
         private readonly string[] _levels;
-        private readonly Game _game;
         private PictureBox _imageBox;
         private bool _configured = false;
         public event Action<string> LoadLevel;
         public event Action<int> SetLevelId;
 
-        public LevelSelectionMenuPanel(Game game)
+        public LevelSelectionMenuPanel()
         {
-            _game = game;
             _levels = GlobalConst.LoadLevels().ToArray();
             
             var table = new TableLayoutPanel
@@ -87,7 +85,7 @@ namespace Cave_Adventure.Views
                 Size = new Size(350, 50),
                 AutoSize = true,
             };
-            backToMainMenuButton.Click += _game.SwitchOnMainMenu;
+            backToMainMenuButton.Click += Game.Instance.SwitchOnMainMenu;
 
             _imageBox = new PictureBox()
             {
@@ -159,7 +157,7 @@ namespace Cave_Adventure.Views
                 };
                 link.LinkClicked += (sender, args) =>
                 {
-                    _game.SwitchOnArenas(sender, args);
+                    Game.Instance.SwitchOnArenas(sender, args);
                     LoadLevel?.Invoke(_levels[arenaId]);
                     SetLevelId?.Invoke(arenaId);
                 };

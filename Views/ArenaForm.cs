@@ -20,7 +20,7 @@ namespace Cave_Adventure
         private readonly TextShowPanel _tutorial1Panel;
         private readonly TextShowPanel _tutorial2Panel;
         private readonly TextShowPanel _endGamePanel;
-        private readonly Game _game;
+        //private readonly Game _game;
 
         protected override void OnLoad(EventArgs e)
         {
@@ -36,28 +36,27 @@ namespace Cave_Adventure
 
         public ArenaForm()
         {
-            _game = new Game();
-            _game.ScreenChanged += OnScreenChange;
+            Game.Instance.ScreenChanged += OnScreenChange;
 
             //SuspendLayout();
 
-            _mainMenuPanel = new MainMenuPanel(_game)
+            _mainMenuPanel = new MainMenuPanel()
             {
                 Dock = DockStyle.Fill,
                 Name = "mainMenuPanel"
             };
-            _levelSelectionMenuPanel = new LevelSelectionMenuPanel(_game)
+            _levelSelectionMenuPanel = new LevelSelectionMenuPanel()
             {
                 Dock = DockStyle.Fill,
                 Name = "levelSelectionMenuPanel"
             };
-            _arenaPanel = new ArenaPanel(_game)
+            _arenaPanel = new ArenaPanel()
             {
                 Dock = DockStyle.Fill,
                 Name = "arenaPanel"
             };
 
-            _tutorial1Panel = new TextShowPanel(_game)
+            _tutorial1Panel = new TextShowPanel()
             {
                 Title = {Text = "Обучение"},
                 InnerTextLabel = {Text = Resources.Tutorial1},
@@ -65,37 +64,37 @@ namespace Cave_Adventure
                 SecondButton = {Text = "Хочу уже играть", Visible = true},
                 ThirdButton = { Text = "Хмм, понял, давай дальше", Visible = true}
             };
-            _tutorial1Panel.FirstButton.Click += _game.SwitchOnStoryIntroPanel;
-            _tutorial1Panel.SecondButton.Click += _game.SwitchOnArenas;
-            _tutorial1Panel.ThirdButton.Click += _game.SwitchOnTutorial2;
+            _tutorial1Panel.FirstButton.Click += Game.Instance.SwitchOnStoryIntroPanel;
+            _tutorial1Panel.SecondButton.Click += Game.Instance.SwitchOnArenas;
+            _tutorial1Panel.ThirdButton.Click += Game.Instance.SwitchOnTutorial2;
             
-            _tutorial2Panel = new TextShowPanel(_game)
+            _tutorial2Panel = new TextShowPanel()
             {
                 Title = {Text = "Обучение"},
                 InnerTextLabel = {Text = Resources.Tutorial2},
                 FirstButton = { Text = "Погодите, хочу назад", Visible = true},
                 ThirdButton = { Text = "И зачем я на это согласился...", Visible = true}
             };
-            _tutorial2Panel.FirstButton.Click += _game.SwitchOnTutorial1;
-            _tutorial2Panel.ThirdButton.Click += _game.SwitchOnArenas;
+            _tutorial2Panel.FirstButton.Click += Game.Instance.SwitchOnTutorial1;
+            _tutorial2Panel.ThirdButton.Click += Game.Instance.SwitchOnArenas;
 
-            _storyIntroPanel = new TextShowPanel(_game)
+            _storyIntroPanel = new TextShowPanel()
             {
                 Title = {Visible = false},
                 InnerTextLabel = {Text = Resources.BeginningOfStory},
                 FirstButton = { Text = "Погодите, хочу назад", Visible = true},
                 ThirdButton = { Text = "И глубже в тьму", Visible = true}
             };
-            _storyIntroPanel.FirstButton.Click += _game.SwitchOnMainMenu;
-            _storyIntroPanel.ThirdButton.Click += _game.SwitchOnTutorial1;
+            _storyIntroPanel.FirstButton.Click += Game.Instance.SwitchOnMainMenu;
+            _storyIntroPanel.ThirdButton.Click += Game.Instance.SwitchOnTutorial1;
             
-            _endGamePanel = new TextShowPanel(_game)
+            _endGamePanel = new TextShowPanel()
             {
                 Title = {Visible = false},
                 InnerTextLabel = {Text = Resources.EndOfStory},
                 ThirdButton = { Text = "Удачи, путник!", Visible = true}
             };
-            _endGamePanel.ThirdButton.Click += _game.SwitchOnMainMenu;
+            _endGamePanel.ThirdButton.Click += Game.Instance.SwitchOnMainMenu;
 
             _levelSelectionMenuPanel.LoadLevel += _arenaPanel.ArenaFieldControl.LoadLevel;
             _levelSelectionMenuPanel.SetLevelId += _arenaPanel.OnSetCurrentArenaId;
@@ -240,7 +239,7 @@ namespace Cave_Adventure
         
         private void TimerTick(object sender, EventArgs e)
         {
-            switch (_game.Screen)
+            switch (Game.Instance.CurrentScreen)
             {
                 case GameScreen.Arenas:
                     _arenaPanel.Update();

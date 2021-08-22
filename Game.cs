@@ -6,8 +6,13 @@ namespace Cave_Adventure
 {
     public class Game
     {
-        public GameScreen Screen { get; private set; } = GameScreen.MainMenu;
+        private static Game _instance;
+        public GameScreen CurrentScreen { get; private set; } = GameScreen.MainMenu;
         public event Action<GameScreen> ScreenChanged;
+        
+        private Game(){}
+        
+        public static Game Instance => _instance ??= new Game();
 
         public void SwitchOnArenas(object sender, EventArgs e)
         {
@@ -51,7 +56,7 @@ namespace Cave_Adventure
 
         private void ChangeStage(GameScreen stage)
         {
-            Screen = stage;
+            CurrentScreen = stage;
             ScreenChanged?.Invoke(stage);
         }
     }

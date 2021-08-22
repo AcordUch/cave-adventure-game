@@ -14,8 +14,7 @@ namespace Cave_Adventure
         public readonly ArenaFieldControl ArenaFieldControl;
         private readonly List<Keys> _pressedKeys = new List<Keys>();
         private readonly string[] _levels;
-        private readonly Game _game;
-        
+
         private HealBarPanel _healBarPanel;
         private InventoryPanel _inventoryPanel;
         private PlayerInfoPanel _playerInfoPanel;
@@ -43,9 +42,8 @@ namespace Cave_Adventure
             }
         }
 
-        public ArenaPanel(Game game)
+        public ArenaPanel()
         {
-            _game = game;
             _levels = GlobalConst.LoadLevels().ToArray();
             //_levels = GlobalConst.LoadDebugLevels().ToArray();
 
@@ -256,7 +254,7 @@ namespace Cave_Adventure
             _backToMenuButton.Click += (sender, args) =>
             {
                 _nextLevelButton.Enabled = false;
-                _game.SwitchOnMainMenu(sender, args);
+                Game.Instance.SwitchOnMainMenu(sender, args);
             };
 
             _nextLevelButton = new Button()
@@ -536,7 +534,7 @@ namespace Cave_Adventure
 
         private void GameEnd()
         {
-            _game.SwitchOnEndGame();
+            Game.Instance.SwitchOnEndGame();
         }
         
         private (double Width, double Height) GetZoomForController()
