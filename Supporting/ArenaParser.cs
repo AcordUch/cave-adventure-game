@@ -43,16 +43,8 @@ namespace Cave_Adventure
             foreach (var row_ in arena)
             {
                 var row = new StringBuilder();
-                for (int _ = 0; _ < amountAddColumn; _++)
-                {
-                    row.Append("#T.");
-                }
-                row.Append(row_);
-                for (int _ = 0; _ < amountAddColumn; _++)
-                {
-                    row.Append("#T.");
-                }
-                row.Append("\r\n");
+                var additionalToCoreRow = CreateAdditionalPartOfCoreRow(amountAddColumn);
+                row.Append(additionalToCoreRow).Append(row_).Append(additionalToCoreRow).Append("\r\n");
                 result.Append(row);
             }
             for (int _ = 0; _ < amountAddRow; _++)
@@ -70,10 +62,19 @@ namespace Cave_Adventure
             {
                 additionalRow.Append("#T.");
             }
-            additionalRow.Append("\r\n");
-            return additionalRow.ToString();
+            return additionalRow.Append("\r\n").ToString();
         }
-        
+
+        private static string CreateAdditionalPartOfCoreRow(int amountAddColumn)
+        {
+            var res = new StringBuilder();
+            for (int _ = 0; _ < amountAddColumn; _++)
+            {
+                res.Append("#T.");
+            }
+            return res.ToString();
+        }
+
         public static ((CellType, CellSubtype)[,] arenaMap, Player player, Monster[] monsters) ParsingMap(string arena)
         {
             var lines = arena.Split(new[] { "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);

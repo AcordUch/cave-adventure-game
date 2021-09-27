@@ -20,7 +20,6 @@ namespace Cave_Adventure
         private readonly TextShowPanel _tutorial1Panel;
         private readonly TextShowPanel _tutorial2Panel;
         private readonly TextShowPanel _endGamePanel;
-        //private readonly Game _game;
 
         protected override void OnLoad(EventArgs e)
         {
