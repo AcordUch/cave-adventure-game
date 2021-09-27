@@ -8,6 +8,7 @@ namespace Cave_Adventure
         StoryIntro,
         TutorialMenu1,
         TutorialMenu2,
-        EndGame
+        EndGame,
+        ArenaGeneratorMenu
     }
 }

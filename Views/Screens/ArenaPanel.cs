@@ -27,6 +27,7 @@ namespace Cave_Adventure
         private bool _winFormIsDisplayed = false;
         private bool _configured = false;
         private bool _UIBlocked = false;
+        private bool _isSingle = false;
         private bool _needInspect = false;
         private int _currentArenaId;
 
@@ -42,10 +43,18 @@ namespace Cave_Adventure
             }
         }
 
-        public ArenaPanel()
+        public ArenaPanel(string[] levels, bool isSingle = false)
+            :this()
         {
-            _levels = GlobalConst.LoadLevels().ToArray();
-            //_levels = GlobalConst.LoadDebugLevels().ToArray();
+            _levels = levels;
+            _isSingle = isSingle;
+        }
+
+        public ArenaPanel(bool isDebugMode = false)
+        {
+            // _levels ??= GlobalConst.LoadLevels().ToArray();
+            // //_levels = GlobalConst.LoadDebugLevels().ToArray();
+            _levels ??= isDebugMode ? GlobalConst.LoadDebugLevels().ToArray() : GlobalConst.LoadLevels().ToArray();
 
             ArenaFieldControl = new ArenaFieldControl()
             {
@@ -60,6 +69,7 @@ namespace Cave_Adventure
                 AutoSize = true
             };
             ConfigureTables(table);
+            if(_isSingle) HideUnusedElements();
 
             ArenaFieldControl.KeyDown += OnKeyDown;
             ArenaFieldControl.KeyUp += OnKeyUp;
@@ -90,6 +100,12 @@ namespace Cave_Adventure
             _configured = true;
         }
 
+        public void ReConfigure(string arenaMap = null)
+        {
+            Drop();
+            Configure(arenaMap);
+        }
+
         public void Drop()
         {
             _configured = false;
@@ -105,6 +121,16 @@ namespace Cave_Adventure
             _healBarPanel.Invalidate();
             _inventoryPanel.Update();
             _playerInfoPanel.Update();
+        }
+
+        public void HideUnusedElements()
+        {
+            _nextLevelButton.Hide();
+        }
+        
+        public void ShowUnusedElements()
+        {
+            _nextLevelButton.Show();
         }
 
         #region ClickOnPointHandler

@@ -133,6 +133,19 @@ namespace Cave_Adventure
             };
             levelSelectionMenu.LinkClicked += Game.Instance.SwitchOnLevelSelectionMenu;
 
+            var personalGeneratLevel = new LinkLabel
+            {
+                Text = "Генератор арены",
+                TextAlign = ContentAlignment.MiddleCenter,
+                LinkColor = Color.White,
+                ActiveLinkColor = Color.White,
+                Size = new Size(100, 35),
+                AutoSize = true,
+                Margin = new Padding(0, 20, 0, 5),
+                BackgroundImage = Properties.Resources.grass1
+            };
+            personalGeneratLevel.LinkClicked += Game.Instance.SwitchOnArenaGeneratorMenu;
+
             var signature = new Label
             {
                 Text = Properties.Resources.Signgature,
@@ -148,6 +161,7 @@ namespace Cave_Adventure
 
             buttonMenu.Controls.Add(arenas);
             buttonMenu.Controls.Add(levelSelectionMenu);
+            buttonMenu.Controls.Add(personalGeneratLevel);
             buttonMenu.Controls.Add(signature);
         }
     }

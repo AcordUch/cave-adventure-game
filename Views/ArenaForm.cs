@@ -16,6 +16,7 @@ namespace Cave_Adventure
         private readonly ArenaPanel _arenaPanel;
         private readonly MainMenuPanel _mainMenuPanel;
         private readonly LevelSelectionMenuPanel _levelSelectionMenuPanel;
+        private readonly ArenaGeneratorPanel _arenaGeneratorPanel;
         private readonly TextShowPanel _storyIntroPanel;
         private readonly TextShowPanel _tutorial1Panel;
         private readonly TextShowPanel _tutorial2Panel;
@@ -36,7 +37,7 @@ namespace Cave_Adventure
         public ArenaForm()
         {
             Game.Instance.ScreenChanged += OnScreenChange;
-
+            Game.Instance.ChangedOnCertainArena += ChangedOnCertainArena;
             //SuspendLayout();
 
             _mainMenuPanel = new MainMenuPanel()
@@ -54,9 +55,18 @@ namespace Cave_Adventure
                 Dock = DockStyle.Fill,
                 Name = "arenaPanel"
             };
+            _arenaGeneratorPanel = new ArenaGeneratorPanel()
+            {
+                Dock = DockStyle.Fill,
+                Name = "arenaGeneratorPanel"
+            };
             
-            _levelSelectionMenuPanel.LoadLevel += _arenaPanel.ArenaFieldControl.LoadLevel;
+            // _levelSelectionMenuPanel.LoadLevel += _arenaPanel.ArenaFieldControl.LoadLevel;
+            _levelSelectionMenuPanel.LoadLevel += _arenaPanel.ReConfigure;
             _levelSelectionMenuPanel.SetLevelId += _arenaPanel.OnSetCurrentArenaId;
+            
+            Game.Instance.ConfigureArenaPanelOneLevel += _arenaPanel.HideUnusedElements;
+            Game.Instance.ConfigureArenaPanelOnManyLevels += _arenaPanel.ShowUnusedElements;
             
             _tutorial1Panel = TextShowPanelHub.CreateTutorial1Panel();
             _tutorial2Panel = TextShowPanelHub.CreateTutorial2Panel();
@@ -66,11 +76,12 @@ namespace Cave_Adventure
             Controls.Add(_arenaPanel);
             Controls.Add(_mainMenuPanel);
             Controls.Add(_levelSelectionMenuPanel);
+            Controls.Add(_arenaGeneratorPanel);
             Controls.Add(_storyIntroPanel);
             Controls.Add(_tutorial1Panel);
             Controls.Add(_tutorial2Panel);
             Controls.Add(_endGamePanel);
-            
+
             ShowMainMenu();
             
             _timer = new Timer { Interval = GlobalConst.MainTimerInterval };
@@ -105,6 +116,15 @@ namespace Cave_Adventure
         // };
         #endregion
 
+        private void ChangedOnCertainArena(string arena)
+        {
+            SuspendLayout();
+            HideScreens();
+            _arenaPanel.ReConfigure(arena);
+            _arenaPanel.Show();
+            ResumeLayout();
+        }
+
         private void OnScreenChange(GameScreen screen)
         {
             SuspendLayout();
@@ -118,6 +138,9 @@ namespace Cave_Adventure
                     break;
                 case GameScreen.LevelSelectionMenu:
                     ShowLevelSelectionMenu();
+                    break;
+                case GameScreen.ArenaGeneratorMenu:
+                    ShowArenaGeneratorMenu();
                     break;
                 case GameScreen.StoryIntro:
                     ShowStoryIntro();
@@ -154,6 +177,13 @@ namespace Cave_Adventure
             HideScreens();
             _levelSelectionMenuPanel.Configure();
             _levelSelectionMenuPanel.Show();
+        }
+
+        private void ShowArenaGeneratorMenu()
+        {
+            HideScreens();
+            _arenaGeneratorPanel.Configure();
+            _arenaGeneratorPanel.Show();
         }
 
         private void ShowStoryIntro()
