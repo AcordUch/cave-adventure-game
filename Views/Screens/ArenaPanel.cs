@@ -11,6 +11,8 @@ namespace Cave_Adventure
 {
     public class ArenaPanel : Panel, IPanel
     {
+        private static ArenaPanel _instance;
+
         public readonly ArenaFieldControl ArenaFieldControl;
         private readonly List<Keys> _pressedKeys = new List<Keys>();
         private readonly string[] _levels;
@@ -30,6 +32,8 @@ namespace Cave_Adventure
         private bool _isSingle = false;
         private bool _needInspect = false;
         private int _currentArenaId;
+        
+        public static ArenaPanel Instance => _instance ??= new ArenaPanel();
 
         public int CurrentArenaId
         {
@@ -43,17 +47,18 @@ namespace Cave_Adventure
             }
         }
 
-        public ArenaPanel(string[] levels, bool isSingle = false)
-            :this()
-        {
-            _levels = levels;
-            _isSingle = isSingle;
-        }
+        // public ArenaPanel(string[] levels, bool isSingle = false)
+        //     :this()
+        // {
+        //     _levels = levels;
+        //     _isSingle = isSingle;
+        // }
 
-        public ArenaPanel(bool isDebugMode = false)
+        private ArenaPanel(bool isDebugMode = false)
         {
             // _levels ??= GlobalConst.LoadLevels().ToArray();
             // //_levels = GlobalConst.LoadDebugLevels().ToArray();
+            this.Dock = DockStyle.Fill;
             _levels ??= isDebugMode ? GlobalConst.LoadDebugLevels().ToArray() : GlobalConst.LoadLevels().ToArray();
 
             ArenaFieldControl = new ArenaFieldControl()
@@ -123,12 +128,33 @@ namespace Cave_Adventure
             _playerInfoPanel.Update();
         }
 
-        public void HideUnusedElements()
+        public void AdjustForLevelsCampaign()
+        {
+            ShowUnusedElements();
+            _backToMenuButton.Text = "Назад в меню";
+            _backToMenuButton.Click += (sender, args) =>
+            {
+                _nextLevelButton.Enabled = false;
+                Game.Instance.SwitchOnMainMenu(sender, args);
+            };
+            _nextLevelButton.Text = "Следующий уровень";
+            _nextLevelButton.Enabled = false;
+            _nextLevelButton.Click += OnNextLevelButtonClick;
+        }
+        
+        public void AdjustCustomLevel()
+        {
+            HideUnusedElements();
+            _backToMenuButton.Text = "Назад в меню";
+            _backToMenuButton.Click += Game.Instance.SwitchOnArenaGeneratorMenu;
+        }
+
+        private void HideUnusedElements()
         {
             _nextLevelButton.Hide();
         }
         
-        public void ShowUnusedElements()
+        private void ShowUnusedElements()
         {
             _nextLevelButton.Show();
         }
@@ -292,7 +318,7 @@ namespace Cave_Adventure
                 AutoSize = true,
                 Enabled = false
             };
-            _nextLevelButton.Click += OnNextLevelButtonClick;
+            //_nextLevelButton.Click += OnNextLevelButtonClick; //действие биндиться здесь и в "настройке под уровень" из-за этого была ошибка со скипом уровня
             
             _inspectEntityButton = new Button()
             {

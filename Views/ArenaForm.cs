@@ -50,11 +50,7 @@ namespace Cave_Adventure
                 Dock = DockStyle.Fill,
                 Name = "levelSelectionMenuPanel"
             };
-            _arenaPanel = new ArenaPanel()
-            {
-                Dock = DockStyle.Fill,
-                Name = "arenaPanel"
-            };
+            _arenaPanel = ArenaPanel.Instance;
             _arenaGeneratorPanel = new ArenaGeneratorPanel()
             {
                 Dock = DockStyle.Fill,
@@ -64,9 +60,6 @@ namespace Cave_Adventure
             // _levelSelectionMenuPanel.LoadLevel += _arenaPanel.ArenaFieldControl.LoadLevel;
             _levelSelectionMenuPanel.LoadLevel += _arenaPanel.ReConfigure;
             _levelSelectionMenuPanel.SetLevelId += _arenaPanel.OnSetCurrentArenaId;
-            
-            Game.Instance.ConfigureArenaPanelOneLevel += _arenaPanel.HideUnusedElements;
-            Game.Instance.ConfigureArenaPanelOnManyLevels += _arenaPanel.ShowUnusedElements;
             
             _tutorial1Panel = TextShowPanelHub.CreateTutorial1Panel();
             _tutorial2Panel = TextShowPanelHub.CreateTutorial2Panel();

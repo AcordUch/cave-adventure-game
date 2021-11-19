@@ -10,8 +10,8 @@ namespace Cave_Adventure
         public GameScreen CurrentScreen { get; private set; } = GameScreen.MainMenu;
         public event Action<GameScreen> ScreenChanged;
         public event Action<string> ChangedOnCertainArena;
-        public event Action ConfigureArenaPanelOnManyLevels;
-        public event Action ConfigureArenaPanelOneLevel;
+        //public event Action ConfigureArenaPanelOnManyLevels;
+        //public event Action ConfigureArenaPanelOneLevel;
         
         private Game(){}
         
@@ -19,13 +19,15 @@ namespace Cave_Adventure
 
         public void SwitchOnArenas(object sender, EventArgs e)
         {
-            ConfigureArenaPanelOnManyLevels?.Invoke();
+            //ConfigureArenaPanelOnManyLevels?.Invoke();
+            ArenaPanel.Instance.AdjustForLevelsCampaign();
             ChangeStage(GameScreen.Arenas);
         }
 
         public void SwitchOnArenas(string arena)
         {
-            ConfigureArenaPanelOneLevel?.Invoke();
+            //ConfigureArenaPanelOneLevel?.Invoke();
+            ArenaPanel.Instance.AdjustCustomLevel();
             ChangeStage(GameScreen.Arenas);
             ChangedOnCertainArena?.Invoke(arena);
         }

@@ -26,11 +26,25 @@ namespace Cave_Adventure
                 [EntityType.Minotaur] = "Mi",
                 [EntityType.Player] = "P "
             };
-
+        
+        private static readonly Dictionary<int, string> EntityByDigitCode =
+            new()
+            {
+                [0] = "Sl",
+                [1] = "Sp",
+                [2] = "Sn",
+                [3] = "Go",
+                [4] = "Gh",
+                [5] = "Wi",
+                [6] = "Mi",
+            };
+        
         private Random _rnd;
+        private string[,] _draftArray;
         private int _width = 12;
         private int _height = 7;
-        private string[,] _draftArray;
+        private int _monstersAmount = 3;
+        private List<Monster> _monstersToPlace = new List<Monster>();
         private bool _playerWasPlaced = false;
 
         public string CreateArena()
@@ -62,25 +76,30 @@ namespace Cave_Adventure
             }
             PutPlayer();
         }
-
-        private void PutPlayer()
-        {
-            while(true)
-            {
-                var plPnt = new Point(_rnd.Next(0, _width), _rnd.Next(0, 3));
-                if(_draftArray[plPnt.Y, plPnt.X] == "  ")
-                {
-                    _draftArray[plPnt.Y, plPnt.X] = "P ";
-                    break;
-                }
-            }
-        }
-
+        
         private string LookCellType(int x, int y)
         {
             if (y > 1 && y <= _height - 2 && _rnd.Next(0, 100) < 15)
                 return "#1";
             return "  ";
+        }
+
+        private void PutPlayer()
+        {
+            while(!_playerWasPlaced)
+            {
+                var plPnt = new Point(_rnd.Next(0, _width), _rnd.Next(0, 3));
+                if(_draftArray[plPnt.Y, plPnt.X] == "  ")
+                {
+                    _draftArray[plPnt.Y, plPnt.X] = "P ";
+                    _playerWasPlaced = true;
+                }
+            }
+        }
+
+        private void PutMonsters()
+        {
+            throw new NotImplementedException();
         }
     }
 }
